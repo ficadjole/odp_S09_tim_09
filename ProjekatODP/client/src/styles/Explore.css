@@ -1,15 +1,16 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 #root {
   margin: 0;
   padding: 0;
-  width: 100%;
+  width: 100% !important;
   height: 100%;
 }
 
@@ -21,14 +22,13 @@ html, body {
   flex: 1;
 }
 
-
 .explore-page {
   min-height: 100vh;
   background-color: #f9f7f1;
 }
 
 .explore-page .content {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .explore-page h1 {
@@ -36,7 +36,7 @@ html, body {
   margin-bottom: 1rem;
   text-align: center;
   font-size: 45px;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
 .search-bar {
