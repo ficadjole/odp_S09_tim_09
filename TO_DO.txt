@@ -1,0 +1,6 @@
+Funkcionalnosti User: doda recept, komentarise, lajkuje
+Doda recept: navoid naziv jela,sastojke,opis,slika,kategorije
+
+Funkcionalnosti Moderator: brise recepte, dodaje ili menja kategorije recepata
+
+prvo: moderator kreiranje kategorije i brisanje recepata

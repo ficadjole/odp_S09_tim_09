@@ -1,4 +1,4 @@
-import { Uloga } from "../enums/Uloga";
+import { Uloga } from "../../enums/Uloga";
 
 export class KorisnikLoginDto {
   public constructor(
