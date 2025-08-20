@@ -1,0 +1,114 @@
+.recipe-details-page {
+  padding: 0;
+  max-width: 100%;
+  margin: 0 auto;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.recipe-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.recipe-header img {
+  margin-top: 20px;
+  width: 70%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+.recipe-header h1 {
+  margin-top: 1rem;
+  color: #196c53;
+  font-size: 2.2rem;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.recipe-header p {
+  color: #555;
+  margin-top: 0.3rem;
+}
+
+.recipe-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.recipe-section h2 {
+  color: #cf711f;
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.recipe-section ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.rating-section .rating-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.star-btn {
+  background: linear-gradient(135deg, #cf711f, #e29b5f);
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: white;
+  transition: all 0.3s ease;
+  align-items: center;
+}
+
+.star-btn.active,
+.star-btn:hover {
+  transform: scale(1.2);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+.comments-section .comment {
+  background: #f0e0d0;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.add-comment {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.add-comment input {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.add-comment button {
+  background: linear-gradient(135deg, #E9A178, #F2B57C);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.add-comment button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
