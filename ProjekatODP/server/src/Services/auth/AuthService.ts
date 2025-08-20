@@ -1,4 +1,4 @@
-import { KorisnikLoginDto } from "../../Domain/DTOs/KorisnikLoginDto";
+import { KorisnikLoginDto } from "../../Domain/DTOs/auth/KorisnikLoginDto";
 import { Uloga } from "../../Domain/enums/Uloga";
 import { Korisnik } from "../../Domain/models/Korisnik";
 import { IKorisnikRepository } from "../../Domain/repositories/IKorisnikRepository";

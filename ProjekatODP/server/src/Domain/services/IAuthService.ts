@@ -1,4 +1,4 @@
-import { KorisnikLoginDto } from "../DTOs/KorisnikLoginDto";
+import { KorisnikLoginDto } from "../DTOs/auth/KorisnikLoginDto";
 import { Uloga } from "../enums/Uloga";
 
 export interface IAuthService {

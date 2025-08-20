@@ -1,6 +1,7 @@
 import { Router, Response, Request } from "express";
 import { IAuthService } from "../../Domain/services/IAuthService";
-import { validacijaPodatakaAuth } from "../../Services/validators/RegisterValidator";
+import { validacijaPodatakaAuth } from "../validators/RegisterValidator";
+import jwt from "jsonwebtoken";
 
 export class AuthController {
   private router: Router;
@@ -31,6 +32,8 @@ export class AuthController {
       const result = await this.authService.prijava(username, email, password);
 
       if (result.idKorisnika !== 0) {
+        const token = jwt.sign;
+
         res
           .status(200)
           .json({ succes: true, message: "Uspesna prijava", data: result });
@@ -67,17 +70,27 @@ export class AuthController {
       );
 
       if (result.idKorisnika !== 0) {
+        const token = jwt.sign(
+          {
+            id: result.idKorisnika,
+            username: result.username,
+            email: result.email,
+            uloga: result.uloga,
+          },
+          process.env.JWT_SECRET ?? "",
+          { expiresIn: "6h" }
+        );
+
         res.status(200).json({
           succes: true,
           message: "Uspesna registracija",
-          data: result,
+          data: token,
         });
         return;
       } else {
         res.status(401).json({
           succes: false,
           message: "Registracija nije uspela. Korisnicko ime vec postoji",
-          data: result,
         });
         return;
       }
