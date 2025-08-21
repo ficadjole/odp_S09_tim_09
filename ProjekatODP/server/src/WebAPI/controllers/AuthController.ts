@@ -32,11 +32,21 @@ export class AuthController {
       const result = await this.authService.prijava(username, email, password);
 
       if (result.idKorisnika !== 0) {
-        const token = jwt.sign;
+        //kreiranje tokena za autorizaciju korisnika
+        const token = jwt.sign(
+          {
+            id: result.idKorisnika,
+            username: result.username,
+            email: result.email,
+            uloga: result.uloga,
+          },
+          process.env.JWT_SECRET ?? "",
+          { expiresIn: "6h" }
+        );
 
         res
           .status(200)
-          .json({ succes: true, message: "Uspesna prijava", data: result });
+          .json({ succes: true, message: "Uspesna prijava", data: token });
         return;
       } else {
         res.status(401).json({

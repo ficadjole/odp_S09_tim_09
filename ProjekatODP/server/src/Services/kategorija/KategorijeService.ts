@@ -4,6 +4,28 @@ import { IKategorijaRepository } from "../../Domain/repositories/IKategorijaRepo
 import { Kategorija } from "../../Domain/models/Kategorija";
 export class KategorijeService implements IKategorijeService {
   public constructor(private kategorijeRepository: IKategorijaRepository) {}
+  async azurirajKategoriju(
+    nazivKNovi: string,
+    nazivKStari: string
+  ): Promise<KategorijaDto> {
+    const postojecaKategorija = await this.kategorijeRepository.getByNazivK(
+      nazivKStari
+    );
+
+    if (postojecaKategorija.idKategorije === 0) return new KategorijaDto();
+
+    const azuriranaKategorija =
+      await this.kategorijeRepository.azurirajKategoriju(
+        nazivKStari,
+        nazivKNovi
+      );
+
+    if (azuriranaKategorija == true) {
+      return new KategorijaDto(postojecaKategorija.idKategorije, nazivKNovi);
+    } else {
+      return new KategorijaDto();
+    }
+  }
 
   async obrisiKategoriju(nazivK: string): Promise<KategorijaDto> {
     const postojecaKategorija = await this.kategorijeRepository.getByNazivK(

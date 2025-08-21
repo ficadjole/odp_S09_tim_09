@@ -4,12 +4,48 @@ import db from "../connection/db_connection_pool";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 
 export class KateogrijaRepository implements IKategorijaRepository {
+  async azurirajKategoriju(
+    nazivKStari: string,
+    nazivKNovi: string
+  ): Promise<boolean> {
+    try {
+      const query = "UPDATE kategorije SET nazivK = ? WHERE nazivK = ?";
+
+      const [result] = await db.execute<ResultSetHeader>(query, [
+        nazivKNovi,
+        nazivKStari,
+      ]);
+
+      return result.affectedRows > 0;
+    } catch {
+      return false;
+    }
+  }
   async getByNazivK(nazivK: string): Promise<Kategorija> {
     try {
       const query =
         "SELECT idKategorije,nazivK FROM kategorije WHERE nazivK = ?";
 
       const [rows] = await db.execute<RowDataPacket[]>(query, [nazivK]);
+
+      if (rows.length > 0) {
+        const row = rows[0];
+
+        return new Kategorija(row.idKategorije, row.nazivK);
+      }
+
+      return new Kategorija();
+    } catch {
+      return new Kategorija();
+    }
+  }
+
+  async getByIdKategorije(idKategorije: number): Promise<Kategorija> {
+    try {
+      const query =
+        "SELECT idKategorije,nazivK FROM kategorije WHERE idKategorije = ?";
+
+      const [rows] = await db.execute<RowDataPacket[]>(query, [idKategorije]);
 
       if (rows.length > 0) {
         const row = rows[0];

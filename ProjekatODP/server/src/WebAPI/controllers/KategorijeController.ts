@@ -27,6 +27,12 @@ export class KategorijeController {
       authorize(Uloga.moderator),
       this.obrisiKategoriju.bind(this)
     );
+    this.router.post(
+      "/kategorije/azuriraj",
+      authenticate,
+      authorize(Uloga.moderator),
+      this.azurirajKategoriju.bind(this)
+    );
   }
 
   private async dodajKategoriju(req: Request, res: Response): Promise<void> {
@@ -69,6 +75,33 @@ export class KategorijeController {
         res.status(401).json({
           success: false,
           message: "Neuspesno brisanje kategorije",
+          data: result,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({ success: false, message: error });
+    }
+  }
+
+  private async azurirajKategoriju(req: Request, res: Response): Promise<void> {
+    try {
+      const { nazivKNovi, nazivKStari } = req.body;
+
+      const result = await this.kateogrijeService.azurirajKategoriju(
+        nazivKNovi,
+        nazivKStari
+      );
+
+      if (result.idKategorije !== 0) {
+        res.status(200).json({
+          success: true,
+          message: "Uspesno ste azurirali kategoriju!",
+          data: result,
+        });
+      } else {
+        res.status(401).json({
+          success: false,
+          message: "Neuspesno azuriranje kategorije",
           data: result,
         });
       }

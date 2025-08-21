@@ -2,7 +2,7 @@ import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { Korisnik } from "../../Domain/models/Korisnik";
 import { IKorisnikRepository } from "../../Domain/repositories/IKorisnikRepository";
 import db from "../connection/db_connection_pool";
-import { resourceLimits } from "worker_threads";
+
 export class KorisnikRepository implements IKorisnikRepository {
   async create(korisnik: Korisnik): Promise<Korisnik> {
     try {
