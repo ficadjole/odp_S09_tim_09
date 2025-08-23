@@ -45,14 +45,22 @@ export class ReceptiController {
 
   private async dodajRecept(req: Request, res: Response): Promise<void> {
     try {
-      const { idKorisnika, nazivR, sastojci, opis, slika_url, idKategorije } =
-        req.body;
+      const {
+        idKorisnika,
+        nazivR,
+        sastojci,
+        opis,
+        saveti,
+        slika_url,
+        idKategorije,
+      } = req.body;
 
       const result = await this.receptService.dodajRecept(
         idKorisnika,
         nazivR,
         sastojci,
         opis,
+        saveti,
         slika_url,
         idKategorije
       );
@@ -76,11 +84,26 @@ export class ReceptiController {
   }
   private async azurirajRecept(req: Request, res: Response): Promise<void> {
     try {
-      const { idKorisnika, idRecepta, nazivR, sastojci, opis, slika_url } =
-        req.body;
+      const {
+        idKorisnika,
+        idRecepta,
+        nazivR,
+        sastojci,
+        opis,
+        saveti,
+        slika_url,
+      } = req.body;
 
       const result = await this.receptService.azurirajRecept(
-        new Recept(idRecepta, idKorisnika, nazivR, sastojci, opis, slika_url)
+        new Recept(
+          idRecepta,
+          idKorisnika,
+          nazivR,
+          sastojci,
+          opis,
+          saveti,
+          slika_url
+        )
       );
 
       if (result.idRecepta !== 0) {

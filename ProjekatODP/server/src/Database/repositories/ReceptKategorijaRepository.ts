@@ -2,6 +2,7 @@ import { ReceptKategorija } from "../../Domain/models/ReceptKategorija";
 import { IReceptKategorijaRepository } from "../../Domain/repositories/IReceptKategorijaRepository";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import db from "../connection/db_connection_pool";
+import { KategorijaDto } from "../../Domain/DTOs/kategorija/KategorijaDto";
 export class ReceptKategorijaRepoistory implements IReceptKategorijaRepository {
   async dodajReceptKategorija(
     receptKategorija: ReceptKategorija
@@ -97,6 +98,24 @@ export class ReceptKategorijaRepoistory implements IReceptKategorijaRepository {
     } catch (error) {
       console.log(error);
       return new ReceptKategorija();
+    }
+  }
+
+  async sveKategorijeRecepta(idRecepta: number): Promise<ReceptKategorija[]> {
+    try {
+      const query = "SELECT * FROM recept_kategorija WHERE idRecepta = ?";
+
+      const [rows] = await db.execute<RowDataPacket[]>(query, [idRecepta]);
+
+      if (rows.length > 0) {
+        return rows.map(
+          (row) => new ReceptKategorija(row.idRecepta, row.idKategorije)
+        );
+      }
+
+      return [];
+    } catch {
+      return [];
     }
   }
 }

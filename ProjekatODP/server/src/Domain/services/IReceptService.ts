@@ -8,6 +8,7 @@ export interface IReceptService {
     nazivR: string,
     sastojci: string,
     opis: string,
+    saveti: string,
     slika_url: string,
     idKategorije: number[]
   ): Promise<ReceptDetaljiDto>;
@@ -17,4 +18,5 @@ export interface IReceptService {
     idKategorije: number[]
   ): Promise<ReceptDetaljiDto>;
   getAllRecepti(): Promise<ReceptiListaDto[]>;
+
 }

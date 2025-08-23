@@ -3,18 +3,18 @@ import { IReceptRepository } from "../../Domain/repositories/IReceptRepository";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import db from "../connection/db_connection_pool";
 
-
 export class ReceptRepository implements IReceptRepository {
   async dodajRecept(recept: Recept): Promise<Recept> {
     try {
       const query =
-        "INSERT INTO recepti (idKorisnika,nazivR,sastojci,opis,slika_url) VALUES (?,?,?,?,?)";
+        "INSERT INTO recepti (idKorisnika,nazivR,sastojci,opis,saveti,slika_url) VALUES (?,?,?,?,?,?)";
 
       const [result] = await db.execute<ResultSetHeader>(query, [
         recept.idKorisnika,
         recept.nazivR,
         recept.sastojci,
         recept.opis,
+        recept.saveti,
         recept.slika_url,
       ]);
 
@@ -25,6 +25,7 @@ export class ReceptRepository implements IReceptRepository {
           recept.nazivR,
           recept.sastojci,
           recept.opis,
+          recept.saveti,
           recept.slika_url,
           new Date()
         );
@@ -39,12 +40,13 @@ export class ReceptRepository implements IReceptRepository {
   async azurirajRecept(recept: Recept): Promise<Recept> {
     try {
       const query =
-        "UPDATE recepti SET nazivR = ?, sastojci = ?,opis = ?,slika_url = ? WHERE idRecepta = ?";
+        "UPDATE recepti SET nazivR = ?, sastojci = ?,opis = ?,saveti = ?,slika_url = ? WHERE idRecepta = ?";
 
       const [result] = await db.execute<ResultSetHeader>(query, [
         recept.nazivR,
         recept.sastojci,
         recept.opis,
+        recept.saveti,
         recept.slika_url,
         recept.idRecepta,
       ]);
@@ -72,7 +74,7 @@ export class ReceptRepository implements IReceptRepository {
   async getByNazivR(nazivR: string): Promise<Recept> {
     try {
       const query =
-        "SELECT idKorisnika,idRecepta,nazivR,sastojci,opis,slika_url,datumR FROM recepti WHERE nazivR = ?";
+        "SELECT idKorisnika,idRecepta,nazivR,sastojci,opis,saveti,slika_url,datumR FROM recepti WHERE nazivR = ?";
 
       const [rows] = await db.execute<RowDataPacket[]>(query, [nazivR]);
 
@@ -85,6 +87,7 @@ export class ReceptRepository implements IReceptRepository {
           row.nazivR,
           row.sastojci,
           row.opis,
+          row.saveti,
           row.slika_url,
           row.datum
         );
@@ -99,7 +102,7 @@ export class ReceptRepository implements IReceptRepository {
   async getByIdRecepta(idRecepta: number): Promise<Recept> {
     try {
       const query =
-        "SELECT idKorisnika,idRecepta,nazivR,sastojci,opis,slika_url,datumR FROM recepti WHERE idRecepta = ?";
+        "SELECT idKorisnika,idRecepta,nazivR,sastojci,opis,saveti,slika_url,datumR FROM recepti WHERE idRecepta = ?";
 
       const [rows] = await db.execute<RowDataPacket[]>(query, [idRecepta]);
 
@@ -111,6 +114,7 @@ export class ReceptRepository implements IReceptRepository {
           row.nazivR,
           row.sastojci,
           row.opis,
+          row.saveti,
           row.slika_url,
           row.datum
         );
@@ -124,7 +128,7 @@ export class ReceptRepository implements IReceptRepository {
   async getAllRecepti(): Promise<Recept[]> {
     try {
       const query =
-        "SELECT idKorisnika,idRecepta,nazivR,sastojci,opis,slika_url,datumR FROM recepti ORDER BY idRecepta ASC";
+        "SELECT idKorisnika,idRecepta,nazivR,sastojci,opis,saveti,slika_url,datumR FROM recepti ORDER BY idRecepta ASC";
 
       const [rows] = await db.execute<RowDataPacket[]>(query);
 
@@ -136,6 +140,7 @@ export class ReceptRepository implements IReceptRepository {
             row.nazivR,
             row.sastojci,
             row.opis,
+            row.saveti,
             row.slika_url,
             row.datum
           )

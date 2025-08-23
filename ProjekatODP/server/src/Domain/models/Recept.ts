@@ -5,6 +5,7 @@ export class Recept {
     public nazivR: string = "",
     public sastojci: string = "",
     public opis: string = "",
+    public saveti: string = "",
     public slika_url: string = "",
     public datum: Date = new Date(1944, 6, 6, 0, 0, 0, 0)
   ) {}
