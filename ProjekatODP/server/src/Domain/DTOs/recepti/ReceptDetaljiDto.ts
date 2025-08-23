@@ -7,7 +7,9 @@ export class ReceptDetaljiDto {
     public nazivR: string = "",
     public sastojic: string = "",
     public opis: string = "",
+    public saveti: string = "",
     public slika_url: string = "",
     public date: Date = new Date(),
+    public kategorije: KategorijaDto[] = []
   ) {}
 }

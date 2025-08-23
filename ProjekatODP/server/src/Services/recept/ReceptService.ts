@@ -1,3 +1,4 @@
+import { KategorijaDto } from "../../Domain/DTOs/kategorija/KategorijaDto";
 import { ReceptDetaljiDto } from "../../Domain/DTOs/recepti/ReceptDetaljiDto";
 import { ReceptiListaDto } from "../../Domain/DTOs/recepti/ReceptListaDto";
 import { Recept } from "../../Domain/models/Recept";
@@ -19,6 +20,7 @@ export class ReceptService implements IReceptService {
     nazivR: string,
     sastojci: string,
     opis: string,
+    saveti: string,
     slika_url: string,
     idKategorije: number[] //ovde ide lista idKategorija
   ): Promise<ReceptDetaljiDto> {
@@ -28,7 +30,7 @@ export class ReceptService implements IReceptService {
     if (postojeciRecept.idRecepta !== 0) return new ReceptDetaljiDto();
 
     const noviRecept = await this.receptRepository.dodajRecept(
-      new Recept(0, idKorisnika, nazivR, sastojci, opis, slika_url)
+      new Recept(0, idKorisnika, nazivR, sastojci, opis, saveti, slika_url)
     );
     //dodavanje recepta u recept_kategorija
     //prvo proveramao da li postoji uopste primljena kategorija
@@ -55,15 +57,7 @@ export class ReceptService implements IReceptService {
     }
 
     if (noviRecept.idRecepta !== 0) {
-      return new ReceptDetaljiDto(
-        noviRecept.idKorisnika,
-        noviRecept.idRecepta,
-        noviRecept.nazivR,
-        noviRecept.sastojci,
-        noviRecept.opis,
-        noviRecept.slika_url,
-        noviRecept.datum
-      );
+      return this.mapToDTO(noviRecept);
     } else {
       return new ReceptDetaljiDto();
     }
@@ -79,15 +73,7 @@ export class ReceptService implements IReceptService {
     const azurirajRecept = await this.receptRepository.azurirajRecept(recept);
 
     if (azurirajRecept.idRecepta !== 0) {
-      return new ReceptDetaljiDto(
-        azurirajRecept.idKorisnika,
-        azurirajRecept.idRecepta,
-        azurirajRecept.nazivR,
-        azurirajRecept.sastojci,
-        azurirajRecept.opis,
-        azurirajRecept.slika_url,
-        azurirajRecept.datum
-      );
+      return this.mapToDTO(azurirajRecept);
     } else {
       return new ReceptDetaljiDto();
     }
@@ -132,15 +118,7 @@ export class ReceptService implements IReceptService {
     }
 
     if (obrisanRecept == true) {
-      return new ReceptDetaljiDto(
-        postojeciRecept.idKorisnika,
-        postojeciRecept.idRecepta,
-        postojeciRecept.nazivR,
-        postojeciRecept.sastojci,
-        postojeciRecept.opis,
-        postojeciRecept.slika_url,
-        postojeciRecept.datum
-      );
+      return this.mapToDTO(postojeciRecept);
     } else {
       return new ReceptDetaljiDto();
     }
@@ -153,5 +131,39 @@ export class ReceptService implements IReceptService {
     );
 
     return receptiListaDto;
+  }
+
+  private async mapToDTO(recept: Recept): Promise<ReceptDetaljiDto> {
+    const receptKategorija =
+      await this.receptKategorijaRepository.sveKategorijeRecepta(
+        recept.idRecepta
+      );
+    const kategorije: KategorijaDto[] = [];
+
+    for (var i = 0; i < receptKategorija.length; i++) {
+      if (receptKategorija[i].idKategorije) {
+        const kategorija = await this.kategorijaRepository.getByIdKategorije(
+          receptKategorija[i].idKategorije
+        );
+
+        if (kategorija.idKategorije !== 0) {
+          kategorije.push(
+            new KategorijaDto(kategorija.idKategorije, kategorija.nazivK)
+          );
+        }
+      }
+    }
+
+    return new ReceptDetaljiDto(
+      recept.idKorisnika,
+      recept.idRecepta,
+      recept.nazivR,
+      recept.sastojci,
+      recept.opis,
+      recept.saveti,
+      recept.slika_url,
+      recept.datum,
+      kategorije
+    );
   }
 }

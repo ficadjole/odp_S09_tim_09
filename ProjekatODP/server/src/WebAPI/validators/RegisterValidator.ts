@@ -34,7 +34,7 @@ export function validacijaPodatakaAuth(
     };
   }
 
-  if (email.match("[a-zA-Z0-9]+@[a-z]+\.com") === null) {
+  if (email.match("[a-zA-Z0-9]+@[a-z]+.com") === null) {
     return {
       uspesno: false,
       poruka: "Niste uneli email u dobrom formatu!",

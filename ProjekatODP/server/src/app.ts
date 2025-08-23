@@ -17,6 +17,16 @@ import { ReceptService } from "./Services/recept/ReceptService";
 import { ReceptiController } from "./WebAPI/controllers/ReceptiController";
 import { IReceptKategorijaRepository } from "./Domain/repositories/IReceptKategorijaRepository";
 import { ReceptKategorijaRepoistory } from "./Database/repositories/ReceptKategorijaRepository";
+import { IKomentarRepository } from "./Domain/repositories/IKomentarRepository";
+import { KomentarRepository } from "./Database/repositories/KomentarRepository";
+import { IKomenatariService } from "./Domain/services/IKomentariService";
+import { KomentariService } from "./Services/komentar/KomentariService";
+import { KomentariController } from "./WebAPI/controllers/KomentariController";
+import { ILajkRepository } from "./Domain/repositories/ILajkRepository";
+import { LajkRepository } from "./Database/repositories/LajkRepository";
+import { ILajkService } from "./Domain/services/ILajkService";
+import { LajkService } from "./Services/lajk/LajkService";
+import { LajkController } from "./WebAPI/controllers/LajkController";
 
 require("dotenv").config();
 
@@ -31,31 +41,47 @@ app.get<{}, { data: string }>("/", (req, res) => {
   });
 });
 
+//Korisnik
 const korisnikRepository: IKorisnikRepository = new KorisnikRepository();
-
-const kategorijeRepository: IKategorijaRepository = new KateogrijaRepository();
-
-const receptRepository: IReceptRepository = new ReceptRepository();
-const receptKategorijaRepository: IReceptKategorijaRepository =
-  new ReceptKategorijaRepoistory();
-
 const authService: IAuthService = new AuthService(korisnikRepository);
+const authController = new AuthController(authService);
 
+//Kategorije
+const kategorijeRepository: IKategorijaRepository = new KateogrijaRepository();
 const kategorijaService: IKategorijeService = new KategorijeService(
   kategorijeRepository
 );
+const kategorijaController = new KategorijeController(kategorijaService);
+
+//Recept
+const receptRepository: IReceptRepository = new ReceptRepository();
+
+const receptKategorijaRepository: IReceptKategorijaRepository =
+  new ReceptKategorijaRepoistory();
 
 const receptService: IReceptService = new ReceptService(
   receptRepository,
   receptKategorijaRepository,
   kategorijeRepository
 );
-
-const authController = new AuthController(authService);
-const kategorijaController = new KategorijeController(kategorijaService);
 const receptController = new ReceptiController(receptService);
+
+//Komentar
+const komentarRepository: IKomentarRepository = new KomentarRepository();
+const komentarService: IKomenatariService = new KomentariService(
+  komentarRepository,
+  korisnikRepository
+);
+const komentarController = new KomentariController(komentarService);
+
+//Lajk
+const lajkRepository: ILajkRepository = new LajkRepository();
+const lajkService: ILajkService = new LajkService(lajkRepository);
+const lajkController = new LajkController(lajkService);
 
 app.use("/api/v1", authController.getRouter());
 app.use("/api/v1", kategorijaController.getRouter());
 app.use("/api/v1", receptController.getRouter());
+app.use("/api/v1", komentarController.getRouter());
+app.use("/api/v1", lajkController.getRouter());
 export default app;

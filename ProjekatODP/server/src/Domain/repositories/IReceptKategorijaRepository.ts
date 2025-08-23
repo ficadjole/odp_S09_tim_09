@@ -13,4 +13,5 @@ export interface IReceptKategorijaRepository {
     idNoveKategorije: number
   ): Promise<ReceptKategorija>;
   getById(idRecepta: number, idKategorije: number): Promise<ReceptKategorija>;
+  sveKategorijeRecepta(idRecepta: number): Promise<ReceptKategorija[]>;
 }

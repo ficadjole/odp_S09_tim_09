@@ -1,4 +1,4 @@
-Funkcionalnosti User: doda recept, komentarise, lajkuje
-Doda recept: navoid naziv jela,sastojke,opis,slika,kategorije
+Funkcionalnosti User: lajkuje
 
-user: da doda recept
+Blog: dodavanje novog posta,brisanje,azuriranje
+Blog_preporuceno: povezati da neki recept bude preporucen
