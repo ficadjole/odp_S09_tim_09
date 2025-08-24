@@ -21,7 +21,7 @@ export class KategorijeController {
       authorize(Uloga.moderator),
       this.dodajKategoriju.bind(this)
     );
-    this.router.get(
+    this.router.delete(
       "/kategorije/obrisi",
       authenticate,
       authorize(Uloga.moderator),

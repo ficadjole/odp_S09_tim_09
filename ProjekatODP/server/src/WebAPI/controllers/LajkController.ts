@@ -99,13 +99,13 @@ export class LajkController {
       if (result.idRecepta !== 0 && result.idKorisnika !== 0) {
         res.status(200).json({
           success: true,
-          message: "Uspesno ste lajkovali!",
+          message: "Uspesno ste dobili status lajkova!",
           data: result,
         });
       } else {
         res.status(401).json({
           success: false,
-          message: "Neuspesno ste lajkovali",
+          message: "Neuspesno ste dobili status lajkova",
           data: result,
         });
       }
@@ -122,13 +122,13 @@ export class LajkController {
       if (result.idRecepta !== 0 && result.brojLajkova !== -1) {
         res.status(200).json({
           success: true,
-          message: "Uspesno ste lajkovali!",
+          message: "Uspesno ste dobili broj lajkova!",
           data: result,
         });
       } else {
         res.status(401).json({
           success: false,
-          message: "Neuspesno ste lajkovali",
+          message: "Neuspesno ste dobili broj lajkova",
           data: result,
         });
       }

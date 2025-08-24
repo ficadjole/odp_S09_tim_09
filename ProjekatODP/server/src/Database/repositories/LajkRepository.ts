@@ -42,7 +42,7 @@ export class LajkRepository implements ILajkRepository {
   async brojLajkovaRecept(idRecepta: number): Promise<number> {
     try {
       const query =
-        "SELECT COUNT(*) AS broj_lajkova FROM lajkovi WHERE idRecepta = ?";
+        "SELECT COUNT(*) AS broj_lajkova FROM lajk WHERE idRecepta = ?";
 
       const [rows] = await db.execute<RowDataPacket[]>(query, [idRecepta]);
       if (rows.length > 0) {

@@ -41,7 +41,6 @@ export class ReceptKategorijaRepoistory implements IReceptKategorijaRepository {
         idRecepta,
         idKategorije,
       ]);
-      console.log(result);
       return result.affectedRows > 0;
     } catch (error) {
       console.log(error);
