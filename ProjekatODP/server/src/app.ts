@@ -27,6 +27,13 @@ import { LajkRepository } from "./Database/repositories/LajkRepository";
 import { ILajkService } from "./Domain/services/ILajkService";
 import { LajkService } from "./Services/lajk/LajkService";
 import { LajkController } from "./WebAPI/controllers/LajkController";
+import { IBlogRepository } from "./Domain/repositories/IBlogRepository";
+import { BlogRepository } from "./Database/repositories/BlogRepository";
+import { IBlogPreporucenReceptRepository } from "./Domain/repositories/IBlogPreporucenReceptRepository";
+import { BlogPreporucenReceptRepository } from "./Database/repositories/BlogPreporucenReceptRepository";
+import { IBlogService } from "./Domain/services/IBlogService";
+import { BlogService } from "./Services/blogPost/BlogService";
+import { BlogController } from "./WebAPI/controllers/BlogController";
 
 require("dotenv").config();
 
@@ -79,9 +86,22 @@ const lajkRepository: ILajkRepository = new LajkRepository();
 const lajkService: ILajkService = new LajkService(lajkRepository);
 const lajkController = new LajkController(lajkService);
 
+//BlogPost
+const blogPostRepository: IBlogRepository = new BlogRepository();
+const preporuceniReceptRepository: IBlogPreporucenReceptRepository =
+  new BlogPreporucenReceptRepository();
+const blogService: IBlogService = new BlogService(
+  blogPostRepository,
+  korisnikRepository,
+  preporuceniReceptRepository,
+  receptRepository
+);
+const blogController = new BlogController(blogService);
+
 app.use("/api/v1", authController.getRouter());
 app.use("/api/v1", kategorijaController.getRouter());
 app.use("/api/v1", receptController.getRouter());
 app.use("/api/v1", komentarController.getRouter());
 app.use("/api/v1", lajkController.getRouter());
+app.use("/api/v1", blogController.getRouter());
 export default app;
