@@ -1,4 +1,2 @@
-Funkcionalnosti User: lajkuje
-
 Blog: dodavanje novog posta,brisanje,azuriranje
 Blog_preporuceno: povezati da neki recept bude preporucen

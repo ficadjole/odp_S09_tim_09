@@ -58,6 +58,7 @@ export class KateogrijaRepository implements IKategorijaRepository {
       return new Kategorija();
     }
   }
+
   async dodajKategoriju(kategorija: Kategorija): Promise<Kategorija> {
     try {
       const query = "INSERT INTO kategorije (nazivK) VALUES (?)";
@@ -75,6 +76,7 @@ export class KateogrijaRepository implements IKategorijaRepository {
       return new Kategorija();
     }
   }
+  
   async obrisiKategoriju(idKategorije: number): Promise<boolean> {
     try {
       const query = "DELETE FROM kategorije WHERE idKategorije = ?";
