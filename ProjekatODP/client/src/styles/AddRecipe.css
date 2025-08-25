@@ -1,0 +1,128 @@
+.add-recipe-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 30px;
+  font-weight: 800;
+  color: #bb1f1f;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+}
+   
+.add-recipe-container h2 { 
+  text-align: center; 
+  margin-bottom: 25px; 
+  font-size: 28px; 
+  font-weight: 600; 
+  color: #333; } 
+  
+.add-recipe-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.add-recipe-form { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 20px; } 
+  
+.form-group label { 
+  font-weight: 600; 
+  margin-bottom: 6px; 
+  color: #444; 
+  display: block; } 
+  
+.add-recipe-form input[type="text"], 
+.add-recipe-form select, 
+.add-recipe-form textarea { 
+  padding: 12px; 
+  border: 1px solid #ddd; 
+  border-radius: 10px; 
+  font-size: 15px;
+  width: 100%; 
+  transition: border 0.2s ease, box-shadow 0.2s ease; } 
+  
+.add-recipe-form input:focus, 
+.add-recipe-form select:focus, 
+.add-recipe-form textarea:focus { 
+  border-color: #ff914d; 
+  box-shadow: 0 0 6px rgba(255, 145, 77, 0.4); 
+  outline: none; } 
+  
+.add-recipe-form textarea { 
+  resize: vertical; 
+  min-height: 100px; } 
+  
+.image-upload-container { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 10px; } 
+  
+.image-preview { 
+  max-width: 100%; 
+  border-radius: 12px; 
+  margin-top: 10px; 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); } 
+  
+.ingredient-input { 
+  display: flex; 
+  gap: 10px; } 
+  
+.ingredient-input input { flex: 1; } 
+.ingredient-input button { 
+  background: #ff914d; 
+  border: none; 
+  padding: 10px 14px; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  color: white; 
+  font-weight: 600; 
+  transition: background 0.2s ease; } 
+  
+.ingredient-input button:hover { background: #ff6a00; } 
+  
+.ingredients-list { 
+  list-style: none; 
+  padding: 0; 
+  margin-top: 8px; } 
+  
+.ingredients-list li { 
+  background: #fff3e6; 
+  padding: 8px 12px; 
+  border-radius: 8px; 
+  margin: 5px 0; 
+  font-size: 14px; } 
+  
+.form-buttons { 
+  display: flex; 
+  justify-content: flex-end; 
+  gap: 15px; 
+  margin-top: 20px; } 
+  
+.cancel-btn { 
+  background: #ff914d; 
+  border: none; 
+  padding: 10px 14px; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  color: white; 
+  font-weight: 600; 
+  transition: background 0.2s ease; } 
+  
+.cancel-btn:hover { background: #bbb; } 
+.submit-btn { 
+  background: #4caf50; 
+  color: white; 
+  padding: 12px 20px; 
+  border: none; 
+  border-radius: 10px; 
+  font-size: 15px; 
+  cursor: pointer; 
+  font-weight: 600; 
+  transition: background 0.2s ease; } 
+  
+  .submit-btn:hover { background: #3d8c40; }

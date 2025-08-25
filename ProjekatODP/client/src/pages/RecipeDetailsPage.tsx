@@ -5,13 +5,24 @@ import recipesData from "../models/recipe/Recipe";
 import Navbar from "../design_components/NavBar";
 import type {Comment} from "../models/recipe/Comment"
 import "../styles/Recipe.css";
+import type { UserLogin } from "../models/auth/UserLogin";
+
+const testUser: UserLogin = {
+  id: "2",
+  username: "Maja",
+  email: "maja@example.com",
+  password: "123",
+  role: "Visitor",
+};
 
 const RecipeDetailsPage: React.FC = () => {
   const un = "Maja";
+  const user = testUser;
   const { id } = useParams<{ id: string }>();
   const recipe = recipesData.find((r: Recipe) => r.id === id);
 
-  const [rating, setRating] = useState<number | null>(null);
+  const [likes, setLikes] = useState<number>(0);
+  const [likedUsers, setLikedUsers] = useState<string[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
 
@@ -28,10 +39,17 @@ const RecipeDetailsPage: React.FC = () => {
     setNewComment("");
   };
 
-  const handleRate = (value: number) => {
-    setRating(value);
+  const handleLikeToggle = () => {
+    if (likedUsers.includes(un)) {
+      setLikes(likes - 1);
+      setLikedUsers(likedUsers.filter((user) => user !== un));
+    } else {
+      setLikes(likes + 1);
+      setLikedUsers([...likedUsers, un]);
+    }
   };
 
+  const userHasLiked = likedUsers.includes(un);
   return (
     <div className="recipe-details-page">
       <Navbar username={un} />
@@ -42,6 +60,7 @@ const RecipeDetailsPage: React.FC = () => {
           alt={recipe.title}
         />
         <h1>{recipe.title}</h1>
+        <h3>Category: {recipe.category}</h3>
         <p>By {recipe.authorId}</p>
       </div>
 
@@ -60,20 +79,22 @@ const RecipeDetailsPage: React.FC = () => {
           <p>{recipe.instructions}</p>
         </div>
 
+        <div className="recipe-section">
+          <h2>Advice</h2>
+          <p>{recipe.saveti}</p>
+        </div>
+
         <div className="recipe-section rating-section">
-          <h2>Rate this recipe</h2>
-          <div className="rating-buttons">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                className={`star-btn ${rating === star ? "active" : ""}`}
-                onClick={() => handleRate(star)}
-              >
-                ⭐
-              </button>
-            ))}
-          </div>
-          {rating && <p>Your rating: {rating} / 5</p>}
+          <h2>Likes</h2>
+          <button
+            className={`like-btn ${userHasLiked ? "liked" : ""}`}
+            onClick={handleLikeToggle}
+          >
+            {userHasLiked ? "💖 Liked" : "👍 Like"}
+          </button>
+          <span className="likes-count">
+            {likes} {likes === 1 ? "Like" : "Likes"}
+          </span>
         </div>
 
         <div className="recipe-section comments-section">
@@ -96,6 +117,17 @@ const RecipeDetailsPage: React.FC = () => {
               onChange={(e) => setNewComment(e.target.value)}
             />
             <button onClick={handleAddComment}>Add Comment</button>
+          </div>
+
+          <div className="buttons-container">
+            {user.role === "Admin" && (
+            <button
+              className="delete-btn"
+              style={{ marginLeft: "1rem", backgroundColor: "#196c53", color: "white" }}
+            >
+              Delete Recipe
+            </button>
+          )}
           </div>
         </div>
       </div>
