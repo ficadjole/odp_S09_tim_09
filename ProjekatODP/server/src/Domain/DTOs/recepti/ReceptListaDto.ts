@@ -1,7 +1,11 @@
+import { KategorijaDto } from "../kategorija/KategorijaDto";
+
 export class ReceptiListaDto {
   public constructor(
     public idRecepta: number = 0,
-    public nazivR: string = ""
+    public nazivR: string = "",
+    public slika_url: string = "",
+    public kategorije: KategorijaDto[] = []
   ) {}
 }
 

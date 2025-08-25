@@ -101,8 +101,7 @@ export class ReceptRepository implements IReceptRepository {
   }
   async getByIdRecepta(idRecepta: number): Promise<Recept> {
     try {
-      const query =
-        "SELECT idKorisnika,idRecepta,nazivR,sastojci,opis,saveti,slika_url,datumR FROM recepti WHERE idRecepta = ?";
+      const query = "SELECT * FROM recepti WHERE idRecepta = ?";
 
       const [rows] = await db.execute<RowDataPacket[]>(query, [idRecepta]);
 
@@ -116,7 +115,7 @@ export class ReceptRepository implements IReceptRepository {
           row.opis,
           row.saveti,
           row.slika_url,
-          row.datum
+          row.datumR
         );
       }
 
@@ -127,25 +126,25 @@ export class ReceptRepository implements IReceptRepository {
   }
   async getAllRecepti(): Promise<Recept[]> {
     try {
-      const query =
-        "SELECT idKorisnika,idRecepta,nazivR,sastojci,opis,saveti,slika_url,datumR FROM recepti ORDER BY idRecepta ASC";
-
+      const query = "SELECT * FROM recepti ORDER BY idRecepta ASC";
+      console.log(query);
       const [rows] = await db.execute<RowDataPacket[]>(query);
 
       return rows.map(
         (row) =>
           new Recept(
-            row.idKorisnika,
             row.idRecepta,
+            row.idKorisnika,
             row.nazivR,
             row.sastojci,
             row.opis,
             row.saveti,
             row.slika_url,
-            row.datum
+            row.datumR
           )
       );
-    } catch {
+    } catch (error) {
+      console.log(error);
       return [];
     }
   }

@@ -69,7 +69,8 @@ const receptKategorijaRepository: IReceptKategorijaRepository =
 const receptService: IReceptService = new ReceptService(
   receptRepository,
   receptKategorijaRepository,
-  kategorijeRepository
+  kategorijeRepository,
+  korisnikRepository
 );
 const receptController = new ReceptiController(receptService);
 
