@@ -5,6 +5,7 @@ import { authorize } from "../../Middlewares/authorization/AuthorizeMiddleware";
 import { Uloga } from "../../Domain/enums/Uloga";
 import { ReceptiListaDto } from "../../Domain/DTOs/recepti/ReceptListaDto";
 import { Recept } from "../../Domain/models/Recept";
+import { ReceptDetaljiDto } from "../../Domain/DTOs/recepti/ReceptDetaljiDto";
 
 export class ReceptiController {
   private router: Router;
@@ -40,6 +41,11 @@ export class ReceptiController {
       "/recepti/prikaziSveRecepte",
       authenticate,
       this.prikaziSveRecepte.bind(this)
+    );
+    this.router.get(
+      "/recepti/:id",
+      authenticate,
+      this.prikaziReceptPoId.bind(this)
     );
   }
 
@@ -157,6 +163,31 @@ export class ReceptiController {
         await this.receptService.getAllRecepti();
 
       if (resultList.length > 0) {
+        res.status(200).json({
+          success: true,
+          message: "Uspesno ste izlistali sve recepte!",
+          data: resultList,
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: "Neuspesno izlistavanje recepata",
+          data: resultList,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({ success: false, message: error });
+    }
+  }
+
+  private async prikaziReceptPoId(req: Request, res: Response): Promise<void> {
+    try {
+      //const { idRecepta } = req.body;
+      const idRecepta = Number(req.params.id);
+      const resultList: ReceptDetaljiDto =
+        await this.receptService.getByIdRecepta(idRecepta);
+
+      if (resultList.idRecepta !== 0) {
         res.status(200).json({
           success: true,
           message: "Uspesno ste izlistali sve recepte!",

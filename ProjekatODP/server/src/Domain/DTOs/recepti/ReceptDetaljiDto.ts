@@ -10,6 +10,10 @@ export class ReceptDetaljiDto {
     public saveti: string = "",
     public slika_url: string = "",
     public date: Date = new Date(),
-    public kategorije: KategorijaDto[] = []
+    public kategorije: KategorijaDto[] = [],
+    public author?: {
+      idKorisnika: number;
+      username: string;
+    }
   ) {}
 }

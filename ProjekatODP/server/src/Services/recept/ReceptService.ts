@@ -4,6 +4,7 @@ import { ReceptiListaDto } from "../../Domain/DTOs/recepti/ReceptListaDto";
 import { Recept } from "../../Domain/models/Recept";
 import { ReceptKategorija } from "../../Domain/models/ReceptKategorija";
 import { IKategorijaRepository } from "../../Domain/repositories/IKategorijaRepository";
+import { IKorisnikRepository } from "../../Domain/repositories/IKorisnikRepository";
 import { IReceptKategorijaRepository } from "../../Domain/repositories/IReceptKategorijaRepository";
 import { IReceptRepository } from "../../Domain/repositories/IReceptRepository";
 import { IReceptService } from "../../Domain/services/IReceptService";
@@ -12,7 +13,8 @@ export class ReceptService implements IReceptService {
   public constructor(
     private receptRepository: IReceptRepository,
     private receptKategorijaRepository: IReceptKategorijaRepository,
-    private kategorijaRepository: IKategorijaRepository
+    private kategorijaRepository: IKategorijaRepository,
+    private korisnikRepository: IKorisnikRepository
   ) {}
 
   async dodajRecept(
@@ -126,20 +128,56 @@ export class ReceptService implements IReceptService {
   async getAllRecepti(): Promise<ReceptiListaDto[]> {
     const recepti: Recept[] = await this.receptRepository.getAllRecepti();
 
-    const receptiListaDto: ReceptiListaDto[] = recepti.map(
-      (recept) => new ReceptiListaDto(recept.idRecepta, recept.nazivR)
-    );
+    const receptiListaDto: ReceptiListaDto[] = [];
+    for (var i = 0; i < recepti.length; i++) {
+      const kategorije = await this.kategorijeLista(recepti[i]);
+
+      receptiListaDto.push(
+        new ReceptiListaDto(
+          recepti[i].idRecepta,
+          recepti[i].nazivR,
+          recepti[i].slika_url,
+          kategorije
+        )
+      );
+    }
 
     return receptiListaDto;
   }
 
+  async getByIdRecepta(idRecepta: number): Promise<ReceptDetaljiDto> {
+    const recept = await this.receptRepository.getByIdRecepta(idRecepta);
+
+    if (recept.idRecepta === 0) return new ReceptDetaljiDto();
+
+    return this.mapToDTO(recept);
+  }
+
   private async mapToDTO(recept: Recept): Promise<ReceptDetaljiDto> {
+    const kategorije = await this.kategorijeLista(recept);
+
+    const autor = await this.korisnikRepository.getById(recept.idKorisnika);
+
+    return new ReceptDetaljiDto(
+      recept.idKorisnika,
+      recept.idRecepta,
+      recept.nazivR,
+      recept.sastojci,
+      recept.opis,
+      recept.saveti,
+      recept.slika_url,
+      recept.datum,
+      kategorije,
+      { idKorisnika: autor.idKorisnika, username: autor.username }
+    );
+  }
+
+  private async kategorijeLista(recept: Recept): Promise<KategorijaDto[]> {
     const receptKategorija =
       await this.receptKategorijaRepository.sveKategorijeRecepta(
         recept.idRecepta
       );
     const kategorije: KategorijaDto[] = [];
-
     for (var i = 0; i < receptKategorija.length; i++) {
       if (receptKategorija[i].idKategorije) {
         const kategorija = await this.kategorijaRepository.getByIdKategorije(
@@ -153,17 +191,6 @@ export class ReceptService implements IReceptService {
         }
       }
     }
-
-    return new ReceptDetaljiDto(
-      recept.idKorisnika,
-      recept.idRecepta,
-      recept.nazivR,
-      recept.sastojci,
-      recept.opis,
-      recept.saveti,
-      recept.slika_url,
-      recept.datum,
-      kategorije
-    );
+    return kategorije;
   }
 }
