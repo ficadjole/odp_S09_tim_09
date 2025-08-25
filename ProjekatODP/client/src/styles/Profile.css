@@ -42,19 +42,44 @@
   margin-left: 40px;
 }
 
-.add-recipe-btn {
+.buttons-wrapper {
+  width: 100%;               
+  display: flex;             
+  justify-content: center;  
+  margin-bottom: 1rem;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 30px; 
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-recipe-btn,
+.add-blog-btn {
   padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #cf711f, #e29b5f);
-  color: white;
   border: none;
   border-radius: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-right: 40px;
 }
 
-.add-recipe-btn:hover {
+.add-recipe-btn {
+  background: linear-gradient(135deg, #cf711f, #e29b5f);
+  color: white;
+}
+
+.add-blog-btn {
+  background: linear-gradient(135deg, #196c53, #4caf7f);
+  color: white;
+}
+
+.add-recipe-btn:hover,
+.add-blog-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }

@@ -1,4 +1,6 @@
 export type Category = 'Appetizer' | 'Main course' | 'Soup' | 'Salad' | 'Dessert' | 'Drink';
+export const categories: Category[] = ['Appetizer', 'Main course', 'Soup', 'Salad', 'Dessert', 'Drink'];
+
 export interface Recipe {
   id: string;
   title: string;
@@ -7,16 +9,18 @@ export interface Recipe {
   authorId: string;
   createdAt: string; 
   category: Category;
+  saveti: string;
 }
 
 const recipesData: Recipe[] = [
   {
     id: "1",
     title: "Chocolate Cake",
-    ingredients: ["Flour", "Sugar", "Cocoa", "Eggs"],
+    ingredients: ["2 cups flour", "200g sugar", "1 tbsp cocoa", "Eggs"],
     instructions: "Mix ingredients and bake for 30 minutes.",
     authorId: "User1",
     createdAt: "2025-08-14",
+    saveti: "Neki savet",
     category: "Dessert"
   },
   {
@@ -26,6 +30,8 @@ const recipesData: Recipe[] = [
     instructions: "Cook pasta, fry bacon, mix with eggs and cheese.",
     authorId: "User2",
     createdAt: "2025-08-03",
+        saveti: "Neki savet",
+
     category: "Main course"
   },
   {
@@ -35,6 +41,8 @@ const recipesData: Recipe[] = [
     instructions: "Cook pasta, fry bacon, mix with eggs and cheese.",
     authorId: "User2",
     createdAt: "2025-08-23",
+        saveti: "Neki savet",
+
     category: "Main course"
   },
   {
@@ -44,6 +52,8 @@ const recipesData: Recipe[] = [
     instructions: "Cook pasta, fry bacon, mix with eggs and cheese.",
     authorId: "User2",
     createdAt: "2025-05-13",
+        saveti: "Neki savet",
+
     category: "Drink"
   },
   {
@@ -53,6 +63,8 @@ const recipesData: Recipe[] = [
     instructions: "Cook pasta, fry bacon, mix with eggs and cheese.",
     authorId: "User2",
     createdAt: "2025-04-13",
+        saveti: "Neki savet",
+
     category: "Appetizer"
   },
   {
@@ -62,6 +74,8 @@ const recipesData: Recipe[] = [
     instructions: "Cook pasta, fry bacon, mix with eggs and cheese.",
     authorId: "User2",
     createdAt: "2024-09-13",
+        saveti: "Neki savet",
+
     category: "Salad"
   },
   {
@@ -71,6 +85,8 @@ const recipesData: Recipe[] = [
     instructions: "Cook pasta, fry bacon, mix with eggs and cheese.",
     authorId: "User2",
     createdAt: "2024-07-13",
+        saveti: "Neki savet",
+
     category: "Soup"
   },
   {
@@ -80,6 +96,8 @@ const recipesData: Recipe[] = [
     instructions: "Cook pasta, fry bacon, mix with eggs and cheese.",
     authorId: "User2",
     createdAt: "2024-12-13",
+        saveti: "Neki savet",
+
     category: "Dessert"
   },
   {
@@ -89,6 +107,8 @@ const recipesData: Recipe[] = [
     instructions: "Cook pasta, fry bacon, mix with eggs and cheese.",
     authorId: "User2",
     createdAt: "2024-02-13",
+        saveti: "Neki savet",
+
     category: "Appetizer"
   }
 ];
