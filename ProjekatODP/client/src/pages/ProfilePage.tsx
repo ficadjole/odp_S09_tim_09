@@ -11,7 +11,7 @@ const testUser: UserLogin = {
   username: "Maja",
   email: "maja@example.com",
   password: "123",
-  role: "Visitor",
+  role: "Admin",
 };
 
 const ProfilePage: React.FC = () => {
@@ -31,17 +31,29 @@ const ProfilePage: React.FC = () => {
         <p>{user.email}</p>
       </div>
 
+      
       <section className="user-recipes">
-        <div className="section-header">
-          <h2>My Recipes</h2>
-          <button
-            className="add-recipe-btn"
-            onClick={() => navigate("/add-recipe")}
-          >
-            + Add New Recipe
-          </button>
+        <div className="buttons-wrapper">
+          <div className="buttons-container">
+            {user.role === "Admin" && (
+            <button
+              className="add-blog-btn"
+              onClick={() => navigate("/add-blog")}
+              style={{ marginLeft: "1rem", backgroundColor: "#196c53", color: "white" }}
+            >
+              + Add New Blog
+            </button>
+          )}
+            <button
+              className="add-recipe-btn"
+              onClick={() => navigate("/add-recipe")}
+            >
+              + Add New Recipe
+            </button>
+          </div>
         </div>
-
+  
+        <h2>My Recipes</h2>
         {userRecipes.length === 0 && <p>You haven't added any recipes yet.</p>}
 
         <div className="recipes1-grid">

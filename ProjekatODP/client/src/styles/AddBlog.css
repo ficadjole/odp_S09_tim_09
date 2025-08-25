@@ -1,0 +1,148 @@
+.add-recipe-container {
+  max-width: 600px;      
+  margin: 40px auto;     
+  padding: 30px 25px;    
+  background: #fff8f0;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+.add-recipe-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 30px;
+  font-weight: 800;
+  color: #bb1f1f;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.add-recipe-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+.form-group textarea {
+  min-height: 140px; 
+  resize: vertical;
+}
+
+.preview-image {
+  margin-top: 10px;
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 50px;   
+  margin-top: 25px;
+}
+
+.save-btn, .cancel-btn {
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+}
+.add-recipe-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff8f0;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+.add-recipe-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #4b3d2a;
+}
+
+.add-recipe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.add-recipe-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.add-recipe-form input[type="text"],
+.add-recipe-form select,
+.add-recipe-form textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.add-recipe-form textarea {
+  resize: none;
+}
+
+.image-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.image-preview {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+
+.save-btn:hover {
+  background: #45a049;
+}
+
+.cancel-btn {
+  background: #ff914d;
+  color: white;
+  border: none;
+}
+
+.cancel-btn:hover {
+  background: #e57b39;
+}
