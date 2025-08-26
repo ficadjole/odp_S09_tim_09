@@ -1,1 +1,20 @@
-razmisliti gde treba da bude authenticate, a gde ne
+kada se naprave JWT tokeni proci opet kroz sve Controllere
+
+napisati implementaciju za tokene
+
+******************************BITNOOOOOOOOOOO**********************
+
+na ovom delu koda u RecipeDetailsPage da stavim iz tokena id korisnika umesto broja 1
+
+  if (!recipe) return <p>Recipe not found</p>;
+  const handleAddComment = async () => {
+    if (!newComment) return;
+    const newCommentV = await commentApi.addComment(
+      token,
+      recipe.idRecepta,
+      1, //OVDE MORAM STAVITI ID KORISNIKA IZ TOKENA
+      newComment
+    );
+    setComments([...comments, newCommentV]);
+    setNewComment("");
+  };

@@ -17,20 +17,20 @@ export class KomentariController {
   private initializeRoutes(): void {
     this.router.post(
       "/komentari/dodajKomentar",
-      authenticate,
+      //authenticate,
       this.dodajKomentar.bind(this)
     );
 
     this.router.delete(
       "/komentari/obrisiKomentar",
-      authenticate,
-      authorize(Uloga.moderator),
+      //authenticate,
+      //authorize(Uloga.moderator),
       this.obrisiKomentar.bind(this)
     );
 
     this.router.get(
-      "/komentari/prikaziSveKomentare",
-      authenticate,
+      "/komentari/prikaziSveKomentare/:id",
+      //authenticate,
       this.prikaziSveKomentare.bind(this)
     );
   }
@@ -92,8 +92,7 @@ export class KomentariController {
     res: Response
   ): Promise<void> {
     try {
-      const { idRecepta } = req.body;
-
+      const idRecepta = Number(req.params.id);
       const sviKomentari =
         await this.komentarService.prikaziSveKomentareZaRecept(idRecepta);
 

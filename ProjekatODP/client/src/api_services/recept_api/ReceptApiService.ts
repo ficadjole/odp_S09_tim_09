@@ -8,13 +8,13 @@ const API_URL = "http://localhost:4000/api/v1/recepti";
 const emptyRecipe: Recipe = {
   idRecepta: 0,
   nazivR: "",
-  sastojci: "",
+  sastojic: "",
   opis: "",
   saveti: "",
   slika_url: "",
   date: new Date(),
   kategorije: [],
-  autor: {
+  author: {
     idKorisnika: 0,
     username: "",
   },
