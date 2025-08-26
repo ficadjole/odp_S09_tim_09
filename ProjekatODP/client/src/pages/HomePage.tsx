@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 import "../styles/Home.css";
 import Navbar from "../design_components/NavBar";
 import type { Recipe } from "../models/recipe/Recipe";
@@ -100,3 +100,4 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+ */

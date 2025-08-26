@@ -1,22 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Explore.css";
 import Navbar from "../design_components/NavBar";
-import type { Recipe } from "../models/recipe/Recipe";
-import recipesData from "../models/recipe/Recipe";
-
-const categories: Recipe['category'][] = ["Appetizer", "Main course", "Soup", "Salad", "Dessert", "Drink"];
+/* import type { Recipe } from "../models/recipe/Recipe"; */
+import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
+import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 
 const ExplorePage: React.FC = () => {
   const un = "Maja";
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<Recipe['category'] | null>(null);
+  /*   if (!token) {
+    alert("Morate biti ulogovani kao urednik da biste dodali knjigu!");
+    return;
+  } */
+  //const [selectedCategory, setSelectedCategory] = useState<Recipe['category'] | null>(null);
 
-  const filteredRecipes = recipesData.filter((recipe) => {
+  /*   const filteredRecipes = recipesData.filter((recipe) => {
     const matchesName = recipe.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory ? recipe.category === selectedCategory : true;
     return matchesName && matchesCategory;
-  });
+  }); */
+
+  const [recipes, setRecipes] = useState<ReceptListaDto[]>([]);
+  useEffect(() => {
+    recipesApi.getAllRecipes("").then((recipes) => {
+      setRecipes(recipes);
+    });
+  }, []);
+
+  console.log(recipes);
 
   return (
     <div className="explore-page">
@@ -33,28 +45,40 @@ const ExplorePage: React.FC = () => {
         />
       </div>
 
-      <div className="categories">
+      {/*  <div className="categories">
         {categories.map((cat) => (
           <button
             key={cat}
-            className={`category-btn ${selectedCategory === cat ? "active" : ""}`}
-            onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
+            className={`category-btn ${
+              selectedCategory === cat ? "active" : ""
+            }`}
+            onClick={() =>
+              setSelectedCategory(selectedCategory === cat ? null : cat)
+            }
           >
             {cat}
           </button>
         ))}
-      </div>
+      </div> */}
 
       <div className="explore-grid">
-        {filteredRecipes.length > 0 ? (
-          filteredRecipes.map((recipe) => (
-            <div key={recipe.id} className="explore-card">
-              <img src={`https://picsum.photos/400/250?random=${recipe.id}`} alt={recipe.title} />
+        {recipes.length > 0 ? (
+          recipes.map((recipe) => (
+            <div key={recipe.idRecepta} className="explore-card">
+              <img
+                src={`https://picsum.photos/400/250?random=${recipe.idRecepta}`}
+                alt={recipe.nazivR}
+              />
               <div className="card-info">
-                <h3>{recipe.title}</h3>
-                <p>By {recipe.authorId}</p>
-                <p>Category: {recipe.category}</p>
-                <Link to={`/recipe/${recipe.id}`} className="read-more">
+                <h3>{recipe.nazivR}</h3>
+
+                <p>
+                  Category:{" "}
+                  {recipe.kategorije
+                    .map((kategorija) => kategorija.nazivK)
+                    .join(" ")}
+                </p>
+                <Link to={`/recipes/${recipe.idRecepta}`} className="read-more">
                   View Recipe
                 </Link>
               </div>
