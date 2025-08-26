@@ -11,6 +11,10 @@ export interface ILikeApiService {
     idRecepta: number,
     idKorisnika: number
   ): Promise<LikeDto>;
-  numberOfLikes(token: string, idRecepta: number): Promise<number>;
-  userLiked(token: string, idKorisnika: number): Promise<boolean>;
+  numberOfLikes(token: string, idRecepta: number): Promise<LikeDto>;
+  userLiked(
+    token: string,
+    idRecepta: number,
+    idKorisnika: number
+  ): Promise<LikeDto>;
 }
