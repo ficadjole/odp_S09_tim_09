@@ -26,13 +26,13 @@ export class LajkController {
     );
 
     this.router.get(
-      "/lajkovi/brojLajkova",
+      "/lajkovi/brojLajkova/:idRecepta",
       authenticate,
       this.getBrojLajkova.bind(this)
     );
 
     this.router.get(
-      "/lajkovi/lajkovano",
+      "/lajkovi/lajkovano/:idRecepta/:idKorisnika",
       authenticate,
       this.getKorisnikLajkovao.bind(this)
     );
@@ -89,7 +89,8 @@ export class LajkController {
     res: Response
   ): Promise<void> {
     try {
-      const { idRecepta, idKorisnika } = req.body;
+      const idRecepta = Number(req.params.idRecepta);
+      const idKorisnika = Number(req.params.idKorisnika);
 
       const result = await this.lajkService.korisnikLajkovao(
         idRecepta,
@@ -115,7 +116,7 @@ export class LajkController {
   }
   private async getBrojLajkova(req: Request, res: Response): Promise<void> {
     try {
-      const { idRecepta } = req.body;
+      const idRecepta = Number(req.params.idRecepta);
 
       const result = await this.lajkService.brojLajkova(idRecepta);
 
