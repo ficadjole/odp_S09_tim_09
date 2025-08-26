@@ -6,4 +6,5 @@ export interface IKategorijaRepository {
   azurirajKategoriju(nazivKStari: string, nazivKNovi: string): Promise<boolean>;
   getByNazivK(nazivK: string): Promise<Kategorija>;
   getByIdKategorije(idKategorije: number): Promise<Kategorija>;
+  getAllKategorije(): Promise<Kategorija[]>;
 }

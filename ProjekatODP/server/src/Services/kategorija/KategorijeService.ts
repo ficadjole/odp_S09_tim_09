@@ -68,4 +68,20 @@ export class KategorijeService implements IKategorijeService {
       return new KategorijaDto();
     }
   }
+
+  async ispisiSveKategorije(): Promise<KategorijaDto[]> {
+    const kategorije: Kategorija[] =
+      await this.kategorijeRepository.getAllKategorije();
+
+    const kategorijeListDto: KategorijaDto[] = [];
+    for (var i = 0; i < kategorije.length; i++) {
+      if (kategorije[i].idKategorije !== 0) {
+        kategorijeListDto.push(
+          new KategorijaDto(kategorije[i].idKategorije, kategorije[i].nazivK)
+        );
+      }
+    }
+
+    return kategorijeListDto;
+  }
 }

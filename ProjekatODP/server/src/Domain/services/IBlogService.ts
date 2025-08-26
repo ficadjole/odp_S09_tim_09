@@ -9,4 +9,5 @@ export interface IBlogService {
   ): Promise<BlogPostDto>;
   obrisiBlogPost(idBlogPost: number, idRecepta: number[]): Promise<BlogPostDto>;
   prikaziSveBlogPost(): Promise<BlogPostDto[]>;
+  getByIdBlogPost(idBlogPost: number): Promise<BlogPostDto>;
 }
