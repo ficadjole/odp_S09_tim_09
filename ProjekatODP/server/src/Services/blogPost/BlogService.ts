@@ -1,10 +1,14 @@
 import { BlogPostDto } from "../../Domain/DTOs/blogPost/BlogPostDto";
+import { KategorijaDto } from "../../Domain/DTOs/kategorija/KategorijaDto";
 import { ReceptiListaDto } from "../../Domain/DTOs/recepti/ReceptListaDto";
 import { BlogPost } from "../../Domain/models/BlogPost";
 import { BlogPreporucenRecept } from "../../Domain/models/BlogPreporucenRecept";
+import { Recept } from "../../Domain/models/Recept";
 import { IBlogPreporucenReceptRepository } from "../../Domain/repositories/IBlogPreporucenReceptRepository";
 import { IBlogRepository } from "../../Domain/repositories/IBlogRepository";
+import { IKategorijaRepository } from "../../Domain/repositories/IKategorijaRepository";
 import { IKorisnikRepository } from "../../Domain/repositories/IKorisnikRepository";
+import { IReceptKategorijaRepository } from "../../Domain/repositories/IReceptKategorijaRepository";
 import { IReceptRepository } from "../../Domain/repositories/IReceptRepository";
 import { IBlogService } from "../../Domain/services/IBlogService";
 
@@ -13,7 +17,9 @@ export class BlogService implements IBlogService {
     private blogRepository: IBlogRepository,
     private korisnikRepository: IKorisnikRepository,
     private blogPreporucenReceptRepository: IBlogPreporucenReceptRepository,
-    private receptRepository: IReceptRepository
+    private receptRepository: IReceptRepository,
+    private kategorijaRepository: IKategorijaRepository,
+    private receptKategorijaRepository: IReceptKategorijaRepository
   ) {}
   async dodajBlogPost(
     idModeratora: number,
@@ -128,6 +134,18 @@ export class BlogService implements IBlogService {
     return blogPostoviListaDto;
   }
 
+  async getByIdBlogPost(idBlogPost: number): Promise<BlogPostDto> {
+    const trazeniBlogPost: BlogPost = await this.blogRepository.getByidBlogPost(
+      idBlogPost
+    );
+
+    if (trazeniBlogPost.idBlogPost === 0) {
+      return new BlogPostDto();
+    }
+
+    return this.mapToDTO(trazeniBlogPost);
+  }
+
   private async mapToDTO(blogPost: BlogPost): Promise<BlogPostDto> {
     const blogRecept =
       await this.blogPreporucenReceptRepository.getAllPreporuceneZaPost(
@@ -141,8 +159,18 @@ export class BlogService implements IBlogService {
         const recept = await this.receptRepository.getByIdRecepta(
           blogRecept[i].idRecepta
         );
+
+        const kategorije = await this.kategorijeLista(recept);
+
         if (recept.idRecepta !== 0) {
-          recepti.push(new ReceptiListaDto(recept.idRecepta, recept.nazivR));
+          recepti.push(
+            new ReceptiListaDto(
+              recept.idRecepta,
+              recept.nazivR,
+              recept.slika_url,
+              kategorije
+            )
+          );
         }
       }
     }
@@ -157,5 +185,27 @@ export class BlogService implements IBlogService {
       recepti,
       { idKorisnika: autor.idKorisnika, username: autor.username }
     );
+  }
+
+  private async kategorijeLista(recept: Recept): Promise<KategorijaDto[]> {
+    const receptKategorija =
+      await this.receptKategorijaRepository.sveKategorijeRecepta(
+        recept.idRecepta
+      );
+    const kategorije: KategorijaDto[] = [];
+    for (var i = 0; i < receptKategorija.length; i++) {
+      if (receptKategorija[i].idKategorije) {
+        const kategorija = await this.kategorijaRepository.getByIdKategorije(
+          receptKategorija[i].idKategorije
+        );
+
+        if (kategorija.idKategorije !== 0) {
+          kategorije.push(
+            new KategorijaDto(kategorija.idKategorije, kategorija.nazivK)
+          );
+        }
+      }
+    }
+    return kategorije;
   }
 }

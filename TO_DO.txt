@@ -1,4 +1,1 @@
-da dodam: uzimanje bloga preko id-a
-da dodam: ucitavanje svih kategorija
-
 razmisliti gde treba da bude authenticate, a gde ne

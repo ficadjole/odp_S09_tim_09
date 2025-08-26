@@ -76,7 +76,7 @@ export class KateogrijaRepository implements IKategorijaRepository {
       return new Kategorija();
     }
   }
-  
+
   async obrisiKategoriju(idKategorije: number): Promise<boolean> {
     try {
       const query = "DELETE FROM kategorije WHERE idKategorije = ?";
@@ -86,6 +86,18 @@ export class KateogrijaRepository implements IKategorijaRepository {
       return result.affectedRows > 0;
     } catch {
       return false;
+    }
+  }
+
+  async getAllKategorije(): Promise<Kategorija[]> {
+    try {
+      const query = "SELECT * FROM kategorije ORDER BY idKategorije ASC";
+
+      const [rows] = await db.execute<RowDataPacket[]>(query);
+
+      return rows.map((row) => new Kategorija(row.idKategorije, row.nazivK));
+    } catch {
+      return [];
     }
   }
 }

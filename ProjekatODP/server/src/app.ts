@@ -95,7 +95,9 @@ const blogService: IBlogService = new BlogService(
   blogPostRepository,
   korisnikRepository,
   preporuceniReceptRepository,
-  receptRepository
+  receptRepository,
+  kategorijeRepository,
+  receptKategorijaRepository
 );
 const blogController = new BlogController(blogService);
 

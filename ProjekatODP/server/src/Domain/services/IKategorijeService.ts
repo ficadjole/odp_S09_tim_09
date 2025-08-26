@@ -7,4 +7,5 @@ export interface IKategorijeService {
     nazivKNovi: string,
     nazivKStari: string
   ): Promise<KategorijaDto>;
+  ispisiSveKategorije(): Promise<KategorijaDto[]>;
 }

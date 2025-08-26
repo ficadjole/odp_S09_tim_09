@@ -36,6 +36,13 @@ export class BlogController {
       authorize(Uloga.moderator),
       this.prikaziSveBlogove.bind(this)
     );
+
+    this.router.get(
+      "/blogPost/:id",
+      authenticate,
+      authorize(Uloga.moderator),
+      this.prikaziOdredjeniBlog.bind(this)
+    );
   }
 
   private async dodajBlogPost(req: Request, res: Response): Promise<void> {
@@ -108,6 +115,35 @@ export class BlogController {
           success: false,
           message: "Neuspesno izlistavanje postova",
           data: resultList,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({ success: false, message: error });
+    }
+  }
+
+  private async prikaziOdredjeniBlog(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      //const { idBlogPost } = req.body;
+      const idBlogPost = Number(req.params.id);
+      const trazeniPost: BlogPostDto = await this.blogService.getByIdBlogPost(
+        idBlogPost
+      );
+
+      if (trazeniPost.idBlogPost !== 0) {
+        res.status(200).json({
+          success: true,
+          message: "Uspesno ste izlistali sve postove!",
+          data: trazeniPost,
+        });
+      } else {
+        res.status(401).json({
+          success: false,
+          message: "Neuspesno izlistavanje postova",
+          data: trazeniPost,
         });
       }
     } catch (error) {
