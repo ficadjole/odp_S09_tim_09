@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Recipe } from "../models/recipe/Recipe";
-import recipesData from "../models/recipe/Recipe";
 import Navbar from "../design_components/NavBar";
-import type {Comment} from "../models/recipe/Comment"
+import type { Comment } from "../models/recipe/Comment";
 import "../styles/Recipe.css";
 import type { UserLogin } from "../models/auth/UserLogin";
-
+import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 const testUser: UserLogin = {
   id: "2",
   username: "Maja",
@@ -18,17 +17,28 @@ const testUser: UserLogin = {
 const RecipeDetailsPage: React.FC = () => {
   const un = "Maja";
   const user = testUser;
-  const { id } = useParams<{ id: string }>();
-  const recipe = recipesData.find((r: Recipe) => r.id === id);
-
-  const [likes, setLikes] = useState<number>(0);
+  const token = "";
+  const { id } = useParams();
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  /*   const [likes, setLikes] = useState<number>(0);
   const [likedUsers, setLikedUsers] = useState<string[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState("");
+  const [newComment, setNewComment] = useState(""); */
+
+  useEffect(() => {
+    console.log(id);
+    if (!id) return;
+
+    recipesApi.getRecipeById(token, Number(id)).then((foundRecipe) => {
+      if (foundRecipe && foundRecipe.idRecepta !== 0) {
+        setRecipe(foundRecipe);
+      }
+    });
+  }, [id]);
 
   if (!recipe) return <p>Recipe not found</p>;
-
-  const handleAddComment = () => {
+  console.log(recipe);
+  /*   const handleAddComment = () => {
     if (!newComment) return;
     const comment: Comment = {
       id: Date.now().toString(),
@@ -49,34 +59,33 @@ const RecipeDetailsPage: React.FC = () => {
     }
   };
 
-  const userHasLiked = likedUsers.includes(un);
+  const userHasLiked = likedUsers.includes(un); */
   return (
     <div className="recipe-details-page">
       <Navbar username={un} />
 
       <div className="recipe-header">
         <img
-          src={`https://picsum.photos/800/400?random=${recipe.id}`}
-          alt={recipe.title}
+          src={`https://picsum.photos/800/400?random=${recipe.idRecepta}`}
+          alt={recipe.nazivR}
         />
-        <h1>{recipe.title}</h1>
-        <h3>Category: {recipe.category}</h3>
-        <p>By {recipe.authorId}</p>
+        <h1>{recipe.nazivR}</h1>
+        <h3>
+          Category:{" "}
+          {recipe.kategorije.map((kategorija) => kategorija.nazivK).join(" ")}
+        </h3>
+        <p>By {recipe.author.username}</p>
       </div>
 
       <div className="recipe-content">
         <div className="recipe-section">
           <h2>Ingredients</h2>
-          <ul>
-            {recipe.ingredients.map((ing, i) => (
-              <li key={i}>{ing}</li>
-            ))}
-          </ul>
+          <ul>{recipe.sastojic}</ul>
         </div>
 
         <div className="recipe-section">
           <h2>Instructions</h2>
-          <p>{recipe.instructions}</p>
+          <p>{recipe.opis}</p>
         </div>
 
         <div className="recipe-section">
@@ -84,7 +93,7 @@ const RecipeDetailsPage: React.FC = () => {
           <p>{recipe.saveti}</p>
         </div>
 
-        <div className="recipe-section rating-section">
+        {/*         <div className="recipe-section rating-section">
           <h2>Likes</h2>
           <button
             className={`like-btn ${userHasLiked ? "liked" : ""}`}
@@ -117,19 +126,22 @@ const RecipeDetailsPage: React.FC = () => {
               onChange={(e) => setNewComment(e.target.value)}
             />
             <button onClick={handleAddComment}>Add Comment</button>
-          </div>
+          </div> */}
 
-          <div className="buttons-container">
+        {/*           <div className="buttons-container">
             {user.role === "Admin" && (
-            <button
-              className="delete-btn"
-              style={{ marginLeft: "1rem", backgroundColor: "#196c53", color: "white" }}
-            >
-              Delete Recipe
-            </button>
-          )}
-          </div>
-        </div>
+              <button
+                className="delete-btn"
+                style={{
+                  marginLeft: "1rem",
+                  backgroundColor: "#196c53",
+                  color: "white",
+                }}
+              >
+                Delete Recipe
+              </button>
+            )}
+          </div> */}
       </div>
     </div>
   );

@@ -127,7 +127,6 @@ export class ReceptRepository implements IReceptRepository {
   async getAllRecepti(): Promise<Recept[]> {
     try {
       const query = "SELECT * FROM recepti ORDER BY idRecepta ASC";
-      console.log(query);
       const [rows] = await db.execute<RowDataPacket[]>(query);
 
       return rows.map(

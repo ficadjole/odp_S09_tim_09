@@ -1,16 +1,8 @@
 import type { KategorijaDto } from "../kategorije/KategorijaDto";
 
-export interface Recipe {
+export interface ReceptListaDto {
   idRecepta: number;
   nazivR: string;
-  sastojic: string;
-  opis: string;
-  saveti: string;
   slika_url: string;
-  date: Date;
   kategorije: KategorijaDto[];
-  author: {
-    idKorisnika: number;
-    username: string;
-  };
 }
