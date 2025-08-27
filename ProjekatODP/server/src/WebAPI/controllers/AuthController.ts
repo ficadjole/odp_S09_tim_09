@@ -20,16 +20,16 @@ export class AuthController {
 
   private async prijava(req: Request, res: Response): Promise<void> {
     try {
-      const { username, email, password, uloga } = req.body;
+      const { username, password } = req.body;
 
-      const rezultat = validacijaPodatakaAuth(username, email, password, uloga);
+      //const rezultat = validacijaPodatakaAuth(username, email, password, uloga);
 
-      if (!rezultat.uspesno) {
+      /*       if (!rezultat.uspesno) {
         res.status(400).json({ succes: false, message: rezultat.poruka });
         return;
-      }
+      } */
 
-      const result = await this.authService.prijava(username, email, password);
+      const result = await this.authService.prijava(username, password);
 
       if (result.idKorisnika !== 0) {
         //kreiranje tokena za autorizaciju korisnika

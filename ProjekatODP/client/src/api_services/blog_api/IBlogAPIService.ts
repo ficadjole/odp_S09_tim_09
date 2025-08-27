@@ -1,5 +1,6 @@
 import type { BlogPostDto } from "../../models/blog/BlogListaDto";
 import type { Blog } from "../../models/blog/Blog";
+import type { ReceptListaDto } from "../../models/recipe/ReceptListaDto";
 
 export interface IBlogAPIService {
     getAllBlogs(token: string): Promise<BlogPostDto[]>;
@@ -8,11 +9,12 @@ export interface IBlogAPIService {
         token: string,
         naslovB: string,
         sadrzaj: string,
-        idPreporucenRecept: string
+        idPreporucenRecepti: ReceptListaDto,
     ): Promise<Blog>;
     deleteBlog(
         token: string,
         idBlogPost: number,
-        idPreporucenRecept: string
+        idPreporucenRecept: ReceptListaDto,
     ): Promise<Blog>;
 }
+

@@ -73,13 +73,13 @@ export class KategorijeController {
       if (result.idKategorije !== 0) {
         res.status(200).json({
           success: true,
-          message: "Uspesno ste obrisali kategoriju!",
+          message: "Uspesno ste dodali kategoriju!",
           data: result,
-        });
+      });
       } else {
         res.status(401).json({
           success: false,
-          message: "Neuspesno brisanje kategorije",
+          message: "Neuspelo ste dodali kategoriju!",
           data: result,
         });
       }

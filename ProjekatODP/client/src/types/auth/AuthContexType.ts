@@ -5,4 +5,6 @@ export type AuthContexType = {
     token: string | null;
     login:(token:string) => void;
     logout: () => void;
+    isAuthenticated: boolean;
+    isLoading: boolean;
 }

@@ -23,15 +23,6 @@ export function validacijaPodatakaAuth(
       uspesno: false,
       poruka: "Duzina sifre mora biti između 3 i 15 karaktera",
     };
-  } else if (
-    !password.includes("?") ||
-    !password.includes("!") ||
-    !password.includes("*")
-  ) {
-    return {
-      uspesno: false,
-      poruka: "Sifra mora sadrzati neke od specijalnih karaktera ? ! *",
-    };
   }
 
   if (email.match("[a-zA-Z0-9]+@[a-z]+.com") === null) {

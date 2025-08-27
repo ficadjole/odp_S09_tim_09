@@ -95,7 +95,7 @@ const ExplorePage: React.FC = () => {
           filteredRecipes.map((recipe) => (
             <div key={recipe.idRecepta} className="explore-card">
               <img
-                src={`https://picsum.photos/400/250?random=${recipe.idRecepta}`}
+                src={`${recipe.slika_url}`}
                 alt={recipe.nazivR}
               />
               <div className="card-info">

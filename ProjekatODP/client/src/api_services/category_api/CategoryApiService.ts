@@ -38,7 +38,7 @@ export const categoryApiService: ICategoryApiService = {
         }, */
       });
 
-      return res.data.data;
+      return res.data;
     } catch {
       return emptyCategory;
     }

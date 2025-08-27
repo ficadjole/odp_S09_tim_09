@@ -1,4 +1,3 @@
-//import type { UserLogin } from "../../models/auth/UserLogin";
 import { Uloga } from "../../models/auth/UserRole";
 import type { IAuthAPIService } from "./IAuthAPIService";
 import type { AuthResponse } from "../../types/auth/AuthResponse";
@@ -9,20 +8,19 @@ const API_URL2 = "http://localhost:4000/api/v1/auth/prijava";
 
 export const usersApi: IAuthAPIService = {
   async register(
-    id: number,
     username: string,
-    password: string,
     email: string,
-    uloga: Uloga.korisnik
+    password: string,
+    uloga: Uloga
   ): Promise<AuthResponse> {
     try {
-      const res = await axios.post<AuthResponse>(`${API_URL1}`, {
-        id,
+      const res = await axios.post<AuthResponse>(API_URL1, {
         username,
-        password,
         email,
+        password,
         uloga,
       });
+      console.log(res);
       return res.data;
     } catch (error) {
       let message = "Registration error.";
@@ -31,7 +29,7 @@ export const usersApi: IAuthAPIService = {
       }
       return {
         success: false,
-        message: "",
+        message,
         data: undefined,
       };
     }
