@@ -17,7 +17,7 @@ const HomePage: React.FC = () => {
   const [latestRecipes, setLatestRecipes] = useState<ReceptListaDto[]>([]);
   const [blogs, setBlogs] = useState<BlogPostDto[]>([]);
   useEffect(() => {
-    if (!token) return; // proveri da li postoji token
+    if (!token) return; 
 
     recipesApi.getAllRecipes(token).then((recipes) => {
       setRecipes(recipes);
@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
   }, [token]);
 
   useEffect(() => {
-    if (!token) return; // proveri da li postoji token
+    if (!token) return; 
 
     blogsAPI.getAllBlogs(token).then((blogs) => {
       setBlogs(blogs);

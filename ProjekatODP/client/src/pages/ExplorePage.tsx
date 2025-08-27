@@ -57,6 +57,25 @@ const ExplorePage: React.FC = () => {
     }
   }, [recipes, searchTerm, selectedCategory]);
 
+  const handleDeleteCategory = async (id: number, naziv: string) => {
+    if (!token) return;
+    const confirmed = window.confirm(
+      `Da li si siguran da želiš da obrišeš kategoriju "${naziv}"?`
+    );
+    if (!confirmed) return;
+
+    try {
+      await categoryApiService.removeCategory(token, naziv);
+      setCategories((prev) => prev.filter((c) => c.idKategorije !== id));
+      setSelectedCategory((prev) =>
+        prev && prev.idKategorije === id ? null : prev
+      );
+    } catch (err) {
+      console.error("Greška pri brisanju kategorije:", err);
+      alert("Neuspešno brisanje kategorije");
+    }
+  };
+
   return (
     <div className="explore-page">
       <Navbar username={user?.username || ""} /> 
@@ -74,15 +93,22 @@ const ExplorePage: React.FC = () => {
 
       <div className="categories">
         {categories.map((cat) => (
-          <button
-            key={cat.idKategorije}
-            className={`category-btn ${selectedCategory === cat ? "active" : ""}`}
-            onClick={() =>
-              setSelectedCategory(selectedCategory === cat ? null : cat)
-            }
-          >
-            {cat.nazivK}
-          </button>
+          <div key={cat.idKategorije} className="category-item">
+            <button
+              className={`category-btn ${selectedCategory === cat ? "active" : ""}`}
+              onClick={() =>
+                setSelectedCategory(selectedCategory === cat ? null : cat)
+              }
+            >
+              {cat.nazivK}
+            </button>
+            <button
+              className="delete-category-btn"
+              onClick={() => handleDeleteCategory(cat.idKategorije, cat.nazivK)}
+            >
+              ❌
+            </button>
+          </div>
         ))}
       </div>
 
