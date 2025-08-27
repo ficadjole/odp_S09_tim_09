@@ -28,7 +28,6 @@ export class BlogService implements IBlogService {
     idPreporucenRecept: number[]
   ): Promise<BlogPostDto> {
     const postojeciBlogPost = await this.blogRepository.getByNaslovB(naslovB);
-
     if (postojeciBlogPost.idBlogPost !== 0) return new BlogPostDto();
 
     const noviBlogPost = await this.blogRepository.dodajBlogPost(
@@ -37,6 +36,7 @@ export class BlogService implements IBlogService {
 
     //provera da li postoje recepti
     for (var i = 0; i < idPreporucenRecept.length; i++) {
+      console.log(idPreporucenRecept);
       const postojeciRecept = await this.receptRepository.getByIdRecepta(
         idPreporucenRecept[i]
       );

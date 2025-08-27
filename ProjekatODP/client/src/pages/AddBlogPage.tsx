@@ -45,7 +45,6 @@ const AddBlogPage: React.FC = () => {
         content,
         selectedRecipeIds
       );
-
       if (newBlog && newBlog.idBlogPost !== 0) {
         alert("Blog added successfully");
         navigate("/profile");

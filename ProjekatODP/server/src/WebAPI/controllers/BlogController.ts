@@ -47,7 +47,6 @@ export class BlogController {
   private async dodajBlogPost(req: Request, res: Response): Promise<void> {
     try {
       const { idKorisnika, naslovB, sadrzaj, idPreporucenRecept } = req.body;
-
       const result = await this.blogService.dodajBlogPost(
         idKorisnika,
         naslovB,

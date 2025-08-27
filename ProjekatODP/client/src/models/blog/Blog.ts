@@ -9,6 +9,5 @@ export interface Blog {
   author?: {
     idKorisnika: number;
     username: string;
-  }
-  
+  };
 }

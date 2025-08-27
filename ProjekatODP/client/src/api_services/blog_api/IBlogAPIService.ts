@@ -9,7 +9,7 @@ export interface IBlogAPIService {
     idKorisnika: number,
     naslovB: string,
     sadrzaj: string,
-    idPreporucenRecepti: number[]
+    idPreporucenRecept: number[]
   ): Promise<Blog>;
   deleteBlog(
     token: string,

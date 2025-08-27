@@ -19,15 +19,14 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/explore" element={<ExplorePage />} />
           <Route path="/profile" element={<ProfilePage />} />
-        
           <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
           <Route path="/add-recipe" element={<AddRecipePage />} />
           <Route path="/blog/:id" element={<BlogDetailsPage />} />
           <Route path="/add-blog" element={<AddBlogPage />} />
-          <Route path="/prijava" element={<LoginPage />} />
           <Route path="/registracija" element={<RegisterPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
