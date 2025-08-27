@@ -53,16 +53,38 @@ export const likeApiService: ILikeApiService = {
       return emptyLike;
     }
   },
-  async numberOfLikes(token: string, idRecepta: number): Promise<number> {
+  async numberOfLikes(token: string, idRecepta: number): Promise<LikeDto> {
     try {
-      const res = await axios.get<number>(
+      const res = await axios.get<LikeDto>(
         `${API_URL}/brojLajkova/${encodeURIComponent(idRecepta)}`
+        /*         headers: {
+          Authorization: `Bearer ${token}`,
+        }, */
       );
+
+      return res.data.data;
     } catch {
-      return -1;
+      return emptyLike;
     }
   },
-  async userLiked(token: string, idKorisnika: number): Promise<boolean> {
-    throw new Error("Function not implemented.");
+  async userLiked(
+    token: string,
+    idRecepta: number,
+    idKorisnika: number
+  ): Promise<LikeDto> {
+    try {
+      const res = await axios.get<LikeDto>(
+        `${API_URL}/lajkovano/${encodeURIComponent(
+          idRecepta
+        )}/${encodeURIComponent(idKorisnika)}`
+        /*         headers: {
+          Authorization: `Bearer ${token}`,
+        }, */
+      );
+
+      return res.data.data;
+    } catch {
+      return emptyLike;
+    }
   },
 };

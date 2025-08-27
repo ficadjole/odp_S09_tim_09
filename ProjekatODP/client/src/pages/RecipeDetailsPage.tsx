@@ -7,6 +7,8 @@ import "../styles/Recipe.css";
 //import type { UserLogin } from "../models/auth/UserLogin";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import { commentApi } from "../api_services/comment_api/CommentApi";
+import { likeApiService } from "../api_services/like_api/LikeApiService";
+import { type LikeDto } from "../models/like/LikeDto";
 /* const testUser: UserLogin = {
   id: "2",
   username: "Maja",
@@ -21,6 +23,8 @@ const RecipeDetailsPage: React.FC = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [comments, setComments] = useState<CommentDto[]>([]);
+  const [liked, setLikeD] = useState<boolean>(false);
+  const [newLike, setNewLike] = useState<LikeDto>();
   const [newComment, setNewComment] = useState("");
   /*   const [likes, setLikes] = useState<number>(0);
   const [likedUsers, setLikedUsers] = useState<string[]>([]);
@@ -61,17 +65,31 @@ const RecipeDetailsPage: React.FC = () => {
     setNewComment("");
   };
 
-  /*const handleLikeToggle = () => {
-    if (likedUsers.includes(un)) {
-      setLikes(likes - 1);
-      setLikedUsers(likedUsers.filter((user) => user !== un));
+  const handleLikeToggle = async () => {
+    if (liked === false) {
+      const newLike = await likeApiService.addLike(token, recipe.idRecepta, 1);
+
+      const nmbrOfLikes = await likeApiService.numberOfLikes(
+        token,
+        recipe.idRecepta
+      );
+      setNewLike(nmbrOfLikes);
+      setLikeD(true);
     } else {
-      setLikes(likes + 1);
-      setLikedUsers([...likedUsers, un]);
+      const deletedLike = await likeApiService.removeLike(
+        token,
+        recipe.idRecepta,
+        1
+      );
+      const nmbrOfLikes = await likeApiService.numberOfLikes(
+        token,
+        recipe.idRecepta
+      );
+      setNewLike(nmbrOfLikes);
+      setLikeD(false);
     }
   };
 
-  const userHasLiked = likedUsers.includes(un); */
   return (
     <div className="recipe-details-page">
       <Navbar username={un} />
@@ -106,18 +124,19 @@ const RecipeDetailsPage: React.FC = () => {
           <p>{recipe.saveti}</p>
         </div>
 
-        {/*         <div className="recipe-section rating-section">
+        <div className="recipe-section rating-section">
           <h2>Likes</h2>
           <button
-            className={`like-btn ${userHasLiked ? "liked" : ""}`}
+            className={`like-btn ${liked ? "liked" : ""}`}
             onClick={handleLikeToggle}
           >
-            {userHasLiked ? "💖 Liked" : "👍 Like"}
+            {liked ? "💖 Liked" : "👍 Like"}
           </button>
           <span className="likes-count">
-            {likes} {likes === 1 ? "Like" : "Likes"}
+            {newLike?.brojLajkova}{" "}
+            {newLike?.brojLajkova === 1 ? "Like" : "Likes"}
           </span>
-        </div>*/}
+        </div>
 
         <div className="recipe-section comments-section">
           <h2>Comments</h2>

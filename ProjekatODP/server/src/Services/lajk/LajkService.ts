@@ -18,7 +18,6 @@ export class LajkService implements ILajkService {
     }
   }
 
-  
   async obrisiLajk(idRecepta: number, idKorisnika: number): Promise<LajkDto> {
     const postojeciLajk = await this.lajkRepository.korisnikLajkovao(
       idKorisnika,
@@ -26,7 +25,16 @@ export class LajkService implements ILajkService {
     );
 
     if (postojeciLajk === true) {
-      return new LajkDto(idRecepta, idKorisnika);
+      const obrisiLajk = await this.lajkRepository.obrisiLajk(
+        idRecepta,
+        idKorisnika
+      );
+
+      if (obrisiLajk === true) {
+        return new LajkDto(idRecepta, idKorisnika);
+      } else {
+        return new LajkDto();
+      }
     } else {
       return new LajkDto();
     }
@@ -50,7 +58,7 @@ export class LajkService implements ILajkService {
     );
 
     if (postojeciLajk === true) {
-      return new LajkDto(idRecepta, idKorisnika,0,postojeciLajk);
+      return new LajkDto(idRecepta, idKorisnika, 0, postojeciLajk);
     } else {
       return new LajkDto();
     }
