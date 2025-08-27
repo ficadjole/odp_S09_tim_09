@@ -9,13 +9,13 @@ import type { KategorijaDto } from "../models/kategorije/KategorijaDto";
 import { categoryApiService } from "../api_services/category_api/CategoryApiService";
 
 const ExplorePage: React.FC = () => {
-  const { user, token } = useAuth(); // <-- dohvatamo username i token iz AuthContext
+  const { user, token } = useAuth(); 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<KategorijaDto | null>(null);
 
   const [recipes, setRecipes] = useState<ReceptListaDto[]>([]);
   useEffect(() => {
-    if (!token) return; // proveri da li postoji token
+    if (!token) return; 
 
     recipesApi.getAllRecipes(token).then((recipes) => {
       setRecipes(recipes);
@@ -59,7 +59,7 @@ const ExplorePage: React.FC = () => {
 
   return (
     <div className="explore-page">
-      <Navbar username={user?.username || ""} /> {/* <-- koristi stvarnog korisnika */}
+      <Navbar username={user?.username || ""} /> 
 
       <h1>Explore Recipes</h1>
 

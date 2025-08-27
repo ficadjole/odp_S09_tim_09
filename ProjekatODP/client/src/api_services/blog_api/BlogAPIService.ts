@@ -20,14 +20,11 @@ const emptyBlog: Blog = {
 export const blogsAPI: IBlogAPIService = {
   async getAllBlogs(token: string): Promise<BlogPostDto[]> {
     try {
-      const res = await axios.get<BlogPostDto[]>(
-        `${API_URL}/prikaziSveBlogove`
-        /*         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        } */
-      );
+      const res = await axios.get<BlogPostDto[]>(`${API_URL}/prikaziSveBlogove`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return res.data.data;
     } catch (error) {
       console.log("Greska front: ", error);
@@ -37,13 +34,11 @@ export const blogsAPI: IBlogAPIService = {
 
   async getBlogById(token: string, idRecepta: number): Promise<Blog> {
     try {
-      const res = await axios.get<Blog>(
-        `${API_URL}/${encodeURIComponent(idRecepta)}` /*         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        } */
-      );
+      const res = await axios.get<Blog>(`${API_URL}/${encodeURIComponent(idRecepta)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return res.data.data;
     } catch {
       return emptyBlog;
@@ -54,45 +49,39 @@ export const blogsAPI: IBlogAPIService = {
     token: string,
     naslovB: string,
     sadrzaj: string,
-    idPreporucenRecepti: ReceptListaDto
+    idPreporucenRecepti: ReceptListaDto[]
   ): Promise<Blog> {
     try {
       const res = await axios.post<Blog>(
         `${API_URL}/dodaj`,
+        { naslovB, sadrzaj, idPreporucenRecepti },
         {
-          naslovB,
-          sadrzaj,
-          idPreporucenRecepti,
-        }
-        /*         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        } */
+        }
       );
       return res.data;
     } catch {
       return emptyBlog;
     }
   },
+
   async deleteBlog(
     token: string,
     idBlogPost: number,
-    idPreporucenRecept: ReceptListaDto
+    idPreporucenRecept: ReceptListaDto[]
   ): Promise<Blog> {
     try {
       const res = await axios.delete(`${API_URL}/obrisi`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         data: {
           idBlogPost,
           idPreporucenRecept,
         },
-        /*
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        */
       });
-
       return res.data;
     } catch {
       return emptyBlog;
