@@ -35,16 +35,29 @@ const ExplorePage: React.FC = () => {
 
   const [filteredRecipes, setFilteredRecipes] = useState<ReceptListaDto[]>([]);
   useEffect(() => {
-    if (searchTerm.trim() === "") {
+    if (searchTerm.trim() === "" && selectedCategory === null) {
       setFilteredRecipes(recipes);
     } else {
       setFilteredRecipes(
-        recipes.filter((recipe) =>
-          recipe.nazivR.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        recipes.filter((recipe) => {
+          const matchesName = recipe.nazivR
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+
+          const matchesCategory =
+            selectedCategory === null
+              ? true
+              : recipe.kategorije.some(
+                  (category) =>
+                    category.nazivK.toLowerCase() ===
+                    selectedCategory.nazivK.toLowerCase()
+                );
+
+          return matchesName && matchesCategory;
+        })
       );
     }
-  }, [recipes, searchTerm]);
+  }, [recipes, searchTerm, selectedCategory]);
 
   return (
     <div className="explore-page">
@@ -104,6 +117,10 @@ const ExplorePage: React.FC = () => {
           <p className="no-results">No recipes found.</p>
         )}
       </div>
+
+      <Link to={`/add-recipe`} className="read-more">
+        Add New Recipe +
+      </Link>
     </div>
   );
 };

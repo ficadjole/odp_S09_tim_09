@@ -1,18 +1,28 @@
-/* import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { Category, Recipe } from "../models/recipe/Recipe";
-import { categories } from "../models/recipe/Recipe";
-import "../styles/AddRecipe.css"
+import type { KategorijaDto } from "../models/kategorije/KategorijaDto";
+import "../styles/AddRecipe.css";
+import { recipesApi } from "../api_services/recept_api/ReceptApiService";
+import { categoryApiService } from "../api_services/category_api/CategoryApiService";
 
 const AddRecipePage: React.FC = () => {
   const navigate = useNavigate();
-
+  const token = "";
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<Category>(categories[0]);
-  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [category, setCategory] = useState<KategorijaDto[]>([]);
+  const [ingredients, setIngredients] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] =
+    useState<KategorijaDto | null>(null);
+  const [advice, setAdvice] = useState<string>("");
   const [ingredientInput, setIngredientInput] = useState("");
   const [instructions, setInstructions] = useState("");
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string>("");
+
+  useEffect(() => {
+    categoryApiService.getAllCategories(token).then((categories) => {
+      setCategory(categories);
+    });
+  });
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -22,31 +32,25 @@ const AddRecipePage: React.FC = () => {
     }
   };
 
-  const handleAddIngredient = () => {
-    if (ingredientInput.trim() !== "") {
-      setIngredients([...ingredients, ingredientInput.trim()]);
-      setIngredientInput("");
-    }
-  };
-
-  const handleSave = () => {
-    const newRecipe: Recipe = {
-      id: Date.now().toString(),
+  const handleSave = async () => {
+    const created = await recipesApi.addRecipe(
+      "",
+      1,
       title,
-      category,
-      ingredients,
+      ingredientInput,
       instructions,
-      authorId: "currentUser",
-      createdAt: new Date().toISOString(),
-    };
-    console.log("Saved recipe:", newRecipe);
-    navigate("/");
+      advice,
+      image,
+      [category[0].idKategorije]
+    );
+    console.log("Saved recipe:", created);
+    navigate("/explore");
   };
 
   return (
     <div className="add-recipe-container">
       <h2>Add New Recipe</h2>
-      
+
       <form className="add-recipe-form" onSubmit={(e) => e.preventDefault()}>
         <div className="form-group">
           <label htmlFor="title">Title</label>
@@ -61,22 +65,28 @@ const AddRecipePage: React.FC = () => {
 
         <div className="form-group">
           <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value as Category)}
-          >
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
+          {category.map((cat) => (
+            <button
+              key={cat.idKategorije}
+              className={`category-btn ${
+                selectedCategory === cat ? "active" : ""
+              }`}
+              onClick={() =>
+                setSelectedCategory(selectedCategory === cat ? null : cat)
+              }
+            >
+              {cat.nazivK}
+            </button>
+          ))}
         </div>
 
         <div className="form-group">
           <label>Recipe Image</label>
           <div className="image-upload-container">
             <input type="file" accept="image/*" onChange={handleImageUpload} />
-            {image && <img src={image} alt="Preview" className="image-preview" />}
+            {image && (
+              <img src={image} alt="Preview" className="image-preview" />
+            )}
           </div>
         </div>
 
@@ -88,17 +98,8 @@ const AddRecipePage: React.FC = () => {
               placeholder="Add ingredient..."
               value={ingredientInput}
               onChange={(e) => setIngredientInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAddIngredient()}
             />
-            <button type="button" onClick={handleAddIngredient}>Add</button>
           </div>
-          {ingredients.length > 0 && (
-            <ul className="ingredients-list">
-              {ingredients.map((ing, idx) => (
-                <li key={idx}>{ing}</li>
-              ))}
-            </ul>
-          )}
         </div>
 
         <div className="form-group">
@@ -109,10 +110,22 @@ const AddRecipePage: React.FC = () => {
             value={instructions}
             onChange={(e) => setInstructions(e.target.value)}
           />
+
+          <label htmlFor="instructions">Advices</label>
+          <textarea
+            id="instructions"
+            placeholder="Write cooking advice..."
+            value={advice}
+            onChange={(e) => setAdvice(e.target.value)}
+          />
         </div>
 
         <div className="form-buttons">
-          <button type="button" className="cancel-btn" onClick={() => navigate("/")}>
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={() => navigate("/")}
+          >
             Cancel
           </button>
           <button type="button" className="submit-btn" onClick={handleSave}>
@@ -125,4 +138,3 @@ const AddRecipePage: React.FC = () => {
 };
 
 export default AddRecipePage;
- */
