@@ -7,4 +7,5 @@ export interface IReceptRepository {
   getByNazivR(nazivR: string): Promise<Recept>;
   getByIdRecepta(idRecepta: number): Promise<Recept>;
   getAllRecepti(): Promise<Recept[]>;
+  getAllReceptiKorisnik(idKorisnika: number): Promise<Recept[]>;
 }

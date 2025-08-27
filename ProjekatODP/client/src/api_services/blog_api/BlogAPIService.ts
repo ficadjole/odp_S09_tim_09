@@ -19,11 +19,14 @@ const emptyBlog: Blog = {
 export const blogsAPI: IBlogAPIService = {
   async getAllBlogs(token: string): Promise<BlogPostDto[]> {
     try {
-      const res = await axios.get<BlogPostDto[]>(`${API_URL}/prikaziSveBlogove`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get<BlogPostDto[]>(
+        `${API_URL}/prikaziSveBlogove`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return res.data.data;
     } catch (error) {
       console.log("Greska front: ", error);
@@ -33,11 +36,14 @@ export const blogsAPI: IBlogAPIService = {
 
   async getBlogById(token: string, idRecepta: number): Promise<Blog> {
     try {
-      const res = await axios.get<Blog>(`${API_URL}/${encodeURIComponent(idRecepta)}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get<Blog>(
+        `${API_URL}/${encodeURIComponent(idRecepta)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return res.data.data;
     } catch {
       return emptyBlog;
@@ -46,6 +52,7 @@ export const blogsAPI: IBlogAPIService = {
 
   async addBlog(
     token: string,
+    idKorisnika: number,
     naslovB: string,
     sadrzaj: string,
     idPreporucenRecepti: number[]
@@ -53,7 +60,7 @@ export const blogsAPI: IBlogAPIService = {
     try {
       const res = await axios.post<Blog>(
         `${API_URL}/dodaj`,
-        { naslovB, sadrzaj, idPreporucenRecepti },
+        { idKorisnika, naslovB, sadrzaj, idPreporucenRecepti },
         {
           headers: {
             Authorization: `Bearer ${token}`,

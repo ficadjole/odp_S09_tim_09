@@ -19,4 +19,8 @@ export interface IReceptApiService {
     idRecepta: number,
     idKategorije: number
   ): Promise<Recipe>;
+  getAllRecipesUser(
+    token: string,
+    idKorisnika: number
+  ): Promise<ReceptListaDto[]>;
 }

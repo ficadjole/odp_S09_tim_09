@@ -107,10 +107,6 @@ const ExplorePage: React.FC = () => {
           <p className="no-results">No recipes found.</p>
         )}
       </div>
-
-      <Link to={`/add-recipe`} className="read-more">
-        Add New Recipe +
-      </Link>
     </div>
   );
 };

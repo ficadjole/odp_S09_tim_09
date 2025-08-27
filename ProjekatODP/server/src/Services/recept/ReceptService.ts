@@ -153,6 +153,27 @@ export class ReceptService implements IReceptService {
     return this.mapToDTO(recept);
   }
 
+  async getAllReceptiKorisnik(idKorisnika: number): Promise<ReceptiListaDto[]> {
+    const recepti: Recept[] = await this.receptRepository.getAllReceptiKorisnik(
+      idKorisnika
+    );
+    const receptiListaDto: ReceptiListaDto[] = [];
+    for (var i = 0; i < recepti.length; i++) {
+      const kategorije = await this.kategorijeLista(recepti[i]);
+
+      receptiListaDto.push(
+        new ReceptiListaDto(
+          recepti[i].idRecepta,
+          recepti[i].nazivR,
+          recepti[i].slika_url,
+          kategorije
+        )
+      );
+    }
+
+    return receptiListaDto;
+  }
+
   private async mapToDTO(recept: Recept): Promise<ReceptDetaljiDto> {
     const kategorije = await this.kategorijeLista(recept);
 

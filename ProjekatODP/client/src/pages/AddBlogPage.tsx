@@ -36,13 +36,14 @@ const AddBlogPage: React.FC = () => {
     }
 
     try {
-      const selectedRecipeIds = selectedRecipes.map(r => r.idRecepta);
+      const selectedRecipeIds = selectedRecipes.map((r) => r.idRecepta);
 
       const newBlog: Blog = await blogsAPI.addBlog(
         token,
+        user.id,
         title,
         content,
-        selectedRecipeIds 
+        selectedRecipeIds
       );
 
       if (newBlog && newBlog.idBlogPost !== 0) {
@@ -85,10 +86,10 @@ const AddBlogPage: React.FC = () => {
         <label>Select Recommended Recipes</label>
         <select
           multiple
-          value={selectedRecipes.map((r) => r.idRecepta.toString())} 
+          value={selectedRecipes.map((r) => r.idRecepta.toString())}
           onChange={(e) => {
-            const selectedIds = Array.from(e.target.selectedOptions).map(
-              (o) => Number(o.value) 
+            const selectedIds = Array.from(e.target.selectedOptions).map((o) =>
+              Number(o.value)
             );
             const newSelected = allRecipes.filter((r) =>
               selectedIds.includes(r.idRecepta)

@@ -8,14 +8,14 @@ import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
 import { useAuth } from "../hooks/auth/authHook";
 
 const ProfilePage: React.FC = () => {
-  const { user, token } = useAuth(); 
+  const { user, token } = useAuth();
   const navigate = useNavigate();
 
   const [userRecipes, setUserRecipes] = useState<ReceptListaDto[]>([]);
 
   useEffect(() => {
-    if (!token) return; 
-    recipesApi.getAllRecipes(token).then((recipes) => {
+    if (!token) return;
+    recipesApi.getAllRecipesUser(token, user?.id).then((recipes) => {
       setUserRecipes(recipes);
     });
   }, [token]);

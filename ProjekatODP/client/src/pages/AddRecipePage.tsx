@@ -43,7 +43,7 @@ const AddRecipePage: React.FC = () => {
       [category[0].idKategorije]
     );
     console.log("Saved recipe:", created);
-    navigate("/explore");
+    navigate("/profile");
   };
 
   return (

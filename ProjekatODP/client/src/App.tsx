@@ -2,7 +2,7 @@ import "./App.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-//import HomePage from "./pages/HomePage";
+import HomePage from "./pages/HomePage";
 import ExplorePage from "./pages/ExplorePage";
 import ProfilePage from "./pages/ProfilePage";
 import RecipeDetailsPage from "./pages/RecipeDetailsPage";
@@ -18,9 +18,8 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-
         <Routes>
-          {/* <Route path="/" element={<HomePage />} /> */}
+          <Route path="/" element={<HomePage />} />
           <Route path="/explore" element={<ExplorePage />} />
           <Route path="/profile" element={<ProfilePage />} />
 
