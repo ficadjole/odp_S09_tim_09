@@ -1,9 +1,9 @@
-export type Role = 'Admin' | 'Visitor';
+import { Uloga } from "./UserRole";
 
 export interface UserLogin{
-id: string;
+  id: number;
   username: string;
   email: string;
   password: string;
-  role: Role;
+  uloga: Uloga;
 }
