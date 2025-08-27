@@ -20,7 +20,7 @@ export class ReceptiController {
   private initializeRoutes(): void {
     this.router.post(
       "/recepti/dodajRecept",
-      authenticate,
+      //authenticate,
       this.dodajRecept.bind(this)
     );
 
