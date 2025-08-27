@@ -35,16 +35,29 @@ const ExplorePage: React.FC = () => {
 
   const [filteredRecipes, setFilteredRecipes] = useState<ReceptListaDto[]>([]);
   useEffect(() => {
-    if (searchTerm.trim() === "") {
+    if (searchTerm.trim() === "" && selectedCategory === null) {
       setFilteredRecipes(recipes);
     } else {
       setFilteredRecipes(
-        recipes.filter((recipe) =>
-          recipe.nazivR.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        recipes.filter((recipe) => {
+          const matchesName = recipe.nazivR
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+
+          const matchesCategory =
+            selectedCategory === null
+              ? true
+              : recipe.kategorije.some(
+                  (category) =>
+                    category.nazivK.toLowerCase() ===
+                    selectedCategory.nazivK.toLowerCase()
+                );
+
+          return matchesName && matchesCategory;
+        })
       );
     }
-  }, [recipes, searchTerm]);
+  }, [recipes, searchTerm, selectedCategory]);
 
   return (
     <div className="explore-page">
