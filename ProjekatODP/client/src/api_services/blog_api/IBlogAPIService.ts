@@ -1,6 +1,5 @@
 import type { BlogPostDto } from "../../models/blog/BlogListaDto";
 import type { Blog } from "../../models/blog/Blog";
-import type { ReceptListaDto } from "../../models/recipe/ReceptListaDto";
 
 export interface IBlogAPIService {
   getAllBlogs(token: string): Promise<BlogPostDto[]>;
