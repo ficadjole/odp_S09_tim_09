@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/* import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Blog } from "../models/blog/Blog";
 import blogData from "../models/blog/Blog";
@@ -69,3 +69,4 @@ const BlogDetailsPage: React.FC = () => {
 };
 
 export default BlogDetailsPage;
+ */
