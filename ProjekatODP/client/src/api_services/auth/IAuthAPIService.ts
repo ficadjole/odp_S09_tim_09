@@ -3,7 +3,6 @@ import type { AuthResponse } from "../../types/auth/AuthResponse";
 
 export interface IAuthAPIService {
     register(
-        id: number,
         username: string,
         email: string,
         password: string,

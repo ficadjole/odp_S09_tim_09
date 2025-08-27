@@ -32,10 +32,9 @@ const RegisterPage: React.FC = () => {
 
     try {
       const newUser: AuthResponse = await usersApi.register(
-        0,
         username,
-        email,
         password,
+        email,
         uloga
       );
 
