@@ -5,6 +5,10 @@ export interface ICommentApi {
     token: string,
     idRecepta: number
   ): Promise<CommentDto[]>;
+  getAllCommentsForBlog(
+    token: string,
+    idBlogPost: number
+  ): Promise<CommentDto[]>;
   addComment(
     token: string,
     idRecepta: number,

@@ -1,4 +1,3 @@
-//import type { UserLogin } from "../../models/auth/UserLogin";
 import { Uloga } from "../../models/auth/UserRole";
 import type { IAuthAPIService } from "./IAuthAPIService";
 import type { AuthResponse } from "../../types/auth/AuthResponse";

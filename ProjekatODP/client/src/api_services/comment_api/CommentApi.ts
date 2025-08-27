@@ -24,6 +24,20 @@ export const commentApi: ICommentApi = {
       return [];
     }
   },
+  async getAllCommentsForBlog(
+    token: string,
+    idBlogPost: number
+  ): Promise<CommentDto[]>{
+    try {
+      const res = await axios.get<CommentDto[]>(
+        `${API_URL}/prikaziSveKomentare/${encodeURIComponent(idBlogPost)}`
+      );
+      return res.data.data;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  },
   async addComment(
     token: string,
     idRecepta: number,
