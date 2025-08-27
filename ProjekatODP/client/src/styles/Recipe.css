@@ -143,7 +143,23 @@
   align-items: center;
 }
 
-.delete-btn :hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+.delete-recipe-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.delete-recipe-btn {
+  background-color: #196c53;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.delete-recipe-btn:hover {
+  background-color: #145a44;
 }

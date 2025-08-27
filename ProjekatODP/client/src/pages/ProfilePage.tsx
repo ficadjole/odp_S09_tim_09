@@ -4,6 +4,7 @@ import "../styles/Profile.css";
 import Navbar from "../design_components/NavBar";
 import { Uloga } from "../models/auth/UserRole";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
+import { categoryApiService } from "../api_services/category_api/CategoryApiService" 
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
 import { useAuth } from "../hooks/auth/authHook";
 
@@ -12,13 +13,30 @@ const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
 
   const [userRecipes, setUserRecipes] = useState<ReceptListaDto[]>([]);
+  const [newCategory, setNewCategory] = useState<string>(""); // unos za kategoriju
+  const [message, setMessage] = useState<string>(""); // feedback poruka
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || !user) return;
     recipesApi.getAllRecipesUser(token, user?.id).then((recipes) => {
       setUserRecipes(recipes);
     });
   }, [token]);
+
+  const handleAddCategory = async () => {
+    if (!token || !newCategory.trim()) return;
+    try {
+      const res = await categoryApiService.addCategory(token, newCategory);
+      if (res && res.nazivK) {
+        setMessage(`Kategorija "${res.nazivK}" uspešno dodata!`);
+        setNewCategory("");
+      } else {
+        setMessage("Došlo je do greške prilikom dodavanja kategorije.");
+      }
+    } catch {
+      setMessage("Došlo je do greške.");
+    }
+  };
 
   if (!user) return <p>Loading user...</p>;
 
@@ -55,6 +73,22 @@ const ProfilePage: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {user.uloga === Uloga.moderator && (   
+        <div className="add-category-section">
+          <h3>Dodaj novu kategoriju</h3>
+          <input
+            type="text"
+            value={newCategory}
+            onChange={(e) => setNewCategory(e.target.value)}
+            placeholder="Unesi naziv kategorije"
+          />
+          <button className="add-category-btn" onClick={handleAddCategory}>
+            + Add New Category
+          </button>
+          {message && <p>{message}</p>}
+        </div>
+      )}
 
         <h2>My Recipes</h2>
         {userRecipes.length === 0 && <p>You haven't added any recipes yet.</p>}

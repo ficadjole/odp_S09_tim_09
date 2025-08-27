@@ -1,64 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import type { Recipe } from "../models/recipe/Recipe";
 import Navbar from "../design_components/NavBar";
 import type { CommentDto } from "../models/comments/CommentDto";
 import "../styles/Recipe.css";
-//import type { UserLogin } from "../models/auth/UserLogin";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import { commentApi } from "../api_services/comment_api/CommentApi";
 import { likeApiService } from "../api_services/like_api/LikeApiService";
 import { type LikeDto } from "../models/like/LikeDto";
-/* const testUser: UserLogin = {
-  id: "2",
-  username: "Maja",
-  email: "maja@example.com",
-  password: "123",
-  role: "Visitor",
-}; */
+import { useAuth } from "../hooks/auth/authHook"; // dodato
 
 const RecipeDetailsPage: React.FC = () => {
-  const un = "Maja";
-  const token = "";
+  const { user, token } = useAuth(); // sada imamo user i token iz hook-a
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [comments, setComments] = useState<CommentDto[]>([]);
   const [liked, setLikeD] = useState<boolean>(false);
   const [newLike, setNewLike] = useState<LikeDto>();
   const [newComment, setNewComment] = useState("");
-  /*   const [likes, setLikes] = useState<number>(0);
-  const [likedUsers, setLikedUsers] = useState<string[]>([]);
-   */
 
   useEffect(() => {
     if (!id) return;
 
-    recipesApi.getRecipeById(token, Number(id)).then((foundRecipe) => {
+    recipesApi.getRecipeById(token || "", Number(id)).then((foundRecipe) => {
       if (foundRecipe && foundRecipe.idRecepta !== 0) {
         setRecipe(foundRecipe);
       }
     });
-  }, [id]);
+  }, [id, token]);
 
   useEffect(() => {
     if (!id) return;
-    console.log(id);
     commentApi
-      .getAllCommentsForRecipe(token, Number(id))
+      .getAllCommentsForRecipe(token || "", Number(id))
       .then((foundComments) => {
         if (foundComments.length > 0) {
           setComments(foundComments);
         }
       });
-  }, [id]);
+  }, [id, token]);
 
   if (!recipe) return <p>Recipe not found</p>;
+
   const handleAddComment = async () => {
     if (!newComment) return;
     const newCommentV = await commentApi.addComment(
-      token,
+      token || "",
       recipe.idRecepta,
-      1, //OVDE MORAM STAVITI ID KORISNIKA IZ TOKENA
+      user?.idKorisnika ?? 0, 
       newComment
     );
     setComments([...comments, newCommentV]);
@@ -67,22 +58,26 @@ const RecipeDetailsPage: React.FC = () => {
 
   const handleLikeToggle = async () => {
     if (liked === false) {
-      const newLike = await likeApiService.addLike(token, recipe.idRecepta, 1);
+      const newLike = await likeApiService.addLike(
+        token || "",
+        recipe.idRecepta,
+        user?.idKorisnika ?? 0
+      );
 
       const nmbrOfLikes = await likeApiService.numberOfLikes(
-        token,
+        token || "",
         recipe.idRecepta
       );
       setNewLike(nmbrOfLikes);
       setLikeD(true);
     } else {
-      const deletedLike = await likeApiService.removeLike(
-        token,
+      await likeApiService.removeLike(
+        token || "",
         recipe.idRecepta,
-        1
+        user?.idKorisnika ?? 0
       );
       const nmbrOfLikes = await likeApiService.numberOfLikes(
-        token,
+        token || "",
         recipe.idRecepta
       );
       setNewLike(nmbrOfLikes);
@@ -90,9 +85,27 @@ const RecipeDetailsPage: React.FC = () => {
     }
   };
 
+  const handleDeleteRecipe = async () => {
+    if (!token || !recipe) return;
+
+    const confirmDelete = window.confirm(
+      `Da li ste sigurni da želite da obrišete recept "${recipe.nazivR}"?`
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await recipesApi.deleteRecipe(token, recipe.idRecepta, recipe.kategorije[0]?.idKategorije ?? 0);
+      alert("Recept je uspešno obrisan.");
+      navigate("/explore"); // vraća korisnika na explore
+    } catch (err) {
+      console.error("Greška pri brisanju recepta:", err);
+      alert("Brisanje nije uspelo.");
+    }
+  };
+
   return (
     <div className="recipe-details-page">
-      <Navbar username={un} />
+      <Navbar username={user?.username || ""} />
 
       <div className="recipe-header">
         <img
@@ -159,23 +172,16 @@ const RecipeDetailsPage: React.FC = () => {
             />
             <button onClick={handleAddComment}>Add Comment</button>
           </div>
-
-          {/*           <div className="buttons-container">
-            {user.role === "Admin" && (
-              <button
-                className="delete-btn"
-                style={{
-                  marginLeft: "1rem",
-                  backgroundColor: "#196c53",
-                  color: "white",
-                }}
-              >
-                Delete Recipe
-              </button>
-            )}
-          </div> */}
         </div>
       </div>
+
+      {user?.uloga === "moderator" && (
+        <div className="delete-recipe-container">
+          <button className="delete-recipe-btn" onClick={handleDeleteRecipe}>
+            🗑 Delete Recipe
+          </button>
+        </div>
+      )}
     </div>
   );
 };

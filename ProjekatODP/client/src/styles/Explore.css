@@ -149,3 +149,18 @@ body {
   color: #888;
   grid-column: 1/-1;
 }
+
+.category-item {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.delete-category-btn {
+  margin-left: 4px;
+  background: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 14px;
+}
