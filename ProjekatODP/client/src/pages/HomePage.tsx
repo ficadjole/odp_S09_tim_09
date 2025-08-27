@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import React, { useEffect, useState } from "react";
 import "../styles/Home.css";
 import Navbar from "../design_components/NavBar";
 //import blogData from "../models/blog/Blog";
@@ -13,7 +12,6 @@ import { useAuth } from "../hooks/auth/authHook";
 
 const HomePage: React.FC = () => {
   const { user, token } = useAuth();
-  const un = "Maja";
   const navigate = useNavigate();
   const [recipes, setRecipes] = useState<ReceptListaDto[]>([]);
   const [latestRecipes, setLatestRecipes] = useState<ReceptListaDto[]>([]);
@@ -43,11 +41,9 @@ const HomePage: React.FC = () => {
   }, [recipes]);
 
   const openRecipe = (recipeId: number) => {
-  const openRecipe = (recipeId: number) => {
     navigate(`/recipes/${recipeId}`);
   };
 
-  const openBlog = (blogId: number) => {
   const openBlog = (blogId: number) => {
     navigate(`/blog/${blogId}`);
   };
@@ -61,20 +57,11 @@ const HomePage: React.FC = () => {
         <div className="recipes-grid">
           {latestRecipes.map((recipe) => (
             <div key={recipe.idRecepta} className="recipe-card">
-          {latestRecipes.map((recipe) => (
-            <div key={recipe.idRecepta} className="recipe-card">
               <img
-                src={`https://picsum.photos/600/400?random=${recipe.idRecepta}`}
-                alt={`Recipe ${recipe.nazivR}`}
                 src={`https://picsum.photos/600/400?random=${recipe.idRecepta}`}
                 alt={`Recipe ${recipe.nazivR}`}
               />
               <div className="recipe-info">
-                <h3>{recipe.nazivR}</h3>
-                <button
-                  className="read-more"
-                  onClick={() => openRecipe(recipe.idRecepta)}
-                >
                 <h3>{recipe.nazivR}</h3>
                 <button
                   className="read-more"
@@ -85,11 +72,10 @@ const HomePage: React.FC = () => {
               </div>
             </div>
           ))}
-        </div> */}
+        </div>
       </section>
 
-      {/*       <section className="blogs-section">
-      {/*       <section className="blogs-section">
+      <section className="blogs-section">
         <h2>Food Blogs</h2>
         <div className="blogs-grid">
           {blogs.map((blog) => (
@@ -109,8 +95,7 @@ const HomePage: React.FC = () => {
           ))}
         </div>
         <button className="view-blogs">View All Blogs</button>
-      </section> */}
-      </section> */}
+      </section>
     </div>
   );
 };
