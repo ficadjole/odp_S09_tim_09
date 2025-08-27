@@ -27,6 +27,7 @@ export const blogsAPI: IBlogAPIService = {
           },
         }
       );
+      console.log(res.data.data);
       return res.data.data;
     } catch (error) {
       console.log("Greska front: ", error);
@@ -55,19 +56,19 @@ export const blogsAPI: IBlogAPIService = {
     idKorisnika: number,
     naslovB: string,
     sadrzaj: string,
-    idPreporucenRecepti: number[]
+    idPreporucenRecept: number[]
   ): Promise<Blog> {
     try {
       const res = await axios.post<Blog>(
         `${API_URL}/dodaj`,
-        { idKorisnika, naslovB, sadrzaj, idPreporucenRecepti },
+        { idKorisnika, naslovB, sadrzaj, idPreporucenRecept },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      return res.data;
+      return res.data.data;
     } catch {
       return emptyBlog;
     }

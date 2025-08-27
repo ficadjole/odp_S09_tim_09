@@ -48,7 +48,6 @@ export class BlogRepository implements IBlogRepository {
     try {
       const query = "SELECT * FROM blog_post WHERE idBlogPost = ?";
       const [rows] = await db.execute<RowDataPacket[]>(query, [idBlogPost]);
-
       if (rows.length > 0) {
         const row = rows[0];
 
@@ -57,7 +56,7 @@ export class BlogRepository implements IBlogRepository {
           row.idModerator,
           row.naslovB,
           row.sadrzaj,
-          row.datum
+          row.datumBP
         );
       } else {
         return new BlogPost();
