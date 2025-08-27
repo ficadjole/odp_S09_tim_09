@@ -5,30 +5,46 @@ import Navbar from "../design_components/NavBar";
 /* import type { Recipe } from "../models/recipe/Recipe"; */
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
+import type { KategorijaDto } from "../models/kategorije/KategorijaDto";
+import { categoryApiService } from "../api_services/category_api/CategoryApiService";
 
 const ExplorePage: React.FC = () => {
   const un = "Maja";
+  const token = "";
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] =
+    useState<KategorijaDto | null>(null);
   /*   if (!token) {
     alert("Morate biti ulogovani kao urednik da biste dodali knjigu!");
     return;
   } */
-  //const [selectedCategory, setSelectedCategory] = useState<Recipe['category'] | null>(null);
-
-  /*   const filteredRecipes = recipesData.filter((recipe) => {
-    const matchesName = recipe.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory ? recipe.category === selectedCategory : true;
-    return matchesName && matchesCategory;
-  }); */
 
   const [recipes, setRecipes] = useState<ReceptListaDto[]>([]);
   useEffect(() => {
-    recipesApi.getAllRecipes("").then((recipes) => {
+    recipesApi.getAllRecipes(token).then((recipes) => {
       setRecipes(recipes);
     });
   }, []);
 
-  console.log(recipes);
+  const [categories, setCategories] = useState<KategorijaDto[]>([]);
+  useEffect(() => {
+    categoryApiService.getAllCategories(token).then((categories) => {
+      setCategories(categories);
+    });
+  });
+
+  const [filteredRecipes, setFilteredRecipes] = useState<ReceptListaDto[]>([]);
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredRecipes(recipes);
+    } else {
+      setFilteredRecipes(
+        recipes.filter((recipe) =>
+          recipe.nazivR.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }
+  }, [recipes, searchTerm]);
 
   return (
     <div className="explore-page">
@@ -45,10 +61,10 @@ const ExplorePage: React.FC = () => {
         />
       </div>
 
-      {/*  <div className="categories">
+      <div className="categories">
         {categories.map((cat) => (
           <button
-            key={cat}
+            key={cat.idKategorije}
             className={`category-btn ${
               selectedCategory === cat ? "active" : ""
             }`}
@@ -56,14 +72,14 @@ const ExplorePage: React.FC = () => {
               setSelectedCategory(selectedCategory === cat ? null : cat)
             }
           >
-            {cat}
+            {cat.nazivK}
           </button>
         ))}
-      </div> */}
+      </div>
 
       <div className="explore-grid">
-        {recipes.length > 0 ? (
-          recipes.map((recipe) => (
+        {filteredRecipes.length > 0 ? (
+          filteredRecipes.map((recipe) => (
             <div key={recipe.idRecepta} className="explore-card">
               <img
                 src={`https://picsum.photos/400/250?random=${recipe.idRecepta}`}
