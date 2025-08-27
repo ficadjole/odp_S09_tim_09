@@ -12,10 +12,12 @@ import AddBlogPage from "./pages/AddBlogPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import { AuthProvider } from "./contexts/auth/AuthContext";
 
 function App() {
   return (
     <Router>
+      <AuthProvider>
       <Routes>
         {/* <Route path="/" element={<HomePage />} /> */}
         <Route path="/explore" element={<ExplorePage />} />
@@ -29,6 +31,7 @@ function App() {
         <Route path="/registracija" element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      </AuthProvider>
     </Router>
   );
 }
