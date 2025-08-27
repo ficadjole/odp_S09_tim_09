@@ -46,11 +46,11 @@ export class AuthController {
 
         res
           .status(200)
-          .json({ succes: true, message: "Uspesna prijava", data: token });
+          .json({ success: true, message: "Uspesna prijava", data: token });
         return;
       } else {
         res.status(401).json({
-          succes: false,
+          success: false,
           message: "Neispravno unoseni podaci",
           data: result,
         });
@@ -92,14 +92,14 @@ export class AuthController {
         );
 
         res.status(200).json({
-          succes: true,
+          success: true,
           message: "Uspesna registracija",
           data: token,
         });
         return;
       } else {
         res.status(401).json({
-          succes: false,
+          success: false,
           message: "Registracija nije uspela. Korisnicko ime vec postoji",
         });
         return;
