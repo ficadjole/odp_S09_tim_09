@@ -18,8 +18,8 @@ export class BlogController {
   private initializeRoutes(): void {
     this.router.post(
       "/blogPost/dodaj",
-      //authenticate,
-      //authorize(Uloga.moderator),
+      authenticate,
+      authorize(Uloga.moderator),
       this.dodajBlogPost.bind(this)
     );
 
@@ -132,7 +132,7 @@ export class BlogController {
       const trazeniPost: BlogPostDto = await this.blogService.getByIdBlogPost(
         idBlogPost
       );
-
+      console.log(trazeniPost);
       if (trazeniPost.idBlogPost !== 0) {
         res.status(200).json({
           success: true,

@@ -147,4 +147,29 @@ export class ReceptRepository implements IReceptRepository {
       return [];
     }
   }
+
+  async getAllReceptiKorisnik(idKorisnika: number): Promise<Recept[]> {
+    try {
+      const query =
+        "SELECT * FROM recepti WHERE idKorisnika = ? ORDER BY idRecepta ASC";
+      const [rows] = await db.execute<RowDataPacket[]>(query, [idKorisnika]);
+
+      return rows.map(
+        (row) =>
+          new Recept(
+            row.idRecepta,
+            row.idKorisnika,
+            row.nazivR,
+            row.sastojci,
+            row.opis,
+            row.saveti,
+            row.slika_url,
+            row.datumR
+          )
+      );
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
 }

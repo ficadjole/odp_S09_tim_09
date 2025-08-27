@@ -1,92 +1,107 @@
-/* import React from "react";
+import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Home.css";
 import Navbar from "../design_components/NavBar";
-import type { Recipe } from "../models/recipe/Recipe";
-import recipesData from "../models/recipe/Recipe";
-import type { Blog } from "../models/blog/Blog";
-import blogData from "../models/blog/Blog";
+//import blogData from "../models/blog/Blog";
+//import blogData from "../models/blog/Blog";
 import { useNavigate } from "react-router-dom";
+import { recipesApi } from "../api_services/recept_api/ReceptApiService";
+import { blogsAPI } from "../api_services/blog_api/BlogAPIService";
+import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
+import type { BlogPostDto } from "../models/blog/BlogListaDto";
+import { useAuth } from "../hooks/auth/authHook";
 
 const HomePage: React.FC = () => {
+  const { user, token } = useAuth();
   const un = "Maja";
   const navigate = useNavigate();
+  const [recipes, setRecipes] = useState<ReceptListaDto[]>([]);
+  const [latestRecipes, setLatestRecipes] = useState<ReceptListaDto[]>([]);
+  const [blogs, setBlogs] = useState<BlogPostDto[]>([]);
+  useEffect(() => {
+    if (!token) return; // proveri da li postoji token
 
-  const sortedRecipes = [...recipesData].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-  const latestRecipes = sortedRecipes.slice(0, 3);
-  const popularRecipes = recipesData.slice(0, 6);
+    recipesApi.getAllRecipes(token).then((recipes) => {
+      setRecipes(recipes);
+    });
+  }, [token]);
 
-  const sortedBlog = [...blogData].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-  const latestBlog = sortedBlog.slice(0, 4);
+  useEffect(() => {
+    if (!token) return; // proveri da li postoji token
 
-  const openRecipe = (recipeId: string) => {
+    blogsAPI.getAllBlogs(token).then((blogs) => {
+      setBlogs(blogs);
+    });
+  }, [token]);
+
+  useEffect(() => {
+    if (recipes.length > 0) {
+      const sortedRecipes = recipes.sort((a, b) => a.idRecepta - b.idRecepta);
+      const temp = sortedRecipes.slice(0, 6);
+      setLatestRecipes(temp);
+    }
+  }, [recipes]);
+
+  const openRecipe = (recipeId: number) => {
+  const openRecipe = (recipeId: number) => {
     navigate(`/recipes/${recipeId}`);
   };
 
-  const openBlog = (blogId: string) => {
+  const openBlog = (blogId: number) => {
+  const openBlog = (blogId: number) => {
     navigate(`/blog/${blogId}`);
   };
 
   return (
     <div className="homepage">
-      <Navbar username={un} />
+      <Navbar username={user?.username || ""} />
 
       <section className="recipes-section">
         <h2>New Recipes</h2>
         <div className="recipes-grid">
-          {latestRecipes.map((recipe: Recipe) => (
-            <div key={recipe.id} className="recipe-card">
+          {latestRecipes.map((recipe) => (
+            <div key={recipe.idRecepta} className="recipe-card">
+          {latestRecipes.map((recipe) => (
+            <div key={recipe.idRecepta} className="recipe-card">
               <img
-                src={`https://picsum.photos/600/400?random=${recipe.id}`}
-                alt={`Recipe ${recipe.title}`}
+                src={`https://picsum.photos/600/400?random=${recipe.idRecepta}`}
+                alt={`Recipe ${recipe.nazivR}`}
+                src={`https://picsum.photos/600/400?random=${recipe.idRecepta}`}
+                alt={`Recipe ${recipe.nazivR}`}
               />
               <div className="recipe-info">
-                <h3>{recipe.title}</h3>
-                <p>By User{recipe.authorId} • ⭐ 4.4</p>
-                <button className="read-more" onClick={() => openRecipe(recipe.id)}>
+                <h3>{recipe.nazivR}</h3>
+                <button
+                  className="read-more"
+                  onClick={() => openRecipe(recipe.idRecepta)}
+                >
+                <h3>{recipe.nazivR}</h3>
+                <button
+                  className="read-more"
+                  onClick={() => openRecipe(recipe.idRecepta)}
+                >
                   Read More
                 </button>
               </div>
             </div>
           ))}
-        </div>
-
-        <h2>Most Popular Recipes</h2>
-        <div className="recipes-grid">
-          {popularRecipes.map((recipe: Recipe) => (
-            <div key={recipe.id} className="recipe-card">
-              <img
-                src={`https://picsum.photos/600/400?random=${recipe.id}`}
-                alt={`Recipe ${recipe.title}`}
-              />
-              <div className="recipe-info">
-                <h3>{recipe.title}</h3>
-                <p>By User{recipe.authorId} • ⭐ 4.4</p>
-                <button className="read-more" onClick={() => openRecipe(recipe.id)}>
-                  Read More
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+        </div> */}
       </section>
 
-      <section className="blogs-section">
+      {/*       <section className="blogs-section">
+      {/*       <section className="blogs-section">
         <h2>Food Blogs</h2>
         <div className="blogs-grid">
-          {latestBlog.map((blog: Blog) => (
-            <div key={blog.id} className="blog-card">
-              <img
-                src={`https://picsum.photos/400/200?random=${blog.id}`}
-                alt={`Blog ${blog.title}`}
-              />
+          {blogs.map((blog) => (
+            <div key={blog.idBlogPost} className="blog-card">
               <div className="blog-info">
-                <h4>{blog.title}</h4>
-                <p>{blog.shortDescription}</p>
-                <button className="read-more" onClick={() => openBlog(blog.id)}>
+                <h1>{blog.naslovB}</h1>
+                <p>{blog.sadrzaj}</p>
+                <p>Created: {new Date(blog.datum).toDateString()}</p>
+                <button
+                  className="read-more"
+                  onClick={() => openBlog(blog.idBlogPost)}
+                >
                   Read More
                 </button>
               </div>
@@ -94,10 +109,10 @@ const HomePage: React.FC = () => {
           ))}
         </div>
         <button className="view-blogs">View All Blogs</button>
-      </section>
+      </section> */}
+      </section> */}
     </div>
   );
 };
 
 export default HomePage;
- */

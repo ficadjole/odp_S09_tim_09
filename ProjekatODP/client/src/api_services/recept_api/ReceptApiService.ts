@@ -109,4 +109,24 @@ export const recipesApi: IReceptApiService = {
       return emptyRecipe;
     }
   },
+  async getAllRecipesUser(
+    token: string,
+    idKorisnika: number
+  ): Promise<ReceptListaDto[]> {
+    try {
+      const res = await axios.get<ReceptListaDto[]>(
+        `${API_URL}/korisnikovi/${encodeURIComponent(idKorisnika)}`
+        /*         {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        } */
+      );
+
+      return res.data.data;
+    } catch (error) {
+      console.log("Greska front: ", error);
+      return [];
+    }
+  },
 };

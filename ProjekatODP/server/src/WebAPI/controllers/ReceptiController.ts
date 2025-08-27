@@ -43,6 +43,12 @@ export class ReceptiController {
       this.prikaziSveRecepte.bind(this)
     );
     this.router.get(
+      "/recepti/korisnikovi/:id",
+      //authenticate,
+      this.prikaziReceptKorisnik.bind(this)
+    );
+
+    this.router.get(
       "/recepti/:id",
       //authenticate,
       this.prikaziReceptPoId.bind(this)
@@ -204,7 +210,33 @@ export class ReceptiController {
       res.status(500).json({ success: false, message: error });
     }
   }
+  private async prikaziReceptKorisnik(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const idKorisnika = Number(req.params.id);
 
+      const resultList: ReceptiListaDto[] =
+        await this.receptService.getAllReceptiKorisnik(idKorisnika);
+
+      if (resultList.length > 0) {
+        res.status(200).json({
+          success: true,
+          message: "Uspesno ste izlistali sve recepte!",
+          data: resultList,
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: "Neuspesno izlistavanje recepata",
+          data: resultList,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({ success: false, message: error });
+    }
+  }
   public getRouter(): Router {
     return this.router;
   }

@@ -2,36 +2,34 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Explore.css";
 import Navbar from "../design_components/NavBar";
-/* import type { Recipe } from "../models/recipe/Recipe"; */
+import { useAuth } from "../hooks/auth/authHook";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import type { KategorijaDto } from "../models/kategorije/KategorijaDto";
 import { categoryApiService } from "../api_services/category_api/CategoryApiService";
 
 const ExplorePage: React.FC = () => {
-  const un = "Maja";
-  const token = "";
+  const { user, token } = useAuth(); 
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] =
-    useState<KategorijaDto | null>(null);
-  /*   if (!token) {
-    alert("Morate biti ulogovani kao urednik da biste dodali knjigu!");
-    return;
-  } */
+  const [selectedCategory, setSelectedCategory] = useState<KategorijaDto | null>(null);
 
   const [recipes, setRecipes] = useState<ReceptListaDto[]>([]);
   useEffect(() => {
+    if (!token) return; 
+
     recipesApi.getAllRecipes(token).then((recipes) => {
       setRecipes(recipes);
     });
-  }, []);
+  }, [token]);
 
   const [categories, setCategories] = useState<KategorijaDto[]>([]);
   useEffect(() => {
+    if (!token) return;
+
     categoryApiService.getAllCategories(token).then((categories) => {
       setCategories(categories);
     });
-  });
+  }, [token]);
 
   const [filteredRecipes, setFilteredRecipes] = useState<ReceptListaDto[]>([]);
   useEffect(() => {
@@ -61,7 +59,7 @@ const ExplorePage: React.FC = () => {
 
   return (
     <div className="explore-page">
-      <Navbar username={un} />
+      <Navbar username={user?.username || ""} /> 
 
       <h1>Explore Recipes</h1>
 
@@ -78,9 +76,7 @@ const ExplorePage: React.FC = () => {
         {categories.map((cat) => (
           <button
             key={cat.idKategorije}
-            className={`category-btn ${
-              selectedCategory === cat ? "active" : ""
-            }`}
+            className={`category-btn ${selectedCategory === cat ? "active" : ""}`}
             onClick={() =>
               setSelectedCategory(selectedCategory === cat ? null : cat)
             }
@@ -94,18 +90,12 @@ const ExplorePage: React.FC = () => {
         {filteredRecipes.length > 0 ? (
           filteredRecipes.map((recipe) => (
             <div key={recipe.idRecepta} className="explore-card">
-              <img
-                src={`${recipe.slika_url}`}
-                alt={recipe.nazivR}
-              />
+              <img src={`${recipe.slika_url}`} alt={recipe.nazivR} />
               <div className="card-info">
                 <h3>{recipe.nazivR}</h3>
-
                 <p>
                   Category:{" "}
-                  {recipe.kategorije
-                    .map((kategorija) => kategorija.nazivK)
-                    .join(" ")}
+                  {recipe.kategorije.map((kategorija) => kategorija.nazivK).join(" ")}
                 </p>
                 <Link to={`/recipes/${recipe.idRecepta}`} className="read-more">
                   View Recipe
@@ -117,10 +107,6 @@ const ExplorePage: React.FC = () => {
           <p className="no-results">No recipes found.</p>
         )}
       </div>
-
-      <Link to={`/add-recipe`} className="read-more">
-        Add New Recipe +
-      </Link>
     </div>
   );
 };

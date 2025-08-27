@@ -9,7 +9,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [greska, setGreska] = useState("");
 
-  const { login } = useAuth(); 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const confirmLogin = async (e: React.FormEvent) => {
@@ -24,8 +24,8 @@ const LoginPage: React.FC = () => {
       const odgovor = await usersApi.login(username, password);
 
       if (odgovor.success && odgovor.data) {
-        login(odgovor.data); 
-        navigate(`/`); 
+        login(odgovor.data);
+        navigate(`/explore`);
       } else {
         setGreska(odgovor.message || "Prijava nije uspela");
       }

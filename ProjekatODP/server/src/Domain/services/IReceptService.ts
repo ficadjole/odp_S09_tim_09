@@ -19,4 +19,5 @@ export interface IReceptService {
   ): Promise<ReceptDetaljiDto>;
   getAllRecepti(): Promise<ReceptiListaDto[]>;
   getByIdRecepta(idRecepta: number): Promise<ReceptDetaljiDto>;
+  getAllReceptiKorisnik(idKorisnika: number): Promise<ReceptiListaDto[]>;
 }

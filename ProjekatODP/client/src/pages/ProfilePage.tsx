@@ -2,29 +2,26 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
 import Navbar from "../design_components/NavBar";
-import type { UserLogin } from "../models/auth/UserLogin";
 import { Uloga } from "../models/auth/UserRole";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
-const testUser: UserLogin = {
-  id: 1,
-  username: "ficadjole",
-  email: "velemirfilip@gmail.com",
-  password: "Fiki2308!*?",
-  uloga: Uloga.korisnik,
-};
+import { useAuth } from "../hooks/auth/authHook";
 
 const ProfilePage: React.FC = () => {
-  const token = "";
-  const user = testUser;
+  const { user, token } = useAuth();
   const navigate = useNavigate();
 
   const [userRecipes, setUserRecipes] = useState<ReceptListaDto[]>([]);
+
   useEffect(() => {
-    recipesApi.getAllRecipes(token).then((recipes) => {
+    if (!token) return;
+    recipesApi.getAllRecipesUser(token, user?.id).then((recipes) => {
       setUserRecipes(recipes);
     });
-  }, []);
+  }, [token]);
+
+  if (!user) return <p>Loading user...</p>;
+
   return (
     <div className="profile-page">
       <Navbar username={user.username} />
