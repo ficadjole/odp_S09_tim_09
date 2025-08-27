@@ -9,12 +9,12 @@ export interface IBlogAPIService {
         token: string,
         naslovB: string,
         sadrzaj: string,
-        idPreporucenRecepti: ReceptListaDto[],
+        idPreporucenRecepti: number[],
     ): Promise<Blog>;
     deleteBlog(
         token: string,
         idBlogPost: number,
-        idPreporucenRecept: ReceptListaDto[],
+        idPreporucenRecept: number[],
     ): Promise<Blog>;
 }
 

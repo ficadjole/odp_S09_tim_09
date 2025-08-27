@@ -36,11 +36,13 @@ const AddBlogPage: React.FC = () => {
     }
 
     try {
+      const selectedRecipeIds = selectedRecipes.map(r => r.idRecepta);
+
       const newBlog: Blog = await blogsAPI.addBlog(
         token,
         title,
         content,
-        selectedRecipes 
+        selectedRecipeIds 
       );
 
       if (newBlog && newBlog.idBlogPost !== 0) {

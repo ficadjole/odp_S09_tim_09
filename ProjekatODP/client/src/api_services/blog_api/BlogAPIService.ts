@@ -2,7 +2,6 @@ import type { BlogPostDto } from "../../models/blog/BlogListaDto";
 import type { Blog } from "../../models/blog/Blog";
 import type { IBlogAPIService } from "./IBlogAPIService";
 import axios from "axios";
-import type { ReceptListaDto } from "../../models/recipe/ReceptListaDto";
 
 const API_URL = "http://localhost:4000/api/v1/blogPost";
 const emptyBlog: Blog = {
@@ -49,7 +48,7 @@ export const blogsAPI: IBlogAPIService = {
     token: string,
     naslovB: string,
     sadrzaj: string,
-    idPreporucenRecepti: ReceptListaDto[]
+    idPreporucenRecepti: number[]
   ): Promise<Blog> {
     try {
       const res = await axios.post<Blog>(
@@ -70,7 +69,7 @@ export const blogsAPI: IBlogAPIService = {
   async deleteBlog(
     token: string,
     idBlogPost: number,
-    idPreporucenRecept: ReceptListaDto[]
+    idPreporucenRecept: number[]
   ): Promise<Blog> {
     try {
       const res = await axios.delete(`${API_URL}/obrisi`, {
