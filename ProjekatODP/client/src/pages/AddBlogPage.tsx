@@ -5,24 +5,23 @@ import "../styles/AddBlog.css";
 import { blogsAPI } from "../api_services/blog_api/BlogAPIService";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
 
-
 const AddBlogPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [preporuceniRecept, setPreporuceniRecept] = useState<ReceptListaDto | null>(null);
+  const [preporuceniRecept, setPreporuceniRecept] =
+    useState<ReceptListaDto | null>(null);
 
   const token = localStorage.getItem("token") || "";
 
-
   const handleSave = async () => {
-    if(!title || !content){
+    if (!title || !content) {
       alert("Fill in title and content of the blog");
       return;
     }
 
-    try{
+    try {
       const newBlog: Blog = await blogsAPI.addBlog(
         token,
         title,
@@ -30,13 +29,13 @@ const AddBlogPage: React.FC = () => {
         preporuceniRecept as ReceptListaDto
       );
 
-      if(newBlog && newBlog.idBlogPost !== 0){
+      if (newBlog && newBlog.idBlogPost !== 0) {
         alert("Blog is not added successfully");
         navigate("/profile");
-      } else{
+      } else {
         alert("Error while adding blog");
       }
-    } catch (error){
+    } catch (error) {
       console.error("Add blog error: ", error);
       alert("Error while blog adding");
     }
@@ -65,8 +64,6 @@ const AddBlogPage: React.FC = () => {
           rows={8}
         />
       </div>
-
-    
 
       <div className="form-buttons">
         <button className="cancel-btn" onClick={() => navigate("/blog")}>

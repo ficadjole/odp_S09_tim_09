@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { usersApi } from "../api_services/auth/AuthAPIService";
 import { Uloga } from "../models/auth/UserRole";
 import type { AuthResponse } from "../types/auth/AuthResponse";
-import { useAuth } from "../hooks/auth/authHook"; 
+import { useAuth } from "../hooks/auth/authHook";
 
 const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -14,7 +14,7 @@ const RegisterPage: React.FC = () => {
   const [greska, setGreska] = useState("");
   const [uloga] = useState(Uloga.korisnik);
 
-  const { login } = useAuth(); 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const confirmRegistration = async (e: React.FormEvent) => {
@@ -33,16 +33,24 @@ const RegisterPage: React.FC = () => {
     try {
       const newUser: AuthResponse = await usersApi.register(
         username,
-        password,
         email,
+        password,
         uloga
       );
 
       if (newUser.success && newUser.data) {
         login(newUser.data);
-        navigate(`/`);
+        navigate(`/explore`);
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
       } else {
         setGreska(newUser.message || "Registracija nije uspela");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
       }
     } catch (error) {
       console.error(error);

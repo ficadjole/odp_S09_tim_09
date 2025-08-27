@@ -14,15 +14,13 @@ export class AuthService implements IAuthService {
 
   async prijava(
     username: string,
-    email: string,
     passwordHash: string
   ): Promise<KorisnikLoginDto> {
     const user = await this.korisnikRepository.getByUsername(username);
 
     if (
       user.idKorisnika !== 0 &&
-      (await bcrypt.compare(passwordHash, user.passwordHash)) &&
-      user.email === email
+      (await bcrypt.compare(passwordHash, user.passwordHash))
     ) {
       return new KorisnikLoginDto(
         user.idKorisnika,

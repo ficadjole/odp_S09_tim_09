@@ -10,7 +10,6 @@ const AddRecipePage: React.FC = () => {
   const token = "";
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<KategorijaDto[]>([]);
-  const [ingredients, setIngredients] = useState<string>("");
   const [selectedCategory, setSelectedCategory] =
     useState<KategorijaDto | null>(null);
   const [advice, setAdvice] = useState<string>("");

@@ -18,8 +18,8 @@ export class BlogController {
   private initializeRoutes(): void {
     this.router.post(
       "/blogPost/dodaj",
-      authenticate,
-      authorize(Uloga.moderator),
+      //authenticate,
+      //authorize(Uloga.moderator),
       this.dodajBlogPost.bind(this)
     );
 
