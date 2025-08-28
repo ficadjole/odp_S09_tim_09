@@ -5,17 +5,18 @@
   height: 100%;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
   overflow-x: hidden;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 .auth-container {
-  background-image: url("../pictures/loginPic.jpg");
+  background-image: url("../../pictures/loginPic.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -34,12 +35,13 @@ html, body {
   width: 300px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   text-align: center;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 
 .auth-box h2 {
   margin-bottom: 1.5rem;
-  color: #3982a6; 
+  color: #3982a6;
 }
 
 .auth-box input {
@@ -52,7 +54,7 @@ html, body {
 }
 
 .auth-box button {
-  background-color: #3982a6; 
+  background-color: #3982a6;
   color: white;
   border: none;
   padding: 0.7rem;

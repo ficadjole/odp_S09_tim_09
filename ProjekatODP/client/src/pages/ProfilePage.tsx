@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../styles/Profile.css";
-import Navbar from "../design_components/NavBar";
+import "../styles/pages/Profile.css";
+import Navbar from "../components/nav_bar/NavBar";
 import { Uloga } from "../models/auth/UserRole";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import { categoryApiService } from "../api_services/category_api/CategoryApiService";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
+import type { KategorijaDto } from "../models/kategorije/KategorijaDto";
 import { useAuth } from "../hooks/auth/authHook";
 
 const ProfilePage: React.FC = () => {
@@ -13,15 +14,27 @@ const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
 
   const [userRecipes, setUserRecipes] = useState<ReceptListaDto[]>([]);
-  const [newCategory, setNewCategory] = useState<string>(""); // unos za kategoriju
-  const [message, setMessage] = useState<string>(""); // feedback poruka
+  const [newCategory, setNewCategory] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
 
+  const [categories, setCategories] = useState<KategorijaDto[]>([]);
+
+  // učitavanje recepata korisnika
   useEffect(() => {
     if (!token || !user) return;
     recipesApi.getAllRecipesUser(token, user?.id).then((recipes) => {
       setUserRecipes(recipes);
     });
-  }, [token]);
+  }, [token, user]);
+
+  // učitavanje svih kategorija (samo ako je moderator)
+  useEffect(() => {
+    if (!token || user?.uloga !== Uloga.moderator) return;
+
+    categoryApiService.getAllCategories(token).then((cats) => {
+      setCategories(cats);
+    });
+  }, [token, user]);
 
   const handleAddCategory = async () => {
     if (!token || !newCategory.trim()) return;
@@ -30,11 +43,28 @@ const ProfilePage: React.FC = () => {
       if (res && res.nazivK) {
         setMessage(`Kategorija "${res.nazivK}" uspešno dodata!`);
         setNewCategory("");
+        setCategories((prev) => [...prev, res]);
       } else {
         setMessage("Došlo je do greške prilikom dodavanja kategorije.");
       }
     } catch {
       setMessage("Došlo je do greške.");
+    }
+  };
+
+  const handleDeleteCategory = async (id: number, naziv: string) => {
+    if (!token) return;
+    const confirmed = window.confirm(
+      `Da li si siguran da želiš da obrišeš kategoriju "${naziv}"?`
+    );
+    if (!confirmed) return;
+
+    try {
+      await categoryApiService.removeCategory(token, naziv);
+      setCategories((prev) => prev.filter((c) => c.idKategorije !== id));
+    } catch (err) {
+      console.error("Greška pri brisanju kategorije:", err);
+      alert("Neuspešno brisanje kategorije");
     }
   };
 
@@ -75,7 +105,7 @@ const ProfilePage: React.FC = () => {
         </div>
 
         {user.uloga === Uloga.moderator && (
-          <div className="add-category-section">
+          <div className="manage-category-section">
             <h3>Dodaj novu kategoriju</h3>
             <input
               type="text"
@@ -87,6 +117,24 @@ const ProfilePage: React.FC = () => {
               + Add New Category
             </button>
             {message && <p>{message}</p>}
+
+            <h3>Postojeće kategorije</h3>
+            <div className="categories-list">
+              {categories.length === 0 && <p>Nema kategorija.</p>}
+              {categories.map((cat) => (
+                <div key={cat.idKategorije} className="category-item">
+                  <span>{cat.nazivK}</span>
+                  <button
+                    className="delete-category-btn"
+                    onClick={() =>
+                      handleDeleteCategory(cat.idKategorije, cat.nazivK)
+                    }
+                  >
+                    ❌
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

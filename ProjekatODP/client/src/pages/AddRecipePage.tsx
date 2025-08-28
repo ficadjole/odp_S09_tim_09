@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { KategorijaDto } from "../models/kategorije/KategorijaDto";
-import "../styles/AddRecipe.css";
+import "../styles/pages/AddRecipe.css";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import { categoryApiService } from "../api_services/category_api/CategoryApiService";
 import { useAuth } from "../hooks/auth/authHook";

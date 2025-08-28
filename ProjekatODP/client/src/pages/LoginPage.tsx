@@ -1,66 +1,27 @@
-import React, { useState } from "react";
-import "../styles/Auth.css";
-import { useNavigate, Link } from "react-router-dom";
-import { usersApi } from "../api_services/auth/AuthAPIService";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { LoginForm } from "../components/auth/LoginForm";
+import type { IAuthAPIService } from "../api_services/auth/IAuthAPIService";
 import { useAuth } from "../hooks/auth/authHook";
+import "../styles/pages/Auth.css";
 
-const LoginPage: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [greska, setGreska] = useState("");
+interface LoginPageProps {
+  authApi: IAuthAPIService;
+}
 
-  const { login } = useAuth();
+export default function LoginPage({ authApi }: LoginPageProps) {
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
-  const confirmLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!username || !password) {
-      setGreska("Popunite sva polja");
-      return;
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/home");
     }
-
-    try {
-      const odgovor = await usersApi.login(username, password);
-
-      if (odgovor.success && odgovor.data) {
-        login(odgovor.data);
-        navigate(`/explore`);
-      } else {
-        setGreska(odgovor.message || "Prijava nije uspela");
-      }
-    } catch (error) {
-      console.error(error);
-      setGreska("Došlo je do greške prilikom prijave");
-    }
-  };
+  }, [isAuthenticated, user, navigate]);
 
   return (
     <div className="auth-container">
-      <div className="auth-box">
-        <h2>Login</h2>
-        <form onSubmit={confirmLogin}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {greska && <p className="text-red-600">{greska}</p>}
-          <button type="submit">Login</button>
-        </form>
-        <p>
-          Don’t have an account? <Link to="/register">Create Account</Link>
-        </p>
-      </div>
+      <LoginForm authApi={authApi} />
     </div>
   );
-};
-
-export default LoginPage;
+}

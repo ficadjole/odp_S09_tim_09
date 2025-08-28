@@ -13,22 +13,89 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { AuthProvider } from "./contexts/auth/AuthContext";
+import { ProtectedRoute } from "./components/protected_route/ProtectedRoute";
 
 function App() {
   return (
     <Router>
       <AuthProvider>
         <Routes>
+          {/*Javne rute*/}
           <Route path="/" element={<LoginPage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/explore" element={<ExplorePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
-          <Route path="/add-recipe" element={<AddRecipePage />} />
-          <Route path="/blog/:id" element={<BlogDetailsPage />} />
-          <Route path="/add-blog" element={<AddBlogPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute requiredRole="">
+                <NotFoundPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/*Protected routes*/}
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute requiredRole="">
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/explore"
+            element={
+              <ProtectedRoute requiredRole="">
+                <ExplorePage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute requiredRole="">
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/recipes/:id"
+            element={
+              <ProtectedRoute requiredRole="">
+                <RecipeDetailsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/add-recipe"
+            element={
+              <ProtectedRoute requiredRole="">
+                <AddRecipePage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/blog/:id"
+            element={
+              <ProtectedRoute requiredRole="">
+                <BlogDetailsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/add-blog"
+            element={
+              <ProtectedRoute requiredRole="moderator">
+                <AddBlogPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </AuthProvider>
     </Router>
