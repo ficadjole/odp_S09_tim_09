@@ -106,7 +106,7 @@ const RecipeDetailsPage: React.FC = () => {
 
       <div className="recipe-header">
         <img
-          src={`https://picsum.photos/800/400?random=${recipe.idRecepta}`}
+          src={`${recipe.slika_url}`}
           alt={recipe.nazivR}
         />
         <h1>{recipe.nazivR}</h1>

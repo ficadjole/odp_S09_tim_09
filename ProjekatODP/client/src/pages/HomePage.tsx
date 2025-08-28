@@ -91,7 +91,7 @@ const HomePage: React.FC = () => {
           {latestRecipes.map((recipe) => (
             <div key={recipe.idRecepta} className="recipe-card">
               <img
-                src={`https://picsum.photos/600/400?random=${recipe.idRecepta}`}
+                src={`${recipe.slika_url}`}
                 alt={`Recipe ${recipe.nazivR}`}
               />
               <div className="recipe-info">

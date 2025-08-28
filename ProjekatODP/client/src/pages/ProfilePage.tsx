@@ -97,7 +97,7 @@ const ProfilePage: React.FC = () => {
           {userRecipes.map((recipe) => (
             <div key={recipe.idRecepta} className="recipe1-card">
               <img
-                src={`https://picsum.photos/400/250?random=${recipe.idRecepta}`}
+                src={`${recipe.slika_url}`}
                 alt={recipe.nazivR}
               />
               <div className="recipe1-info">
