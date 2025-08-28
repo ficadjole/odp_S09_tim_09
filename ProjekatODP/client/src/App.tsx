@@ -100,7 +100,7 @@ function App() {
             path="/blog/:id"
             element={
               <ProtectedRoute requiredRole="">
-                <BlogDetailsPage />
+                <BlogDetailsPage blogsApi={blogsAPI} />
               </ProtectedRoute>
             }
           />
