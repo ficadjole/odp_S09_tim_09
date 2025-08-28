@@ -4,10 +4,11 @@ import type { KategorijaDto } from "../models/kategorije/KategorijaDto";
 import "../styles/AddRecipe.css";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import { categoryApiService } from "../api_services/category_api/CategoryApiService";
+import { useAuth } from "../hooks/auth/authHook";
 
 const AddRecipePage: React.FC = () => {
   const navigate = useNavigate();
-  const token = "";
+  const { user, token } = useAuth();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<KategorijaDto[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
@@ -17,6 +18,7 @@ const AddRecipePage: React.FC = () => {
   const [image, setImage] = useState<string>("");
 
   useEffect(() => {
+    if (!token) return;
     categoryApiService.getAllCategories(token).then((categories) => {
       setCategory(categories);
     });
@@ -41,9 +43,11 @@ const AddRecipePage: React.FC = () => {
   };
 
   const handleSave = async () => {
+    if (!user?.id) return;
+    if (!token) return;
     const created = await recipesApi.addRecipe(
-      "",
-      1,
+      token,
+      user.id,
       title,
       ingredientInput,
       instructions,
@@ -71,7 +75,7 @@ const AddRecipePage: React.FC = () => {
           />
         </div>
 
-        <div style={{}} className="category-div">
+        <div className="category-div">
           {category.map((cat) => (
             <label key={cat.idKategorije} className="category-div-label">
               <input
@@ -128,7 +132,7 @@ const AddRecipePage: React.FC = () => {
           <button
             type="button"
             className="cancel-btn"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/profile")}
           >
             Cancel
           </button>

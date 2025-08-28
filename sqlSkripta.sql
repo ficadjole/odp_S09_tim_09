@@ -20,6 +20,7 @@ CREATE TABLE recepti (
     nazivR VARCHAR(100) NOT NULL,
     sastojci TEXT NOT NULL,
     opis TEXT NOT NULL,
+    saveti TEXT,
     slika_url TEXT,
     datumR TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -53,7 +54,7 @@ CREATE TABLE blog_post (
     idModerator INT NOT NULL REFERENCES korisnici(idKorisnika) ON DELETE CASCADE,
     naslovB VARCHAR(150) NOT NULL,
     sadrzaj TEXT NOT NULL,
-    datum_kreiranja TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    datumBP TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Veza između blog postova i preporučenih recepata

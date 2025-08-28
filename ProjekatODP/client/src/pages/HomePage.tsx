@@ -39,7 +39,9 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (recipes.length > 0) {
-      const sortedRecipes = recipes.sort((a, b) => a.idRecepta - b.idRecepta);
+      const sortedRecipes = recipes.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
       const temp = sortedRecipes.slice(0, 6);
       setLatestRecipes(temp);
     }
@@ -59,7 +61,6 @@ const HomePage: React.FC = () => {
 
     fetchLikes();
   }, [recipes, token]);
-  console.log(likes);
 
   useEffect(() => {
     const sortedByLikes = recipes.slice().sort((a, b) => {
@@ -70,7 +71,7 @@ const HomePage: React.FC = () => {
       return likesB - likesA; // najveći broj lajkova prvi
     });
 
-    setPopularRecipes(sortedByLikes);
+    setPopularRecipes(sortedByLikes.slice(0, 6));
   }, [recipes, likes]);
 
   const openRecipe = (recipeId: number) => {
@@ -96,6 +97,7 @@ const HomePage: React.FC = () => {
               />
               <div className="recipe-info">
                 <h3>{recipe.nazivR}</h3>
+                <h3>Created at: {new Date(recipe.date).toDateString()}</h3>
                 <button
                   className="read-more"
                   onClick={() => openRecipe(recipe.idRecepta)}
@@ -112,11 +114,12 @@ const HomePage: React.FC = () => {
           {popularRecipes.map((recipe) => (
             <div key={recipe.idRecepta} className="recipe-card">
               <img
-                src={`https://picsum.photos/600/400?random=${recipe.idRecepta}`}
+                src={`${recipe.slika_url}`}
                 alt={`Recipe ${recipe.nazivR}`}
               />
               <div className="recipe-info">
                 <h3>{recipe.nazivR}</h3>
+                <h3>Created at: {new Date(recipe.date).toDateString()}</h3>
                 <button
                   className="read-more"
                   onClick={() => openRecipe(recipe.idRecepta)}
@@ -137,7 +140,7 @@ const HomePage: React.FC = () => {
               <div className="blog-info">
                 <h1>{blog.naslovB}</h1>
                 <p>{blog.sadrzaj}</p>
-                <p>Created: {new Date(blog.datum).toDateString()}</p>
+                <p>Created at: {new Date(blog.datumBP).toDateString()}</p>
                 <button
                   className="read-more"
                   onClick={() => openBlog(blog.idBlogPost)}
@@ -148,7 +151,6 @@ const HomePage: React.FC = () => {
             </div>
           ))}
         </div>
-        <button className="view-blogs">View All Blogs</button>
       </section>
     </div>
   );

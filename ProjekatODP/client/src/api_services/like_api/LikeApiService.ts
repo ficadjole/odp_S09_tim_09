@@ -21,10 +21,10 @@ export const likeApiService: ILikeApiService = {
         {
           idRecepta,
           idKorisnika,
-        }
-        /*         {
+        },
+        {
           headers: { Authorization: `Bearer ${token}` },
-        } */
+        }
       );
 
       return res.data.data;
@@ -43,9 +43,9 @@ export const likeApiService: ILikeApiService = {
           idRecepta,
           idKorisnika,
         },
-        /*         headers: {
+        headers: {
           Authorization: `Bearer ${token}`,
-        }, */
+        },
       });
 
       return res.data.data;
@@ -56,10 +56,12 @@ export const likeApiService: ILikeApiService = {
   async numberOfLikes(token: string, idRecepta: number): Promise<LikeDto> {
     try {
       const res = await axios.get<LikeDto>(
-        `${API_URL}/brojLajkova/${encodeURIComponent(idRecepta)}`
-        /*         headers: {
-          Authorization: `Bearer ${token}`,
-        }, */
+        `${API_URL}/brojLajkova/${encodeURIComponent(idRecepta)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       return res.data.data;
@@ -76,10 +78,12 @@ export const likeApiService: ILikeApiService = {
       const res = await axios.get<LikeDto>(
         `${API_URL}/lajkovano/${encodeURIComponent(
           idRecepta
-        )}/${encodeURIComponent(idKorisnika)}`
-        /*         headers: {
-          Authorization: `Bearer ${token}`,
-        }, */
+        )}/${encodeURIComponent(idKorisnika)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       return res.data.data;

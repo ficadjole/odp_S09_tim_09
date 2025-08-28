@@ -17,25 +17,25 @@ export class KategorijeController {
   private initializeRoutes(): void {
     this.router.post(
       "/kategorije/dodaj",
-      //authenticate,
-      //authorize(Uloga.moderator),
+      authenticate,
+      authorize(Uloga.moderator),
       this.dodajKategoriju.bind(this)
     );
     this.router.delete(
       "/kategorije/obrisi",
-      //authenticate,
-      //authorize(Uloga.moderator),
+      authenticate,
+      authorize(Uloga.moderator),
       this.obrisiKategoriju.bind(this)
     );
     this.router.put(
       "/kategorije/azuriraj",
-      //authenticate,
-      //authorize(Uloga.moderator),
+      authenticate,
+      authorize(Uloga.moderator),
       this.azurirajKategoriju.bind(this)
     );
     this.router.get(
       "/kategorije/ispisiSve",
-      //authenticate,
+      authenticate,
       this.ispisiSve.bind(this)
     );
   }

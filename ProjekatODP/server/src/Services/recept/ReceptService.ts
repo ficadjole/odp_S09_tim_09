@@ -137,7 +137,8 @@ export class ReceptService implements IReceptService {
           recepti[i].idRecepta,
           recepti[i].nazivR,
           recepti[i].slika_url,
-          kategorije
+          kategorije,
+          recepti[i].datum
         )
       );
     }
@@ -166,7 +167,8 @@ export class ReceptService implements IReceptService {
           recepti[i].idRecepta,
           recepti[i].nazivR,
           recepti[i].slika_url,
-          kategorije
+          kategorije,
+          recepti[i].datum
         )
       );
     }

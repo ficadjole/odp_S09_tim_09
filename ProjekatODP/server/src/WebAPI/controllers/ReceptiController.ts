@@ -20,7 +20,7 @@ export class ReceptiController {
   private initializeRoutes(): void {
     this.router.post(
       "/recepti/dodajRecept",
-      //authenticate,
+      authenticate,
       this.dodajRecept.bind(this)
     );
 
@@ -39,18 +39,18 @@ export class ReceptiController {
 
     this.router.get(
       "/recepti/prikaziSveRecepte",
-      //authenticate,
+      authenticate,
       this.prikaziSveRecepte.bind(this)
     );
     this.router.get(
       "/recepti/korisnikovi/:id",
-      //authenticate,
+      authenticate,
       this.prikaziReceptKorisnik.bind(this)
     );
 
     this.router.get(
       "/recepti/:id",
-      //authenticate,
+      authenticate,
       this.prikaziReceptPoId.bind(this)
     );
   }
