@@ -27,7 +27,9 @@ const BlogDetailsPage: React.FC = () => {
   const handleDelete = async () => {
     if (!token || !blog) return;
 
-    const confirmed = window.confirm("Da li si siguran da želiš da obrišeš ovaj blog?");
+    const confirmed = window.confirm(
+      "Da li si siguran da želiš da obrišeš ovaj blog?"
+    );
     if (!confirmed) return;
 
     await blogsAPI.deleteBlog(
@@ -35,7 +37,7 @@ const BlogDetailsPage: React.FC = () => {
       blog.idBlogPost,
       blog.preporuceniRecepti.map((r) => r.idRecepta)
     );
-    navigate("/blogs");
+    navigate("/home");
   };
 
   return (
@@ -43,10 +45,6 @@ const BlogDetailsPage: React.FC = () => {
       <Navbar username={user?.username || ""} />
 
       <div className="blog-header">
-        <img
-          src={`https://picsum.photos/800/400?random=${blog.idBlogPost}`}
-          alt={blog.naslovB}
-        />
         <h1>{blog.naslovB}</h1>
         <p>By {blog.author?.username} </p>
       </div>
