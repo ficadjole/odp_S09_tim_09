@@ -4,29 +4,35 @@ import { RecipeComments } from "./RecipeComments";
 import type { ICommentApi } from "../../../api_services/comment_api/ICommentApi";
 
 interface RecipeCommentsContainerProps {
-  token: string | null;
-  recipeId: number;
+  token: string;
+  idRecepta: number;
   userId: number;
   commentApi: ICommentApi;
 }
 
 export const RecipeCommentsContainer: React.FC<
   RecipeCommentsContainerProps
-> = ({ token, recipeId, userId, commentApi }) => {
+> = ({ token, idRecepta, userId, commentApi }) => {
   const [comments, setComments] = useState<CommentDto[]>([]);
 
   useEffect(() => {
-    if (!token) return;
-
-    commentApi.getAllCommentsForRecipe(token, recipeId).then(setComments);
-  }, [token, recipeId]);
+    if (!idRecepta) return;
+    console.log(token);
+    commentApi
+      .getAllCommentsForRecipe(token || "", Number(idRecepta))
+      .then((foundComments) => {
+        if (foundComments.length > 0) {
+          setComments(foundComments);
+        }
+      });
+  }, [idRecepta, token]);
 
   const handleAddComment = async (text: string) => {
     if (!token) return;
 
     const newComment = await commentApi.addComment(
       token,
-      recipeId,
+      idRecepta,
       userId,
       text
     );

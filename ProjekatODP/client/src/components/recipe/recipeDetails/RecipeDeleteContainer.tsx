@@ -4,8 +4,8 @@ import { RecipeDeleteButton } from "./RecipeDeleteButton";
 import type { IReceptApiService } from "../../../api_services/recept_api/IReceptApiService";
 
 interface RecipeDeleteContainerProps {
-  token: string | null;
-  recipeId: number;
+  token: string;
+  idRecepta: number;
   userRole: string | undefined;
   firstCategoryId?: number;
   recipesApi: IReceptApiService;
@@ -13,7 +13,7 @@ interface RecipeDeleteContainerProps {
 
 export const RecipeDeleteContainer: React.FC<RecipeDeleteContainerProps> = ({
   token,
-  recipeId,
+  idRecepta,
   userRole,
   firstCategoryId,
   recipesApi,
@@ -28,14 +28,14 @@ export const RecipeDeleteContainer: React.FC<RecipeDeleteContainerProps> = ({
     );
     if (!confirmDelete) return;
 
-    await recipesApi.deleteRecipe(token, recipeId, firstCategoryId ?? 0);
+    await recipesApi.deleteRecipe(token, idRecepta, firstCategoryId ?? 0);
     alert("Recipe deleted successfully.");
     navigate("/explore");
   };
 
   return (
     <RecipeDeleteButton
-      recipe={{ idRecepta: recipeId } as any}
+      recipe={{ idRecepta: idRecepta } as any}
       onDelete={handleDelete}
       userRole={userRole}
     />

@@ -3,15 +3,15 @@ import { RecipeLikes } from "./RecipeLikes";
 import type { ILikeApiService } from "../../../api_services/like_api/ILikeApiService";
 
 interface RecipeLikesContainerProps {
-  token: string | null;
-  recipeId: number;
+  token: string;
+  idRecepta: number;
   userId: number;
   likeApiService: ILikeApiService;
 }
 
 export const RecipeLikesContainer: React.FC<RecipeLikesContainerProps> = ({
   token,
-  recipeId,
+  idRecepta,
   userId,
   likeApiService,
 }) => {
@@ -22,21 +22,21 @@ export const RecipeLikesContainer: React.FC<RecipeLikesContainerProps> = ({
     if (!token) return;
 
     likeApiService
-      .userLiked(token, recipeId, userId)
+      .userLiked(token, idRecepta, userId)
       .then((res) => setLiked(res.korisnikLajkova));
 
     likeApiService
-      .numberOfLikes(token, recipeId)
+      .numberOfLikes(token, idRecepta)
       .then((res) => setLikeCount(res.brojLajkova));
-  }, [token, recipeId, userId]);
+  }, [token, idRecepta, userId]);
 
   const handleToggleLike = async () => {
     if (!token) return;
 
-    if (!liked) await likeApiService.addLike(token, recipeId, userId);
-    else await likeApiService.removeLike(token, recipeId, userId);
+    if (!liked) await likeApiService.addLike(token, idRecepta, userId);
+    else await likeApiService.removeLike(token, idRecepta, userId);
 
-    const likes = await likeApiService.numberOfLikes(token, recipeId);
+    const likes = await likeApiService.numberOfLikes(token, idRecepta);
     setLikeCount(likes.brojLajkova);
     setLiked(!liked);
   };

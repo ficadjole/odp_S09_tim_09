@@ -209,8 +209,7 @@ const RecipeDetailsPage: React.FC<RecipeDetailsPageProps> = ({
 }) => {
   const { user, token } = useAuth();
   const { id } = useParams();
-  const recipeId = Number(id);
-
+  const idRecepta = Number(id);
   if (!token || !user || !id) return <p>Loading...</p>;
 
   return (
@@ -219,29 +218,29 @@ const RecipeDetailsPage: React.FC<RecipeDetailsPageProps> = ({
 
       <RecipeHeaderContainer
         token={token}
-        recipeId={recipeId}
+        idRecepta={idRecepta}
         recipesApi={recipesApi}
       />
       <RecipeContentContainer
         token={token}
-        recipeId={recipeId}
+        idRecepta={idRecepta}
         recipesApi={recipesApi}
       />
       <RecipeLikesContainer
         token={token}
-        recipeId={recipeId}
+        idRecepta={idRecepta}
         userId={user.id}
         likeApiService={likeApiService}
       />
       <RecipeCommentsContainer
         token={token}
-        recipeId={recipeId}
+        idRecepta={idRecepta}
         userId={user.id}
         commentApi={commentApi}
       />
       <RecipeDeleteContainer
         token={token}
-        recipeId={recipeId}
+        idRecepta={idRecepta}
         userRole={user.uloga}
         firstCategoryId={0}
         recipesApi={recipesApi}

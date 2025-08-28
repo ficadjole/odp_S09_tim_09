@@ -5,21 +5,21 @@ import type { IReceptApiService } from "../../../api_services/recept_api/IRecept
 
 interface RecipeHeaderContainerProps {
   token: string | null;
-  recipeId: number;
+  idRecepta: number;
   recipesApi: IReceptApiService;
 }
 
 export const RecipeHeaderContainer: React.FC<RecipeHeaderContainerProps> = ({
   token,
-  recipeId,
+  idRecepta,
   recipesApi,
 }) => {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
     if (!token) return;
-    recipesApi.getRecipeById(token, recipeId).then(setRecipe);
-  }, [token, recipeId]);
+    recipesApi.getRecipeById(token, idRecepta).then(setRecipe);
+  }, [token, idRecepta]);
 
   if (!recipe) return <p>Loading recipe...</p>;
 

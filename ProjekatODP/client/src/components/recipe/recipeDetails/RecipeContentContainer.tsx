@@ -4,22 +4,22 @@ import { RecipeContent } from "./RecipeContent";
 import type { IReceptApiService } from "../../../api_services/recept_api/IReceptApiService";
 
 interface RecipeContentContainerProps {
-  token: string | null;
-  recipeId: number;
+  token: string;
+  idRecepta: number;
   recipesApi: IReceptApiService;
 }
 
 export const RecipeContentContainer: React.FC<RecipeContentContainerProps> = ({
   token,
-  recipeId,
+  idRecepta,
   recipesApi,
 }) => {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
     if (!token) return;
-    recipesApi.getRecipeById(token, recipeId).then(setRecipe);
-  }, [token, recipeId]);
+    recipesApi.getRecipeById(token, idRecepta).then(setRecipe);
+  }, [token, idRecepta]);
 
   if (!recipe) return <p>Loading recipe content...</p>;
 
