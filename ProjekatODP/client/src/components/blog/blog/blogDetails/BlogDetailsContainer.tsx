@@ -54,5 +54,12 @@ export const BlogDetailsContainer: React.FC<BlogDetailsContainerProps> = ({
   if (loading) return <p>Loading...</p>;
   if (!blog) return <p>Blog not found</p>;
 
-  return <BlogDetailsView blog={blog} user={user} onDelete={handleDelete} />;
+  return (
+    <BlogDetailsView
+      blog={blog}
+      user={user}
+      recipes={blog.preporuceniRecepti}
+      onDelete={handleDelete}
+    />
+  );
 };
