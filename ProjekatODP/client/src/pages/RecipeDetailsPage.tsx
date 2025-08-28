@@ -42,6 +42,27 @@ const RecipeDetailsPage: React.FC = () => {
       });
   }, [id, token]);
 
+  useEffect(() => {
+    if (!token) return;
+
+    const nemamPojma = async () => {
+      const korisnikLajkovao = await likeApiService.userLiked(
+        token || "",
+        recipe.idRecepta,
+        user?.id
+      );
+      console.log(korisnikLajkovao);
+      if (korisnikLajkovao.korisnikLajkova == true) {
+        const nmbrOfLikes = await likeApiService.numberOfLikes(
+          token || "",
+          recipe.idRecepta
+        );
+        setNewLike(nmbrOfLikes);
+        setLikeD(true);
+      }
+    };
+  }, [recipe, token, user]);
+
   if (!recipe) return <p>Recipe not found</p>;
 
   const handleAddComment = async () => {
@@ -49,7 +70,7 @@ const RecipeDetailsPage: React.FC = () => {
     const newCommentV = await commentApi.addComment(
       token || "",
       recipe.idRecepta,
-      user?.idKorisnika ?? 0, 
+      user?.id ?? 0,
       newComment
     );
     setComments([...comments, newCommentV]);
@@ -61,7 +82,7 @@ const RecipeDetailsPage: React.FC = () => {
       const newLike = await likeApiService.addLike(
         token || "",
         recipe.idRecepta,
-        user?.idKorisnika ?? 0
+        user?.id ?? 0
       );
 
       const nmbrOfLikes = await likeApiService.numberOfLikes(
@@ -74,7 +95,7 @@ const RecipeDetailsPage: React.FC = () => {
       await likeApiService.removeLike(
         token || "",
         recipe.idRecepta,
-        user?.idKorisnika ?? 0
+        user?.id ?? 0
       );
       const nmbrOfLikes = await likeApiService.numberOfLikes(
         token || "",
@@ -94,7 +115,11 @@ const RecipeDetailsPage: React.FC = () => {
     if (!confirmDelete) return;
 
     try {
-      await recipesApi.deleteRecipe(token, recipe.idRecepta, recipe.kategorije[0]?.idKategorije ?? 0);
+      await recipesApi.deleteRecipe(
+        token,
+        recipe.idRecepta,
+        recipe.kategorije[0]?.idKategorije ?? 0
+      );
       alert("Recept je uspešno obrisan.");
       navigate("/explore"); // vraća korisnika na explore
     } catch (err) {

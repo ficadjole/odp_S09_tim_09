@@ -10,8 +10,7 @@ const AddRecipePage: React.FC = () => {
   const token = "";
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<KategorijaDto[]>([]);
-  const [selectedCategory, setSelectedCategory] =
-    useState<KategorijaDto | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [advice, setAdvice] = useState<string>("");
   const [ingredientInput, setIngredientInput] = useState("");
   const [instructions, setInstructions] = useState("");
@@ -21,13 +20,23 @@ const AddRecipePage: React.FC = () => {
     categoryApiService.getAllCategories(token).then((categories) => {
       setCategory(categories);
     });
-  });
+  }, []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onloadend = () => setImage(reader.result as string);
       reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
+  const handleCheckboxChange = (id: number) => {
+    if (selectedCategories.includes(id)) {
+      // a ovde gleda da li je imamo vec ako imamo znaci da smo kliknuli drugi put i hocemo da je uklonimo
+      setSelectedCategories(selectedCategories.filter((c) => c !== id));
+    } else {
+      // dodaje kategoriju na vec posojeci niz selektovanih
+      setSelectedCategories([...selectedCategories, id]);
     }
   };
 
@@ -40,7 +49,7 @@ const AddRecipePage: React.FC = () => {
       instructions,
       advice,
       image,
-      [category[0].idKategorije]
+      selectedCategories
     );
     console.log("Saved recipe:", created);
     navigate("/profile");
@@ -62,23 +71,19 @@ const AddRecipePage: React.FC = () => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="category">Category</label>
+        <div style={{}} className="category-div">
           {category.map((cat) => (
-            <button
-              key={cat.idKategorije}
-              className={`category-btn ${
-                selectedCategory === cat ? "active" : ""
-              }`}
-              onClick={() =>
-                setSelectedCategory(selectedCategory === cat ? null : cat)
-              }
-            >
+            <label key={cat.idKategorije} className="category-div-label">
+              <input
+                type="checkbox"
+                checked={selectedCategories.includes(cat.idKategorije)}
+                onChange={() => handleCheckboxChange(cat.idKategorije)}
+                className="category-div-input"
+              />
               {cat.nazivK}
-            </button>
+            </label>
           ))}
         </div>
-
         <div className="form-group">
           <label>Recipe Image</label>
           <div className="image-upload-container">
