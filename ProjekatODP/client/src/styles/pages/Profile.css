@@ -144,7 +144,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 2rem; 
+  margin-bottom: 2rem;
+  margin-top: 20px; 
 }
 
 .add-category-wrapper {
