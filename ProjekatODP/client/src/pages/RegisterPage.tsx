@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { RegisterForm } from "../components/auth/RegisterForm";
 import { useAuth } from "../hooks/auth/authHook";
-import "../styles/Auth.css";
+import "../styles/pages/Auth.css";
 
 export default function RegisterPage() {
   const { isAuthenticated, user } = useAuth();
