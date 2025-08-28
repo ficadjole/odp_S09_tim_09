@@ -23,7 +23,12 @@ function App() {
           {/*Javne rute*/}
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+
+
+          <Route path="*" element={
+            <ProtectedRoute requiredRole="">
+            <NotFoundPage />
+            </ProtectedRoute>} />
 
           {/*Protected routes*/}
           <Route path="/home" element={
@@ -69,7 +74,7 @@ function App() {
           />
 
           <Route path="/add-blog" element={
-            <ProtectedRoute requiredRole=""> 
+            <ProtectedRoute requiredRole="moderator"> 
               <AddBlogPage />
             </ProtectedRoute>
             } 
