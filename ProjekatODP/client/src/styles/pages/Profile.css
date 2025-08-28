@@ -140,6 +140,20 @@
   color: #555;
 }
 */
+.buttons-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem; 
+}
+
+.add-category-wrapper {
+  display: flex;
+  gap: 1rem;           
+  margin-bottom: 2rem; 
+  align-items: center;
+}
+
 .read-more {
   display: inline-block;
   padding: 0.4rem 0.8rem;
