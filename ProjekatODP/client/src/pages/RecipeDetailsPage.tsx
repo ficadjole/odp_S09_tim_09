@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import type { Recipe } from "../models/recipe/Recipe";
-import Navbar from "../design_components/NavBar";
+import Navbar from "../components/nav_bar/NavBar";
 import type { CommentDto } from "../models/comments/CommentDto";
 import "../styles/Recipe.css";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";

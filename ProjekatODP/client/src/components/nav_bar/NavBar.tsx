@@ -1,8 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import "../styles/Nav.css";
-import userPic from "../pictures/user.png";
-import logoPic from "../pictures/log.png";
+import "../../styles/nav_bar/Nav.css";
+import userPic from "../../pictures/user.png";
+import logoPic from "../../pictures/log.png";
+import LogoutButton from "./LogoutButton";
 
 interface NavbarProps {
   username: string;
@@ -45,6 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ username }) => {
       <div className="navbar-right">
         <img src={userPic} alt="User png" className="userPng" height={20} />
         <span className="username">{username}</span>
+        <LogoutButton/>
       </div>
     </nav>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Explore.css";
-import Navbar from "../design_components/NavBar";
+import Navbar from "../components/nav_bar/NavBar";
 import { useAuth } from "../hooks/auth/authHook";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
@@ -57,25 +57,6 @@ const ExplorePage: React.FC = () => {
     }
   }, [recipes, searchTerm, selectedCategory]);
 
-  const handleDeleteCategory = async (id: number, naziv: string) => {
-    if (!token) return;
-    const confirmed = window.confirm(
-      `Da li si siguran da želiš da obrišeš kategoriju "${naziv}"?`
-    );
-    if (!confirmed) return;
-
-    try {
-      await categoryApiService.removeCategory(token, naziv);
-      setCategories((prev) => prev.filter((c) => c.idKategorije !== id));
-      setSelectedCategory((prev) =>
-        prev && prev.idKategorije === id ? null : prev
-      );
-    } catch (err) {
-      console.error("Greška pri brisanju kategorije:", err);
-      alert("Neuspešno brisanje kategorije");
-    }
-  };
-
   return (
     <div className="explore-page">
       <Navbar username={user?.username || ""} /> 
@@ -101,12 +82,6 @@ const ExplorePage: React.FC = () => {
               }
             >
               {cat.nazivK}
-            </button>
-            <button
-              className="delete-category-btn"
-              onClick={() => handleDeleteCategory(cat.idKategorije, cat.nazivK)}
-            >
-              ❌
             </button>
           </div>
         ))}

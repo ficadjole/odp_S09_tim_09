@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Home.css";
-import Navbar from "../design_components/NavBar";
+import Navbar from "../components/nav_bar/NavBar";
 //import blogData from "../models/blog/Blog";
 //import blogData from "../models/blog/Blog";
 import { useNavigate } from "react-router-dom";
@@ -40,7 +40,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     if (recipes.length > 0) {
       const sortedRecipes = recipes.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
       const temp = sortedRecipes.slice(0, 6);
       setLatestRecipes(temp);
