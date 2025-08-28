@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../styles/Profile.css";
+import "../styles/pages/Profile.css";
 import Navbar from "../components/nav_bar/NavBar";
 import { Uloga } from "../models/auth/UserRole";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";

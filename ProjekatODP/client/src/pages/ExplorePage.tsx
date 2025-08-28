@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/Explore.css";
+import "../styles/pages/Explore.css";
 import Navbar from "../components/nav_bar/NavBar";
 import { useAuth } from "../hooks/auth/authHook";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import type { KategorijaDto } from "../models/kategorije/KategorijaDto";
 import { categoryApiService } from "../api_services/category_api/CategoryApiService";
+import { SearchBar } from "../components/serach_bar/SearchBar";
 
 const ExplorePage: React.FC = () => {
-  const { user, token } = useAuth(); 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<KategorijaDto | null>(null);
-
+  const { user, token } = useAuth();
+  const [selectedCategory, setSelectedCategory] =
+    useState<KategorijaDto | null>(null);
+  const [filteredRecipes, setFilteredRecipes] = useState<ReceptListaDto[]>([]);
   const [recipes, setRecipes] = useState<ReceptListaDto[]>([]);
   useEffect(() => {
-    if (!token) return; 
+    if (!token) return;
 
     recipesApi.getAllRecipes(token).then((recipes) => {
       setRecipes(recipes);
+      setFilteredRecipes(recipes);
     });
   }, [token]);
 
@@ -31,52 +33,27 @@ const ExplorePage: React.FC = () => {
     });
   }, [token]);
 
-  const [filteredRecipes, setFilteredRecipes] = useState<ReceptListaDto[]>([]);
-  useEffect(() => {
-    if (searchTerm.trim() === "" && selectedCategory === null) {
-      setFilteredRecipes(recipes);
-    } else {
-      setFilteredRecipes(
-        recipes.filter((recipe) => {
-          const matchesName = recipe.nazivR
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
-
-          const matchesCategory =
-            selectedCategory === null
-              ? true
-              : recipe.kategorije.some(
-                  (category) =>
-                    category.nazivK.toLowerCase() ===
-                    selectedCategory.nazivK.toLowerCase()
-                );
-
-          return matchesName && matchesCategory;
-        })
-      );
-    }
-  }, [recipes, searchTerm, selectedCategory]);
+  const odradiPrimanje = (filteredRecipes: ReceptListaDto[]) => {
+    setFilteredRecipes(filteredRecipes);
+  };
 
   return (
     <div className="explore-page">
-      <Navbar username={user?.username || ""} /> 
+      <Navbar username={user?.username || ""} />
 
       <h1>Explore Recipes</h1>
-
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search recipes..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
+      <SearchBar
+        recipes={recipes}
+        selectedCategory={selectedCategory}
+        primiRecept={odradiPrimanje}
+      ></SearchBar>
       <div className="categories">
         {categories.map((cat) => (
           <div key={cat.idKategorije} className="category-item">
             <button
-              className={`category-btn ${selectedCategory === cat ? "active" : ""}`}
+              className={`category-btn ${
+                selectedCategory === cat ? "active" : ""
+              }`}
               onClick={() =>
                 setSelectedCategory(selectedCategory === cat ? null : cat)
               }
@@ -96,7 +73,9 @@ const ExplorePage: React.FC = () => {
                 <h3>{recipe.nazivR}</h3>
                 <p>
                   Category:{" "}
-                  {recipe.kategorije.map((kategorija) => kategorija.nazivK).join(" ")}
+                  {recipe.kategorije
+                    .map((kategorija) => kategorija.nazivK)
+                    .join(" ")}
                 </p>
                 <Link to={`/recipes/${recipe.idRecepta}`} className="read-more">
                   View Recipe

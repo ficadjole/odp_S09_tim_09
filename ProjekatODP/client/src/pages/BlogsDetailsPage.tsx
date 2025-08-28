@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import type { Blog } from "../models/blog/Blog";
 import Navbar from "../components/nav_bar/NavBar";
-import "../styles/Blog.css";
+import "../styles/pages/Blog.css";
 import { blogsAPI } from "../api_services/blog_api/BlogAPIService";
 import { useAuth } from "../hooks/auth/authHook";
 
