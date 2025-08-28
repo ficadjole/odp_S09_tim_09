@@ -1,10 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { RegisterForm } from "../components/auth/RegisterForm";
+import type { IAuthAPIService } from "../api_services/auth/IAuthAPIService";
 import { useAuth } from "../hooks/auth/authHook";
 import "../styles/pages/Auth.css";
 
-export default function RegisterPage() {
+interface RegisterPageProps {
+  authApi: IAuthAPIService;
+}
+
+export default function RegisterPage({ authApi }: RegisterPageProps) {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
@@ -16,7 +21,7 @@ export default function RegisterPage() {
 
   return (
     <div className="auth-container">
-      <RegisterForm/>
+      <RegisterForm authApi={authApi} />
     </div>
   );
 }

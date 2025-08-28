@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { usersApi } from "../../api_services/auth/AuthAPIService";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/auth/authHook";
+import type { IAuthAPIService } from "../../api_services/auth/IAuthAPIService";
 
-export function LoginForm() {
+interface LoginFormProps {
+  authApi: IAuthAPIService;
+}
+
+export function LoginForm({ authApi }: LoginFormProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [greska, setGreska] = useState("");
-
   const { login } = useAuth();
-  const navigate = useNavigate();
 
-  const confirmLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!username || !password) {
@@ -20,16 +22,17 @@ export function LoginForm() {
     }
 
     try {
-      const odgovor = await usersApi.login(username, password);
+      const odgovor = await authApi.login(username, password);
 
       if (odgovor.success && odgovor.data) {
         login(odgovor.data);
-        navigate(`/home`);
       } else {
         setGreska(odgovor.message || "Prijava nije uspela");
+        setUsername("");
+        setPassword("");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       setGreska("Došlo je do greške prilikom prijave");
     }
   };
@@ -37,7 +40,7 @@ export function LoginForm() {
   return (
     <div className="auth-box">
       <h2>Login</h2>
-      <form onSubmit={confirmLogin}>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Username"

@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { usersApi } from "../../api_services/auth/AuthAPIService";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Uloga } from "../../models/auth/UserRole";
-import type { AuthResponse } from "../../types/auth/AuthResponse";
+import type { IAuthAPIService } from "../../api_services/auth/IAuthAPIService";
 import { useAuth } from "../../hooks/auth/authHook";
 
-export function RegisterForm() {
+interface RegisterFormProps {
+  authApi: IAuthAPIService;
+}
+
+export function RegisterForm({ authApi }: RegisterFormProps) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +18,7 @@ export function RegisterForm() {
 
   const { login } = useAuth();
 
-  const confirmRegistration = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!username || !email || !password || !confirmPassword) {
@@ -28,21 +32,16 @@ export function RegisterForm() {
     }
 
     try {
-      const newUser: AuthResponse = await usersApi.register(
-        username,
-        email,
-        password,
-        uloga
-      );
+      const odgovor = await authApi.register(username, email, password, uloga);
 
-      if (newUser.success && newUser.data) {
-        login(newUser.data);
+      if (odgovor.success && odgovor.data) {
+        login(odgovor.data);
         setUsername("");
         setEmail("");
         setPassword("");
         setConfirmPassword("");
       } else {
-        setGreska(newUser.message || "Registracija nije uspela");
+        setGreska(odgovor.message || "Registracija nije uspela");
         setUsername("");
         setEmail("");
         setPassword("");
@@ -57,7 +56,7 @@ export function RegisterForm() {
   return (
     <div className="auth-box">
       <h2>Register</h2>
-      <form onSubmit={confirmRegistration} className="space-y-4">
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Username"
@@ -86,7 +85,7 @@ export function RegisterForm() {
         <button type="submit">Register</button>
       </form>
       <p>
-        Already have an account? <a href="/login">Login</a>
+        Already have an account? <Link to="/login">Login</Link>
       </p>
     </div>
   );
