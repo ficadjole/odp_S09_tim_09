@@ -14,9 +14,8 @@ import RegisterPage from "./pages/RegisterPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { AuthProvider } from "./contexts/auth/AuthContext";
 import { ProtectedRoute } from "./components/protected_route/ProtectedRoute";
-import { categoryApiService } from "./api_services/category_api/CategoryApiService";
-import { blogsAPI } from "./api_services/blog_api/BlogAPIService";
 import { recipesApi } from "./api_services/recept_api/ReceptApiService";
+import { categoryApiService } from "./api_services/category_api/CategoryApiService";
 
 function App() {
   return (
@@ -24,24 +23,18 @@ function App() {
       <AuthProvider>
         <Routes>
           {/*Javne rute*/}
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-
-          <Route
-            path="*"
-            element={
-              <ProtectedRoute requiredRole="">
-                <NotFoundPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/" element={<LoginPage authApi={usersApi}/>} />
+          <Route path="/register" element={<RegisterPage authApi={usersApi}/>} />
 
           {/*Protected routes*/}
           <Route
             path="/home"
             element={
               <ProtectedRoute requiredRole="">
-                <HomePage />
+                <HomePage 
+                recipesApi={recipesApi}
+                blogsAPI={blogsAPI}
+                likeApiService={likeApiService}/>
               </ProtectedRoute>
             }
           />
@@ -59,7 +52,9 @@ function App() {
             path="/profile"
             element={
               <ProtectedRoute requiredRole="">
-                <ProfilePage />
+                <ProfilePage
+                  recipesApi={recipesApi} 
+                  categoryApiService={categoryApiService}/>
               </ProtectedRoute>
             }
           />
@@ -102,6 +97,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute requiredRole="">
+                <NotFoundPage />
+              </ProtectedRoute>
+            }
+          />
+          
         </Routes>
       </AuthProvider>
     </Router>
