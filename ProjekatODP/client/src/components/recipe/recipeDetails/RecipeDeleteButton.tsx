@@ -1,14 +1,11 @@
 import React from "react";
-import type { Recipe } from "../../../models/recipe/Recipe";
 
 interface RecipeDeleteButtonProps {
-  recipe: Recipe;
   onDelete: () => void;
   userRole: string | undefined;
 }
 
 export const RecipeDeleteButton: React.FC<RecipeDeleteButtonProps> = ({
-  recipe,
   onDelete,
   userRole,
 }) => {

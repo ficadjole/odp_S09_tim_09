@@ -16,7 +16,7 @@ export const likeApiService: ILikeApiService = {
     idKorisnika: number
   ): Promise<LikeDto> {
     try {
-      const res = await axios.post<LikeDto>(
+      const res = await axios.post<{ data: LikeDto }>(
         `${API_URL}/dodajLajk`,
         {
           idRecepta,
@@ -55,7 +55,7 @@ export const likeApiService: ILikeApiService = {
   },
   async numberOfLikes(token: string, idRecepta: number): Promise<LikeDto> {
     try {
-      const res = await axios.get<LikeDto>(
+      const res = await axios.get<{ data: LikeDto }>(
         `${API_URL}/brojLajkova/${encodeURIComponent(idRecepta)}`,
         {
           headers: {
@@ -75,7 +75,7 @@ export const likeApiService: ILikeApiService = {
     idKorisnika: number
   ): Promise<LikeDto> {
     try {
-      const res = await axios.get<LikeDto>(
+      const res = await axios.get<{ data: LikeDto }>(
         `${API_URL}/lajkovano/${encodeURIComponent(
           idRecepta
         )}/${encodeURIComponent(idKorisnika)}`,

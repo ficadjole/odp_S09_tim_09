@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+/* import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import type { Blog } from "../models/blog/Blog";
 import Navbar from "../components/nav_bar/NavBar";
@@ -60,6 +60,19 @@ const BlogDetailsPage: React.FC = () => {
       )}
     </div>
   );
+};
+
+export default BlogDetailsPage;
+ */ import React from "react";
+import type { IBlogAPIService } from "../api_services/blog_api/IBlogAPIService";
+import { BlogDetailsContainer } from "../components/blog/blog/blogDetails/BlogDetailsContainer";
+
+interface BlogDetailsPageProps {
+  blogsApi: IBlogAPIService;
+}
+
+const BlogDetailsPage: React.FC<BlogDetailsPageProps> = ({ blogsApi }) => {
+  return <BlogDetailsContainer blogsApi={blogsApi} />;
 };
 
 export default BlogDetailsPage;

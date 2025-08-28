@@ -13,7 +13,7 @@ export const RecipeLikes: React.FC<RecipeLikesProps> = ({
 }) => {
   return (
     <div className="recipe-section rating-section">
-      <h2>Likes</h2>
+      <div className="recipe-details"><h2 >Likes</h2></div>
       <button
         className={`like-btn ${liked ? "liked" : ""}`}
         onClick={onToggleLike}

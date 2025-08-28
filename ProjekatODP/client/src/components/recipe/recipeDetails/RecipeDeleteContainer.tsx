@@ -33,11 +33,5 @@ export const RecipeDeleteContainer: React.FC<RecipeDeleteContainerProps> = ({
     navigate("/explore");
   };
 
-  return (
-    <RecipeDeleteButton
-      recipe={{ idRecepta: idRecepta } as any}
-      onDelete={handleDelete}
-      userRole={userRole}
-    />
-  );
+  return <RecipeDeleteButton onDelete={handleDelete} userRole={userRole} />;
 };
