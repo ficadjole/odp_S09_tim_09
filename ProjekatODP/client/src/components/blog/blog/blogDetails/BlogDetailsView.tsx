@@ -5,6 +5,7 @@ import type { Blog } from "../../../../models/blog/Blog";
 import type { AuthUser } from "../../../../types/auth/AuthUser";
 import type { ReceptListaDto } from "../../../../models/recipe/ReceptListaDto";
 import RecipeCard from "../../../recipe/RecipeCard";
+import "../../../../styles/blog/BlogView.css";
 
 interface BlogDetailsViewProps {
   blog: Blog;
