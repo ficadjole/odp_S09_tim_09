@@ -1,36 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import "../styles/pages/Explore.css";
 import Navbar from "../components/nav_bar/NavBar";
 import { useAuth } from "../hooks/auth/authHook";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
-import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import type { KategorijaDto } from "../models/kategorije/KategorijaDto";
 import { SearchBar } from "../components/serach_bar/SearchBar";
 import { CategoryButtons } from "../components/category_buttons/CategoryButtons";
 import type { ICategoryApiService } from "../api_services/category_api/ICategoryApiService";
+import UserRecipesList from "../components/user_recipe_list/UserRecipesList";
+import type { IReceptApiService } from "../api_services/recept_api/IReceptApiService";
 
 interface ExplorePageProps {
   categoryApiService: ICategoryApiService;
+  recipesApi: IReceptApiService;
 }
 
-const ExplorePage: React.FC<ExplorePageProps> = ({ categoryApiService }) => {
+const ExplorePage: React.FC<ExplorePageProps> = ({
+  categoryApiService,
+  recipesApi,
+}) => {
   const { user, token } = useAuth();
   const [selectedCategory, setSelectedCategory] =
     useState<KategorijaDto | null>(null);
-  const [filteredRecipes, setFilteredRecipes] = useState<ReceptListaDto[]>([]);
-  const [recipes, setRecipes] = useState<ReceptListaDto[]>([]);
-  useEffect(() => {
-    if (!token) return;
 
-    recipesApi.getAllRecipes(token).then((recipes) => {
-      setRecipes(recipes);
-      setFilteredRecipes(recipes);
-    });
-  }, [token]);
+  const [allRecipes, setAllRecipes] = useState<ReceptListaDto[]>([]);
+  const [filteredRecipes, setFilteredRecipes] = useState<
+    ReceptListaDto[] | null
+  >(null);
 
-  const odradiPrimanje = (filteredRecipes: ReceptListaDto[]) => {
-    setFilteredRecipes(filteredRecipes);
+  const handleRecipesLoaded = (recipes: ReceptListaDto[]) => {
+    setAllRecipes(recipes);
+    setFilteredRecipes(null); // inicijalno nema filtera
+  };
+
+  const handleFilteredRecipes = (filtered: ReceptListaDto[]) => {
+    setFilteredRecipes(filtered.length > 0 ? filtered : null);
+  };
+
+  const openRecipe = (id: number) => {
+    window.location.href = `/recipes/${id}`;
   };
 
   return (
@@ -38,41 +46,26 @@ const ExplorePage: React.FC<ExplorePageProps> = ({ categoryApiService }) => {
       <Navbar username={user?.username || ""} />
 
       <h1>Explore Recipes</h1>
+
       <SearchBar
-        recipes={recipes}
+        recipes={allRecipes} // uvek pretražujemo po svim receptima
         selectedCategory={selectedCategory}
-        primiRecept={odradiPrimanje}
-      ></SearchBar>
+        primiRecept={handleFilteredRecipes}
+      />
 
       <CategoryButtons
         selectedCategory={selectedCategory}
         primiKategoriju={setSelectedCategory}
         categoryApiService={categoryApiService}
-      ></CategoryButtons>
+      />
 
-      <div className="explore-grid">
-        {filteredRecipes.length > 0 ? (
-          filteredRecipes.map((recipe) => (
-            <div key={recipe.idRecepta} className="explore-card">
-              <img src={`${recipe.slika_url}`} alt={recipe.nazivR} />
-              <div className="card-info">
-                <h3>{recipe.nazivR}</h3>
-                <p>
-                  Category:{" "}
-                  {recipe.kategorije
-                    .map((kategorija) => kategorija.nazivK)
-                    .join(" ")}
-                </p>
-                <Link to={`/recipes/${recipe.idRecepta}`} className="read-more">
-                  View Recipe
-                </Link>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className="no-results">No recipes found.</p>
-        )}
-      </div>
+      <UserRecipesList
+        token={token || ""}
+        openRecipe={openRecipe}
+        recipesApi={recipesApi}
+        onRecipesLoaded={handleRecipesLoaded}
+        filteredRecipes={filteredRecipes ?? undefined}
+      />
     </div>
   );
 };

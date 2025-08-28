@@ -16,7 +16,12 @@ export const commentApi: ICommentApi = {
   ): Promise<CommentDto[]> {
     try {
       const res = await axios.get<CommentDto[]>(
-        `${API_URL}/prikaziSveKomentare/${encodeURIComponent(idRecepta)}`
+        `${API_URL}/prikaziSveKomentare/${encodeURIComponent(idRecepta)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       return res.data.data;
     } catch (error) {
@@ -30,7 +35,12 @@ export const commentApi: ICommentApi = {
   ): Promise<CommentDto[]> {
     try {
       const res = await axios.get<CommentDto[]>(
-        `${API_URL}/prikaziSveKomentare/${encodeURIComponent(idBlogPost)}`
+        `${API_URL}/prikaziSveKomentare/${encodeURIComponent(idBlogPost)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       return res.data.data;
     } catch (error) {

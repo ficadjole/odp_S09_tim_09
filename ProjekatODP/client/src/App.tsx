@@ -14,7 +14,12 @@ import RegisterPage from "./pages/RegisterPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { AuthProvider } from "./contexts/auth/AuthContext";
 import { ProtectedRoute } from "./components/protected_route/ProtectedRoute";
+import { recipesApi } from "./api_services/recept_api/ReceptApiService";
 import { categoryApiService } from "./api_services/category_api/CategoryApiService";
+import { usersApi } from "./api_services/auth/AuthAPIService";
+import { blogsAPI } from "./api_services/blog_api/BlogAPIService";
+import { likeApiService } from "./api_services/like_api/LikeApiService";
+import { commentApi } from "./api_services/comment_api/CommentApi";
 
 function App() {
   return (
@@ -22,16 +27,10 @@ function App() {
       <AuthProvider>
         <Routes>
           {/*Javne rute*/}
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-
+          <Route path="/" element={<LoginPage authApi={usersApi} />} />
           <Route
-            path="*"
-            element={
-              <ProtectedRoute requiredRole="">
-                <NotFoundPage />
-              </ProtectedRoute>
-            }
+            path="/register"
+            element={<RegisterPage authApi={usersApi} />}
           />
 
           {/*Protected routes*/}
@@ -39,7 +38,11 @@ function App() {
             path="/home"
             element={
               <ProtectedRoute requiredRole="">
-                <HomePage />
+                <HomePage
+                  recipesApi={recipesApi}
+                  blogsAPI={blogsAPI}
+                  likeApiService={likeApiService}
+                />
               </ProtectedRoute>
             }
           />
@@ -48,7 +51,10 @@ function App() {
             path="/explore"
             element={
               <ProtectedRoute requiredRole="">
-                <ExplorePage categoryApiService={categoryApiService} />
+                <ExplorePage
+                  categoryApiService={categoryApiService}
+                  recipesApi={recipesApi}
+                />
               </ProtectedRoute>
             }
           />
@@ -57,7 +63,10 @@ function App() {
             path="/profile"
             element={
               <ProtectedRoute requiredRole="">
-                <ProfilePage />
+                <ProfilePage
+                  recipesApi={recipesApi}
+                  categoryApiService={categoryApiService}
+                />
               </ProtectedRoute>
             }
           />
@@ -66,7 +75,11 @@ function App() {
             path="/recipes/:id"
             element={
               <ProtectedRoute requiredRole="">
-                <RecipeDetailsPage />
+                <RecipeDetailsPage
+                  recipesApi={recipesApi}
+                  likeApiService={likeApiService}
+                  commentApi={commentApi}
+                />
               </ProtectedRoute>
             }
           />
@@ -75,7 +88,10 @@ function App() {
             path="/add-recipe"
             element={
               <ProtectedRoute requiredRole="">
-                <AddRecipePage />
+                <AddRecipePage
+                  recipesApi={recipesApi}
+                  categoryApiService={categoryApiService}
+                />
               </ProtectedRoute>
             }
           />
@@ -93,7 +109,16 @@ function App() {
             path="/add-blog"
             element={
               <ProtectedRoute requiredRole="moderator">
-                <AddBlogPage />
+                <AddBlogPage blogsAPI={blogsAPI} recipesApi={recipesApi} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute requiredRole="">
+                <NotFoundPage />
               </ProtectedRoute>
             }
           />

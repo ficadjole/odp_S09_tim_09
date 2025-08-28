@@ -11,7 +11,7 @@ export function CategoryButton({
   selectedCategory,
   primiKategoriju,
 }: CategoryButtonProps) {
-  const isActive = selectedCategory === cat;
+  const isActive = selectedCategory?.idKategorije === cat.idKategorije;
 
   const posaljiPodatke = () => {
     primiKategoriju(isActive ? null : cat);
