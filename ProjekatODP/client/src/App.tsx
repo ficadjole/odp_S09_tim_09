@@ -14,6 +14,7 @@ import RegisterPage from "./pages/RegisterPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { AuthProvider } from "./contexts/auth/AuthContext";
 import { ProtectedRoute } from "./components/protected_route/ProtectedRoute";
+import { categoryApiService } from "./api_services/category_api/CategoryApiService";
 
 function App() {
   return (
@@ -47,7 +48,7 @@ function App() {
             path="/explore"
             element={
               <ProtectedRoute requiredRole="">
-                <ExplorePage />
+                <ExplorePage categoryApiService={categoryApiService} />
               </ProtectedRoute>
             }
           />

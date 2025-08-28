@@ -1,8 +1,12 @@
 import React from "react";
-import type { UserLogin } from "../../models/auth/UserLogin";
+import "../../styles/profile/ProfileHeader.css"
 
 interface ProfileHeaderProps {
-  user: UserLogin;
+  user: {
+    username: string;
+    email: string;
+    uloga: string;
+  };
 }
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {

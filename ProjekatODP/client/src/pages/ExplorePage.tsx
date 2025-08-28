@@ -6,10 +6,15 @@ import { useAuth } from "../hooks/auth/authHook";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import type { KategorijaDto } from "../models/kategorije/KategorijaDto";
-import { categoryApiService } from "../api_services/category_api/CategoryApiService";
 import { SearchBar } from "../components/serach_bar/SearchBar";
+import { CategoryButtons } from "../components/category_buttons/CategoryButtons";
+import type { ICategoryApiService } from "../api_services/category_api/ICategoryApiService";
 
-const ExplorePage: React.FC = () => {
+interface ExplorePageProps {
+  categoryApiService: ICategoryApiService;
+}
+
+const ExplorePage: React.FC<ExplorePageProps> = ({ categoryApiService }) => {
   const { user, token } = useAuth();
   const [selectedCategory, setSelectedCategory] =
     useState<KategorijaDto | null>(null);
@@ -21,15 +26,6 @@ const ExplorePage: React.FC = () => {
     recipesApi.getAllRecipes(token).then((recipes) => {
       setRecipes(recipes);
       setFilteredRecipes(recipes);
-    });
-  }, [token]);
-
-  const [categories, setCategories] = useState<KategorijaDto[]>([]);
-  useEffect(() => {
-    if (!token) return;
-
-    categoryApiService.getAllCategories(token).then((categories) => {
-      setCategories(categories);
     });
   }, [token]);
 
@@ -47,22 +43,12 @@ const ExplorePage: React.FC = () => {
         selectedCategory={selectedCategory}
         primiRecept={odradiPrimanje}
       ></SearchBar>
-      <div className="categories">
-        {categories.map((cat) => (
-          <div key={cat.idKategorije} className="category-item">
-            <button
-              className={`category-btn ${
-                selectedCategory === cat ? "active" : ""
-              }`}
-              onClick={() =>
-                setSelectedCategory(selectedCategory === cat ? null : cat)
-              }
-            >
-              {cat.nazivK}
-            </button>
-          </div>
-        ))}
-      </div>
+
+      <CategoryButtons
+        selectedCategory={selectedCategory}
+        primiKategoriju={setSelectedCategory}
+        categoryApiService={categoryApiService}
+      ></CategoryButtons>
 
       <div className="explore-grid">
         {filteredRecipes.length > 0 ? (
