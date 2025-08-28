@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/Profile.css";
+import "../styles/pages/Profile.css";
 import Navbar from "../components/nav_bar/NavBar";
 import { Uloga } from "../models/auth/UserRole";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
@@ -13,7 +13,10 @@ import UserRecipes from "../components/profile/UserRecipes";
 
 interface ProfilePageProps {
   recipesApi: {
-    getAllRecipesUser: (token: string, idKorisnika: number) => Promise<ReceptListaDto[]>;
+    getAllRecipesUser: (
+      token: string,
+      idKorisnika: number
+    ) => Promise<ReceptListaDto[]>;
   };
   categoryApiService: {
     getAllCategories: (token: string) => Promise<KategorijaDto[]>;
@@ -22,7 +25,10 @@ interface ProfilePageProps {
   };
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ recipesApi, categoryApiService }) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({
+  recipesApi,
+  categoryApiService,
+}) => {
   const { user, token } = useAuth();
   const navigate = useNavigate();
 
@@ -58,7 +64,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ recipesApi, categoryApiServic
         />
       )}
 
-      <UserRecipes userRecipes={userRecipes} navigate={navigate} userRole={user.uloga} />
+      <UserRecipes
+        userRecipes={userRecipes}
+        navigate={navigate}
+        userRole={user.uloga}
+      />
     </div>
   );
 };
