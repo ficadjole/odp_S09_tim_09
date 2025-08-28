@@ -15,6 +15,8 @@ import NotFoundPage from "./pages/NotFoundPage";
 import { AuthProvider } from "./contexts/auth/AuthContext";
 import { ProtectedRoute } from "./components/protected_route/ProtectedRoute";
 import { categoryApiService } from "./api_services/category_api/CategoryApiService";
+import { blogsAPI } from "./api_services/blog_api/BlogAPIService";
+import { recipesApi } from "./api_services/recept_api/ReceptApiService";
 
 function App() {
   return (
@@ -75,7 +77,10 @@ function App() {
             path="/add-recipe"
             element={
               <ProtectedRoute requiredRole="">
-                <AddRecipePage />
+                <AddRecipePage
+                  recipesApi={recipesApi}
+                  categoryApiService={categoryApiService}
+                />
               </ProtectedRoute>
             }
           />
@@ -93,7 +98,7 @@ function App() {
             path="/add-blog"
             element={
               <ProtectedRoute requiredRole="moderator">
-                <AddBlogPage />
+                <AddBlogPage blogsAPI={blogsAPI} recipesApi={recipesApi} />
               </ProtectedRoute>
             }
           />
