@@ -31,9 +31,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ recipesApi, categoryApiServic
 
   useEffect(() => {
     if (!token || !user) return;
-
-    // Pretvaramo user.id u number, API očekuje number
-    const userId = Number(user.id);
+    const userId = Number(user.id); // API očekuje number
     recipesApi.getAllRecipesUser(token, userId).then(setUserRecipes);
   }, [token, user]);
 

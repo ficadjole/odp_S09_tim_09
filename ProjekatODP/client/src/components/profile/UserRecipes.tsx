@@ -11,7 +11,7 @@ interface UserRecipesProps {
 
 const UserRecipes: React.FC<UserRecipesProps> = ({ userRecipes, navigate, userRole }) => {
   const openRecipe = (id: number) => {
-    navigate(`/recipes/${id.toString()}`); 
+    navigate(`/recipes/${id.toString()}`);
   };
 
   return (
@@ -19,14 +19,13 @@ const UserRecipes: React.FC<UserRecipesProps> = ({ userRecipes, navigate, userRo
       <div className="buttons-wrapper">
         <div className="buttons-container">
           {userRole === Uloga.moderator && (
-            <button
-              onClick={() => navigate("/add-blog")}
-              style={{ marginLeft: "1rem", backgroundColor: "#196c53", color: "white" }}
-            >
+            <button className="add-blog-btn" onClick={() => navigate("/add-blog")}>
               + Add New Blog
             </button>
           )}
-          <button onClick={() => navigate("/add-recipe")}>+ Add New Recipe</button>
+          <button className="add-recipe-btn" onClick={() => navigate("/add-recipe")}>
+            + Add New Recipe
+          </button>
         </div>
       </div>
 

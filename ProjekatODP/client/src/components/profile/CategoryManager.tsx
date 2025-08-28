@@ -8,7 +8,7 @@ interface CategoryManagerProps {
   categoryApiService: {
     getAllCategories: (token: string) => Promise<KategorijaDto[]>;
     addCategory: (token: string, naziv: string) => Promise<KategorijaDto>;
-    removeCategory: (token: string, naziv: string) => Promise<KategorijaDto>; // usklađeno sa API
+    removeCategory: (token: string, naziv: string) => Promise<KategorijaDto>;
   };
 }
 
@@ -40,7 +40,7 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
     if (!confirmed) return;
 
     try {
-      await categoryApiService.removeCategory(token, naziv); // vraća KategorijaDto, ali ne koristimo rezultat
+      await categoryApiService.removeCategory(token, naziv);
       setCategories((prev) => prev.filter((c) => c.idKategorije !== id));
     } catch (err) {
       console.error(err);
@@ -51,13 +51,17 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
   return (
     <div className="manage-category-section">
       <h3>Dodaj novu kategoriju</h3>
-      <input
-        type="text"
-        value={newCategory}
-        onChange={(e) => setNewCategory(e.target.value)}
-        placeholder="Unesi naziv kategorije"
-      />
-      <button onClick={handleAddCategory}>+ Add New Category</button>
+      <div className="add-category-wrapper">
+        <input
+          type="text"
+          value={newCategory}
+          onChange={(e) => setNewCategory(e.target.value)}
+          placeholder="Unesi naziv kategorije"
+        />
+        <button className="add-category-btn" onClick={handleAddCategory}>
+          + Add New Category
+        </button>
+      </div>
       {message && <p>{message}</p>}
 
       <h3>Postojeće kategorije</h3>
