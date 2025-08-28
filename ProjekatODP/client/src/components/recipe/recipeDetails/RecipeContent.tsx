@@ -9,7 +9,8 @@ export const RecipeContent: React.FC<RecipeContentProps> = ({ recipe }) => {
   return (
     <div className="recipe-content">
       <div className="recipe-section">
-        <h2>Ingredients</h2>
+        <div className="recipe-details"><h2>Ingredients</h2></div>
+        
         <ul>{recipe.sastojic}</ul>
       </div>
 
