@@ -13,7 +13,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, openRecipe }) => {
       <img src={recipe.slika_url} alt={recipe.nazivR} />
       <div className="recipe-info">
         <h3>{recipe.nazivR}</h3>
-        <h3>Created at: {new Date(recipe.date).toDateString()}</h3>
+        <h4>Created at: {new Date(recipe.date).toDateString()}</h4>
         <button className="read-more" onClick={() => openRecipe(recipe.idRecepta)}>
           Read More
         </button>
