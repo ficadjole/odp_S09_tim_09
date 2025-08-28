@@ -1,44 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import type { ReceptListaDto } from "../../models/recipe/ReceptListaDto";
 import type { BlogPostDto } from "../../models/blog/BlogListaDto";
-import RecipeCard from "../recipe/RecipeCard";
-import BlogCard from "../blog/BlogCard";
+import type { LikeDto } from "../../models/like/LikeDto";
+import { recipesApi } from "../../api_services/recept_api/ReceptApiService";
+import { blogsAPI } from "../../api_services/blog_api/BlogAPIService";
+import { likeApiService } from "../../api_services/like_api/LikeApiService";
+import { useAuth } from "../../hooks/auth/authHook";
+import { useNavigate } from "react-router-dom";
+import LatestRecipesSection from "../home/LatestRecipes";
+import PopularRecipesSection from "../home/PopularRecipes";
+import BlogSection from "../home/BlogSection";
 
-interface HomeFormProps {
-  latestRecipes: ReceptListaDto[];
-  popularRecipes: ReceptListaDto[];
-  blogs: BlogPostDto[];
-  openRecipe: (id: number) => void;
-  openBlog: (id: number) => void;
-}
+const HomeForm: React.FC = () => {
+  const { token } = useAuth();
+  const navigate = useNavigate();
 
-const HomeForm: React.FC<HomeFormProps> = ({ latestRecipes, popularRecipes, blogs, openRecipe, openBlog }) => {
+  const [recipes, setRecipes] = useState<ReceptListaDto[]>([]);
+  const [blogs, setBlogs] = useState<BlogPostDto[]>([]);
+  const [likes, setLikes] = useState<LikeDto[]>([]);
+
+  useEffect(() => {
+    if (!token) return;
+    recipesApi.getAllRecipes(token).then(setRecipes);
+  }, [token]);
+
+  useEffect(() => {
+    if (!token) return;
+    blogsAPI.getAllBlogs(token).then(setBlogs);
+  }, [token]);
+
+  useEffect(() => {
+    if (!token || recipes.length === 0) return;
+    const fetchLikes = async () => {
+      const likesArray = await Promise.all(
+        recipes.map((recipe) =>
+          likeApiService.numberOfLikes(token, recipe.idRecepta)
+        )
+      );
+      setLikes(likesArray);
+    };
+    fetchLikes();
+  }, [recipes, token]);
+
+  // Navigation helpers
+  const openRecipe = (recipeId: number) => navigate(`/recipes/${recipeId}`);
+  const openBlog = (blogId: number) => navigate(`/blog/${blogId}`);
+
   return (
     <div className="homepage">
-      <section className="recipes-section">
-        <h2>New Recipes</h2>
-        <div className="recipes-grid">
-          {latestRecipes.map((recipe) => (
-            <RecipeCard key={recipe.idRecepta} recipe={recipe} openRecipe={openRecipe} />
-          ))}
-        </div>
-
-        <h2>Popular Recipes</h2>
-        <div className="recipes-grid">
-          {popularRecipes.map((recipe) => (
-            <RecipeCard key={recipe.idRecepta} recipe={recipe} openRecipe={openRecipe} />
-          ))}
-        </div>
-      </section>
-
-      <section className="blogs-section">
-        <h2>Food Blogs</h2>
-        <div className="blogs-grid">
-          {blogs.map((blog) => (
-            <BlogCard key={blog.idBlogPost} blog={blog} openBlog={openBlog} />
-          ))}
-        </div>
-      </section>
+      <LatestRecipesSection recipes={recipes} openRecipe={openRecipe} />
+      <PopularRecipesSection
+        recipes={recipes}
+        likes={likes}
+        openRecipe={openRecipe}
+      />
+      <BlogSection blogs={blogs} openBlog={openBlog} />
     </div>
   );
 };
