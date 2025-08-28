@@ -1,5 +1,4 @@
-import React, {  useState } from "react";
-//import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import "../styles/pages/Explore.css";
 import Navbar from "../components/nav_bar/NavBar";
 import { useAuth } from "../hooks/auth/authHook";
@@ -9,19 +8,33 @@ import { SearchBar } from "../components/serach_bar/SearchBar";
 import { CategoryButtons } from "../components/category_buttons/CategoryButtons";
 import type { ICategoryApiService } from "../api_services/category_api/ICategoryApiService";
 import UserRecipesList from "../components/user_recipe_list/UserRecipesList";
+import type { IReceptApiService } from "../api_services/recept_api/IReceptApiService";
 
 interface ExplorePageProps {
   categoryApiService: ICategoryApiService;
-  recipes: ReceptListaDto[];  
+  recipesApi: IReceptApiService;
 }
 
-const ExplorePage: React.FC<ExplorePageProps> = ({ categoryApiService, recipes }) => {
-  const { user } = useAuth();
-  const [selectedCategory, setSelectedCategory] = useState<KategorijaDto | null>(null);
-  const [filteredRecipes, setFilteredRecipes] = useState<ReceptListaDto[]>(recipes);
+const ExplorePage: React.FC<ExplorePageProps> = ({
+  categoryApiService,
+  recipesApi,
+}) => {
+  const { user, token } = useAuth();
+  const [selectedCategory, setSelectedCategory] =
+    useState<KategorijaDto | null>(null);
+
+  const [allRecipes, setAllRecipes] = useState<ReceptListaDto[]>([]);
+  const [filteredRecipes, setFilteredRecipes] = useState<
+    ReceptListaDto[] | null
+  >(null);
+
+  const handleRecipesLoaded = (recipes: ReceptListaDto[]) => {
+    setAllRecipes(recipes);
+    setFilteredRecipes(null); // inicijalno nema filtera
+  };
 
   const handleFilteredRecipes = (filtered: ReceptListaDto[]) => {
-    setFilteredRecipes(filtered);
+    setFilteredRecipes(filtered.length > 0 ? filtered : null);
   };
 
   const openRecipe = (id: number) => {
@@ -35,7 +48,7 @@ const ExplorePage: React.FC<ExplorePageProps> = ({ categoryApiService, recipes }
       <h1>Explore Recipes</h1>
 
       <SearchBar
-        recipes={recipes}
+        recipes={allRecipes} // uvek pretražujemo po svim receptima
         selectedCategory={selectedCategory}
         primiRecept={handleFilteredRecipes}
       />
@@ -46,7 +59,13 @@ const ExplorePage: React.FC<ExplorePageProps> = ({ categoryApiService, recipes }
         categoryApiService={categoryApiService}
       />
 
-      <UserRecipesList recipes={filteredRecipes} openRecipe={openRecipe} />
+      <UserRecipesList
+        token={token || ""}
+        openRecipe={openRecipe}
+        recipesApi={recipesApi}
+        onRecipesLoaded={handleRecipesLoaded}
+        filteredRecipes={filteredRecipes ?? undefined}
+      />
     </div>
   );
 };

@@ -51,7 +51,10 @@ function App() {
             path="/explore"
             element={
               <ProtectedRoute requiredRole="">
-                <ExplorePage categoryApiService={categoryApiService} />
+                <ExplorePage
+                  categoryApiService={categoryApiService}
+                  recipesApi={recipesApi}
+                />
               </ProtectedRoute>
             }
           />
