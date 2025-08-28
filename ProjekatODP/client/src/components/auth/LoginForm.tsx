@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/auth/authHook";
 import type { IAuthAPIService } from "../../api_services/auth/IAuthAPIService";
+import { validacijaPodatakaAuth } from "../../api_services/validators/Validation";
+
 
 interface LoginFormProps {
   authApi: IAuthAPIService;
@@ -16,8 +18,9 @@ export function LoginForm({ authApi }: LoginFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!username || !password) {
-      setGreska("Popunite sva polja");
+    const validacija = validacijaPodatakaAuth(username, password);
+    if (!validacija.uspesno) {
+      setGreska(validacija.poruka ?? "Data not entered correctly");
       return;
     }
 
