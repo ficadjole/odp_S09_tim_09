@@ -7,19 +7,18 @@ import "../styles/Recipe.css";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import { commentApi } from "../api_services/comment_api/CommentApi";
 import { likeApiService } from "../api_services/like_api/LikeApiService";
-import { type LikeDto } from "../models/like/LikeDto";
-import { useAuth } from "../hooks/auth/authHook"; // dodato
+import { useAuth } from "../hooks/auth/authHook"; 
 
 const RecipeDetailsPage: React.FC = () => {
-  const { user, token } = useAuth(); // sada imamo user i token iz hook-a
+  const { user, token } = useAuth(); 
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [comments, setComments] = useState<CommentDto[]>([]);
   const [liked, setLikeD] = useState<boolean>(false);
-  const [newLike, setNewLike] = useState<LikeDto>();
   const [newComment, setNewComment] = useState("");
+  const [likeCount, setLikeCount] = useState<number>(0);
 
   useEffect(() => {
     if (!id) return;
@@ -43,25 +42,15 @@ const RecipeDetailsPage: React.FC = () => {
   }, [id, token]);
 
   useEffect(() => {
-    if (!token) return;
+    if (!recipe || !user || !token) return;
 
-    const nemamPojma = async () => {
-      const korisnikLajkovao = await likeApiService.userLiked(
-        token || "",
-        recipe.idRecepta,
-        user?.id
-      );
-      console.log(korisnikLajkovao);
-      if (korisnikLajkovao.korisnikLajkova == true) {
-        const nmbrOfLikes = await likeApiService.numberOfLikes(
-          token || "",
-          recipe.idRecepta
-        );
-        setNewLike(nmbrOfLikes);
-        setLikeD(true);
-      }
-    };
-  }, [recipe, token, user]);
+    likeApiService.userLiked(token, recipe.idRecepta, user.id)
+      .then((res) => setLikeD(res.korisnikLajkova));
+
+    likeApiService.numberOfLikes(token, recipe.idRecepta)
+      .then((res) => setLikeCount(res.brojLajkova));
+  }, [recipe, user, token]);
+  
 
   if (!recipe) return <p>Recipe not found</p>;
 
@@ -70,7 +59,7 @@ const RecipeDetailsPage: React.FC = () => {
     const newCommentV = await commentApi.addComment(
       token || "",
       recipe.idRecepta,
-      user?.id ?? 0,
+      user?.id ?? 0, 
       newComment
     );
     setComments([...comments, newCommentV]);
@@ -78,33 +67,20 @@ const RecipeDetailsPage: React.FC = () => {
   };
 
   const handleLikeToggle = async () => {
-    if (liked === false) {
-      const newLike = await likeApiService.addLike(
-        token || "",
-        recipe.idRecepta,
-        user?.id ?? 0
-      );
+  if (!user || !token || !recipe) return;
 
-      const nmbrOfLikes = await likeApiService.numberOfLikes(
-        token || "",
-        recipe.idRecepta
-      );
-      setNewLike(nmbrOfLikes);
-      setLikeD(true);
-    } else {
-      await likeApiService.removeLike(
-        token || "",
-        recipe.idRecepta,
-        user?.id ?? 0
-      );
-      const nmbrOfLikes = await likeApiService.numberOfLikes(
-        token || "",
-        recipe.idRecepta
-      );
-      setNewLike(nmbrOfLikes);
-      setLikeD(false);
-    }
-  };
+  if (!liked) {
+    await likeApiService.addLike(token, recipe.idRecepta, user.id);
+  } else {
+    await likeApiService.removeLike(token, recipe.idRecepta, user.id);
+  }
+
+  const likes = await likeApiService.numberOfLikes(token, recipe.idRecepta);
+  setLikeCount(likes.brojLajkova);
+
+  setLikeD(!liked);
+};
+
 
   const handleDeleteRecipe = async () => {
     if (!token || !recipe) return;
@@ -115,13 +91,9 @@ const RecipeDetailsPage: React.FC = () => {
     if (!confirmDelete) return;
 
     try {
-      await recipesApi.deleteRecipe(
-        token,
-        recipe.idRecepta,
-        recipe.kategorije[0]?.idKategorije ?? 0
-      );
+      await recipesApi.deleteRecipe(token, recipe.idRecepta, recipe.kategorije[0]?.idKategorije ?? 0);
       alert("Recept je uspešno obrisan.");
-      navigate("/explore"); // vraća korisnika na explore
+      navigate("/explore"); 
     } catch (err) {
       console.error("Greška pri brisanju recepta:", err);
       alert("Brisanje nije uspelo.");
@@ -171,8 +143,7 @@ const RecipeDetailsPage: React.FC = () => {
             {liked ? "💖 Liked" : "👍 Like"}
           </button>
           <span className="likes-count">
-            {newLike?.brojLajkova}{" "}
-            {newLike?.brojLajkova === 1 ? "Like" : "Likes"}
+            {likeCount} {likeCount === 1 ? "Like" : "Likes"}
           </span>
         </div>
 
