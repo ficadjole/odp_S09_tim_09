@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import type { Recipe } from "../models/recipe/Recipe";
 import Navbar from "../components/nav_bar/NavBar";
 import type { CommentDto } from "../models/comments/CommentDto";
-import "../styles/Recipe.css";
+import "../styles/pages/Recipe.css";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import { commentApi } from "../api_services/comment_api/CommentApi";
 import { likeApiService } from "../api_services/like_api/LikeApiService";

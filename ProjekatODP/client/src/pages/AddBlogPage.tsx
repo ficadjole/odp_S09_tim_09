@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Blog } from "../models/blog/Blog";
-import "../styles/AddBlog.css";
+import "../styles/pages/AddBlog.css";
 import { blogsAPI } from "../api_services/blog_api/BlogAPIService";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
 import { useAuth } from "../hooks/auth/authHook";
@@ -105,7 +105,7 @@ const AddBlogPage: React.FC = () => {
       </div>
 
       <div className="form-buttons">
-        <button className="cancel-btn" onClick={() => navigate("/blog")}>
+        <button className="cancel-btn" onClick={() => navigate("/profile")}>
           Cancel
         </button>
         <button className="save-btn" onClick={handleSave}>

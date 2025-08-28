@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../styles/Home.css";
+import "../styles/pages/Home.css";
 import Navbar from "../components/nav_bar/NavBar";
 import HomeForm from "../components/home/HomeForm";
 import { useNavigate } from "react-router-dom";
@@ -35,7 +35,9 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (recipes.length > 0) {
-      const sortedRecipes = recipes.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      const sortedRecipes = recipes.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
       setLatestRecipes(sortedRecipes.slice(0, 6));
     }
   }, [recipes]);
@@ -44,7 +46,9 @@ const HomePage: React.FC = () => {
     if (!token) return;
     const fetchLikes = async () => {
       const likesArray = await Promise.all(
-        recipes.map((recipe) => likeApiService.numberOfLikes(token, recipe.idRecepta))
+        recipes.map((recipe) =>
+          likeApiService.numberOfLikes(token, recipe.idRecepta)
+        )
       );
       setLikes(likesArray);
     };
@@ -53,8 +57,10 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const sortedByLikes = recipes.slice().sort((a, b) => {
-      const likesA = likes.find((l) => l.idRecepta === a.idRecepta)?.brojLajkova || 0;
-      const likesB = likes.find((l) => l.idRecepta === b.idRecepta)?.brojLajkova || 0;
+      const likesA =
+        likes.find((l) => l.idRecepta === a.idRecepta)?.brojLajkova || 0;
+      const likesB =
+        likes.find((l) => l.idRecepta === b.idRecepta)?.brojLajkova || 0;
       return likesB - likesA;
     });
     setPopularRecipes(sortedByLikes.slice(0, 6));

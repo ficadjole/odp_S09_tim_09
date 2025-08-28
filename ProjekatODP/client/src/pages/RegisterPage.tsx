@@ -16,7 +16,7 @@ export default function RegisterPage() {
 
   return (
     <div className="auth-container">
-      <RegisterForm/>
+      <RegisterForm />
     </div>
   );
 }
