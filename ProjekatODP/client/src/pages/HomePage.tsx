@@ -6,26 +6,31 @@ import Navbar from "../design_components/NavBar";
 import { useNavigate } from "react-router-dom";
 import { recipesApi } from "../api_services/recept_api/ReceptApiService";
 import { blogsAPI } from "../api_services/blog_api/BlogAPIService";
+import { likeApiService } from "../api_services/like_api/LikeApiService";
 import type { ReceptListaDto } from "../models/recipe/ReceptListaDto";
 import type { BlogPostDto } from "../models/blog/BlogListaDto";
 import { useAuth } from "../hooks/auth/authHook";
+import type { LikeDto } from "../models/like/LikeDto";
 
 const HomePage: React.FC = () => {
   const { user, token } = useAuth();
   const navigate = useNavigate();
   const [recipes, setRecipes] = useState<ReceptListaDto[]>([]);
   const [latestRecipes, setLatestRecipes] = useState<ReceptListaDto[]>([]);
+  const [popularRecipes, setPopularRecipes] = useState<ReceptListaDto[]>([]);
   const [blogs, setBlogs] = useState<BlogPostDto[]>([]);
+  const [likes, setLikes] = useState<LikeDto[]>([]);
   useEffect(() => {
-    if (!token) return; 
+    if (!token) return;
 
     recipesApi.getAllRecipes(token).then((recipes) => {
       setRecipes(recipes);
+      setPopularRecipes(recipes);
     });
   }, [token]);
 
   useEffect(() => {
-    if (!token) return; 
+    if (!token) return;
 
     blogsAPI.getAllBlogs(token).then((blogs) => {
       setBlogs(blogs);
@@ -39,6 +44,34 @@ const HomePage: React.FC = () => {
       setLatestRecipes(temp);
     }
   }, [recipes]);
+
+  useEffect(() => {
+    if (!token) return;
+
+    const fetchLikes = async () => {
+      const likesArray = await Promise.all(
+        recipes.map((recipe) =>
+          likeApiService.numberOfLikes(token, recipe.idRecepta)
+        )
+      );
+      setLikes(likesArray); // likesArray = niz brojeva, po istom redosledu kao recipes
+    };
+
+    fetchLikes();
+  }, [recipes, token]);
+  console.log(likes);
+
+  useEffect(() => {
+    const sortedByLikes = recipes.slice().sort((a, b) => {
+      const likesA =
+        likes.find((l) => l.idRecepta === a.idRecepta)?.brojLajkova || 0;
+      const likesB =
+        likes.find((l) => l.idRecepta === b.idRecepta)?.brojLajkova || 0;
+      return likesB - likesA; // najveći broj lajkova prvi
+    });
+
+    setPopularRecipes(sortedByLikes);
+  }, [recipes, likes]);
 
   const openRecipe = (recipeId: number) => {
     navigate(`/recipes/${recipeId}`);
@@ -56,6 +89,27 @@ const HomePage: React.FC = () => {
         <h2>New Recipes</h2>
         <div className="recipes-grid">
           {latestRecipes.map((recipe) => (
+            <div key={recipe.idRecepta} className="recipe-card">
+              <img
+                src={`https://picsum.photos/600/400?random=${recipe.idRecepta}`}
+                alt={`Recipe ${recipe.nazivR}`}
+              />
+              <div className="recipe-info">
+                <h3>{recipe.nazivR}</h3>
+                <button
+                  className="read-more"
+                  onClick={() => openRecipe(recipe.idRecepta)}
+                >
+                  Read More
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <h2>Popular recipes</h2>
+
+        <div className="recipes-grid">
+          {popularRecipes.map((recipe) => (
             <div key={recipe.idRecepta} className="recipe-card">
               <img
                 src={`https://picsum.photos/600/400?random=${recipe.idRecepta}`}
