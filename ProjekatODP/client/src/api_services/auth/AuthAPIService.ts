@@ -20,7 +20,6 @@ export const usersApi: IAuthAPIService = {
         password,
         uloga,
       });
-      console.log(res);
       return res.data;
     } catch (error) {
       let message = "Registration error.";

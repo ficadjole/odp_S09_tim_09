@@ -15,7 +15,7 @@ export const commentApi: ICommentApi = {
     idRecepta: number
   ): Promise<CommentDto[]> {
     try {
-      const res = await axios.get<CommentDto[]>(
+      const res = await axios.get<{ data: CommentDto[] }>(
         `${API_URL}/prikaziSveKomentare/${encodeURIComponent(idRecepta)}`,
         {
           headers: {
@@ -34,7 +34,7 @@ export const commentApi: ICommentApi = {
     idBlogPost: number
   ): Promise<CommentDto[]> {
     try {
-      const res = await axios.get<CommentDto[]>(
+      const res = await axios.get<{ data: CommentDto[] }>(
         `${API_URL}/prikaziSveKomentare/${encodeURIComponent(idBlogPost)}`,
         {
           headers: {
@@ -55,7 +55,7 @@ export const commentApi: ICommentApi = {
     tekst: string
   ): Promise<CommentDto> {
     try {
-      const res = await axios.post<CommentDto>(
+      const res = await axios.post<{ data: CommentDto }>(
         `${API_URL}/dodajKomentar`,
         {
           idRecepta,

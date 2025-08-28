@@ -2,6 +2,7 @@ import { Router, Response, Request } from "express";
 import { IAuthService } from "../../Domain/services/IAuthService";
 import { validacijaPodatakaAuth } from "../validators/RegisterValidator";
 import jwt from "jsonwebtoken";
+import { validacijaPodatakaAuthLogin } from "../validators/LoginValidator";
 
 export class AuthController {
   private router: Router;
@@ -22,12 +23,12 @@ export class AuthController {
     try {
       const { username, password } = req.body;
 
-      //const rezultat = validacijaPodatakaAuth(username, email, password, uloga);
+      const rezultat = validacijaPodatakaAuthLogin(username, password);
 
-      /*       if (!rezultat.uspesno) {
+      if (!rezultat.uspesno) {
         res.status(400).json({ succes: false, message: rezultat.poruka });
         return;
-      } */
+      }
 
       const result = await this.authService.prijava(username, password);
 

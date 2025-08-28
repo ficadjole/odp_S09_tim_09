@@ -12,7 +12,7 @@ const emptyCategory: KategorijaDto = {
 export const categoryApiService: ICategoryApiService = {
   async addCategory(token: string, nazivK: string): Promise<KategorijaDto> {
     try {
-      const res = await axios.post<KategorijaDto>(
+      const res = await axios.post<{ data: KategorijaDto }>(
         `${API_URL}/dodaj`,
         { nazivK },
         {
@@ -49,7 +49,7 @@ export const categoryApiService: ICategoryApiService = {
     nazivKStari: string
   ): Promise<KategorijaDto> {
     try {
-      const res = await axios.put<KategorijaDto>(
+      const res = await axios.put<{ data: KategorijaDto }>(
         `${API_URL}/azuriraj`,
         {
           nazivKNovi,
@@ -69,11 +69,14 @@ export const categoryApiService: ICategoryApiService = {
   },
   async getAllCategories(token: string): Promise<KategorijaDto[]> {
     try {
-      const res = await axios.get<KategorijaDto[]>(`${API_URL}/ispisiSve`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get<{ data: KategorijaDto[] }>(
+        `${API_URL}/ispisiSve`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return res.data.data;
     } catch {
       return [];

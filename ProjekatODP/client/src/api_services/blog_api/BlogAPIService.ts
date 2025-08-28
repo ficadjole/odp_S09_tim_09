@@ -19,7 +19,7 @@ const emptyBlog: Blog = {
 export const blogsAPI: IBlogAPIService = {
   async getAllBlogs(token: string): Promise<BlogPostDto[]> {
     try {
-      const res = await axios.get<BlogPostDto[]>(
+      const res = await axios.get<{ data: BlogPostDto[] }>(
         `${API_URL}/prikaziSveBlogove`,
         {
           headers: {
@@ -27,7 +27,7 @@ export const blogsAPI: IBlogAPIService = {
           },
         }
       );
-      console.log(res.data.data);
+
       return res.data.data;
     } catch (error) {
       console.log("Greska front: ", error);
@@ -37,7 +37,7 @@ export const blogsAPI: IBlogAPIService = {
 
   async getBlogById(token: string, idRecepta: number): Promise<Blog> {
     try {
-      const res = await axios.get<Blog>(
+      const res = await axios.get<{ data: Blog }>(
         `${API_URL}/${encodeURIComponent(idRecepta)}`,
         {
           headers: {
@@ -59,7 +59,7 @@ export const blogsAPI: IBlogAPIService = {
     idPreporucenRecept: number[]
   ): Promise<Blog> {
     try {
-      const res = await axios.post<Blog>(
+      const res = await axios.post<{ data: Blog }>(
         `${API_URL}/dodaj`,
         { idKorisnika, naslovB, sadrzaj, idPreporucenRecept },
         {

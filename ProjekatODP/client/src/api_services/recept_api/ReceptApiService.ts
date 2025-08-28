@@ -23,7 +23,7 @@ const emptyRecipe: Recipe = {
 export const recipesApi: IReceptApiService = {
   async getAllRecipes(token: string): Promise<ReceptListaDto[]> {
     try {
-      const res = await axios.get<ReceptListaDto[]>(
+      const res = await axios.get<{ data: ReceptListaDto[] }>(
         `${API_URL}/prikaziSveRecepte`,
         {
           headers: {
@@ -40,7 +40,7 @@ export const recipesApi: IReceptApiService = {
   },
   async getRecipeById(token: string, idRecepta: number): Promise<Recipe> {
     try {
-      const res = await axios.get<Recipe>(
+      const res = await axios.get<{ data: Recipe }>(
         `${API_URL}/${encodeURIComponent(idRecepta)}`,
         {
           headers: {
@@ -65,7 +65,7 @@ export const recipesApi: IReceptApiService = {
     idKategorije: number[]
   ): Promise<Recipe> {
     try {
-      const res = await axios.post<Recipe>(
+      const res = await axios.post<{ data: Recipe }>(
         `${API_URL}/dodajRecept`,
         {
           idKorisnika,
@@ -83,7 +83,7 @@ export const recipesApi: IReceptApiService = {
         }
       );
 
-      return res.data;
+      return res.data.data;
     } catch {
       return emptyRecipe;
     }
@@ -114,7 +114,7 @@ export const recipesApi: IReceptApiService = {
     idKorisnika: number
   ): Promise<ReceptListaDto[]> {
     try {
-      const res = await axios.get<ReceptListaDto[]>(
+      const res = await axios.get<{ data: ReceptListaDto[] }>(
         `${API_URL}/korisnikovi/${encodeURIComponent(idKorisnika)}`,
         {
           headers: {
