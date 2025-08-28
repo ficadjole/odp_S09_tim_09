@@ -24,12 +24,12 @@ export const recipesApi: IReceptApiService = {
   async getAllRecipes(token: string): Promise<ReceptListaDto[]> {
     try {
       const res = await axios.get<ReceptListaDto[]>(
-        `${API_URL}/prikaziSveRecepte`
-        /*         {
+        `${API_URL}/prikaziSveRecepte`,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        } */
+        }
       );
 
       return res.data.data;
@@ -41,12 +41,12 @@ export const recipesApi: IReceptApiService = {
   async getRecipeById(token: string, idRecepta: number): Promise<Recipe> {
     try {
       const res = await axios.get<Recipe>(
-        `${API_URL}/${encodeURIComponent(idRecepta)}`
-        /*         {
+        `${API_URL}/${encodeURIComponent(idRecepta)}`,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        } */
+        }
       );
 
       return res.data.data;
@@ -115,12 +115,12 @@ export const recipesApi: IReceptApiService = {
   ): Promise<ReceptListaDto[]> {
     try {
       const res = await axios.get<ReceptListaDto[]>(
-        `${API_URL}/korisnikovi/${encodeURIComponent(idKorisnika)}`
-        /*         {
+        `${API_URL}/korisnikovi/${encodeURIComponent(idKorisnika)}`,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        } */
+        }
       );
 
       return res.data.data;

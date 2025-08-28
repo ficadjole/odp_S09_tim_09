@@ -15,25 +15,25 @@ export class LajkController {
   private initializeRoutes(): void {
     this.router.post(
       "/lajkovi/dodajLajk",
-      //authenticate,
+      authenticate,
       this.dodajLajk.bind(this)
     );
 
     this.router.delete(
       "/lajkovi/obrisiLajk",
-      //authenticate,
+      authenticate,
       this.obrisiLajk.bind(this)
     );
 
     this.router.get(
       "/lajkovi/brojLajkova/:idRecepta",
-      //authenticate,
+      authenticate,
       this.getBrojLajkova.bind(this)
     );
 
     this.router.get(
       "/lajkovi/lajkovano/:idRecepta/:idKorisnika",
-      //authenticate,
+      authenticate,
       this.getKorisnikLajkovao.bind(this)
     );
   }

@@ -27,7 +27,7 @@ function App() {
           <Route path="/add-recipe" element={<AddRecipePage />} />
           <Route path="/blog/:id" element={<BlogDetailsPage />} />
           <Route path="/add-blog" element={<AddBlogPage />} />
-          <Route path="/registracija" element={<RegisterPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>

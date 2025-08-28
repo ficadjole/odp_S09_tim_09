@@ -17,20 +17,20 @@ export class KomentariController {
   private initializeRoutes(): void {
     this.router.post(
       "/komentari/dodajKomentar",
-      //authenticate,
+      authenticate,
       this.dodajKomentar.bind(this)
     );
 
     this.router.delete(
       "/komentari/obrisiKomentar",
-      //authenticate,
-      //authorize(Uloga.moderator),
+      authenticate,
+      authorize(Uloga.moderator),
       this.obrisiKomentar.bind(this)
     );
 
     this.router.get(
       "/komentari/prikaziSveKomentare/:id",
-      //authenticate,
+      authenticate,
       this.prikaziSveKomentare.bind(this)
     );
   }

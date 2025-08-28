@@ -8,7 +8,7 @@ const emptyBlog: Blog = {
   idBlogPost: 0,
   naslovB: "",
   sadrzaj: "",
-  datum: new Date(),
+  datumBP: new Date(),
   preporuceniRecepti: [],
   author: {
     idKorisnika: 0,

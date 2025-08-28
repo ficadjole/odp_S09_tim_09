@@ -27,7 +27,7 @@ export const commentApi: ICommentApi = {
   async getAllCommentsForBlog(
     token: string,
     idBlogPost: number
-  ): Promise<CommentDto[]>{
+  ): Promise<CommentDto[]> {
     try {
       const res = await axios.get<CommentDto[]>(
         `${API_URL}/prikaziSveKomentare/${encodeURIComponent(idBlogPost)}`
@@ -51,12 +51,12 @@ export const commentApi: ICommentApi = {
           idRecepta,
           idKorisnika,
           tekst,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-        /*           {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-            }, 
-            } */
       );
 
       return res.data.data;
@@ -70,9 +70,9 @@ export const commentApi: ICommentApi = {
         data: {
           idKomentara,
         },
-        /*         headers: {
+        headers: {
           Authorization: `Bearer ${token}`,
-        }, */
+        },
       });
 
       return res.data.data;

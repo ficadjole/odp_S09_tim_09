@@ -4,7 +4,7 @@ export interface BlogPostDto {
   idBlogPost: number;
   naslovB: string;
   sadrzaj: string;
-  datum: Date;
+  datumBP: Date;
   preporuceniRecepti: ReceptListaDto[];
   author?: {
     idKorisnika: number;

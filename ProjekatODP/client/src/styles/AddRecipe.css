@@ -19,6 +19,27 @@ h3 {
   color: #333;
 }
 
+.category-div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.category-div-label {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f8f9fa;
+}
+
+.category-div-input {
+  margin-right: 5px;
+}
+
 .add-recipe-container label {
   display: block;
   margin-bottom: 8px;
@@ -151,25 +172,4 @@ h3 {
 
 .submit-btn:hover {
   background: #3d8c40;
-}
-
-.category-div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 5px;
-}
-
-.category-div-label {
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #f8f9fa;
-}
-
-.category-div-input{
-  margin-right: 5px;
 }

@@ -5,4 +5,5 @@ export interface ReceptListaDto {
   nazivR: string;
   slika_url: string;
   kategorije: KategorijaDto[];
+  date: Date;
 }

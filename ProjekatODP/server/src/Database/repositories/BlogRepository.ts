@@ -21,7 +21,7 @@ export class BlogRepository implements IBlogRepository {
           blogPost.idModerator,
           blogPost.naslovB,
           blogPost.sadrzaj,
-          new Date()
+          blogPost.datum
         );
       } else {
         return new BlogPost();
@@ -80,7 +80,7 @@ export class BlogRepository implements IBlogRepository {
           row.idModerator,
           row.naslovB,
           row.sadrzaj,
-          row.datum
+          row.datumBP
         );
       } else {
         return new BlogPost();
@@ -103,7 +103,7 @@ export class BlogRepository implements IBlogRepository {
             row.idModerator,
             row.naslovB,
             row.sadrzaj,
-            row.datum
+            row.datumBP
           )
       );
     } catch (error) {

@@ -39,7 +39,7 @@ export class BlogController {
     this.router.get(
       "/blogPost/:id",
       authenticate,
-      authorize(Uloga.moderator),
+      //authorize(Uloga.moderator),
       this.prikaziOdredjeniBlog.bind(this)
     );
   }

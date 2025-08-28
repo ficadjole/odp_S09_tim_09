@@ -5,7 +5,8 @@ export class ReceptiListaDto {
     public idRecepta: number = 0,
     public nazivR: string = "",
     public slika_url: string = "",
-    public kategorije: KategorijaDto[] = []
+    public kategorije: KategorijaDto[] = [],
+    public date: Date = new Date()
   ) {}
 }
 

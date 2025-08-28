@@ -5,7 +5,7 @@ export class BlogPostDto {
     public idBlogPost: number = 0,
     public naslovB: string = "",
     public sadrzaj: string = "",
-    public datum: Date = new Date(),
+    public datumBP: Date = new Date(),
     public preporuceniRecepti: ReceptiListaDto[] = [],
     public author?: {
       idKorisnika: number;
