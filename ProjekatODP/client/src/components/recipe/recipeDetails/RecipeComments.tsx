@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import type { CommentDto } from "../../../models/comments/CommentDto";
 
+
 interface RecipeCommentsProps {
   comments: CommentDto[];
   onAddComment: (text: string) => void;
@@ -20,7 +21,7 @@ export const RecipeComments: React.FC<RecipeCommentsProps> = ({
 
   return (
     <div className="recipe-section comments-section">
-      <h2>Comments</h2>
+      <div className="recipe-details"><h2 >Comments</h2></div>
       {comments.length > 0 ? (
         comments.map((c) => (
           <div key={c.idKomentara} className="comment">
