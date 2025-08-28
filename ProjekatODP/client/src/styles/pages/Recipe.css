@@ -35,6 +35,8 @@
 .recipe-header p {
   color: #555;
   margin-top: 0.3rem;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 .recipe-content {
