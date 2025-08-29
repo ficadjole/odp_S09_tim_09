@@ -90,14 +90,12 @@ body {
 }
 
 .category-btn.active {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(52, 52, 51, 0.15);
-  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #ad5f1a, #c28452);
+
+}
+
+.category-btn:hover::after {
+  left: 0;
 }
 
 .explore-grid {
@@ -171,11 +169,3 @@ body {
   margin-right: 8px;
 }
 
-.delete-category-btn {
-  margin-left: 4px;
-  background: transparent;
-  border: none;
-  color: red;
-  cursor: pointer;
-  font-size: 14px;
-}
