@@ -6,6 +6,7 @@ import { Uloga } from "../../Domain/enums/Uloga";
 import { ReceptiListaDto } from "../../Domain/DTOs/recepti/ReceptListaDto";
 import { Recept } from "../../Domain/models/Recept";
 import { ReceptDetaljiDto } from "../../Domain/DTOs/recepti/ReceptDetaljiDto";
+import { validacijaPodatakaDodavanjeRecepta } from "../validators/NewRecipeValidator";
 
 export class ReceptiController {
   private router: Router;
@@ -66,6 +67,19 @@ export class ReceptiController {
         slika_url,
         idKategorije,
       } = req.body;
+
+      var odgovor = validacijaPodatakaDodavanjeRecepta(
+        idKorisnika,
+        nazivR,
+        sastojci,
+        opis,
+        idKategorije
+      );
+
+      if (!odgovor.uspesno) {
+        res.status(400).json({ succes: false, message: odgovor.poruka });
+        return;
+      }
 
       const result = await this.receptService.dodajRecept(
         idKorisnika,

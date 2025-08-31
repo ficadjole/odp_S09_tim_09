@@ -3,6 +3,7 @@ import { IKategorijeService } from "../../Domain/services/IKategorijeService";
 import { authenticate } from "../../Middlewares/authentification/AuthMiddleware";
 import { authorize } from "../../Middlewares/authorization/AuthorizeMiddleware";
 import { Uloga } from "../../Domain/enums/Uloga";
+import { validacijaPodatakaDodavanjeKategorije } from "../validators/NewCategoryValidator";
 
 export class KategorijeController {
   private router: Router;
@@ -44,6 +45,13 @@ export class KategorijeController {
     try {
       const { nazivK } = req.body;
 
+      const rezultat = validacijaPodatakaDodavanjeKategorije(nazivK);
+
+      if (!rezultat.uspesno) {
+        res.status(400).json({ succes: false, message: rezultat.poruka });
+        return;
+      }
+
       const result = await this.kateogrijeService.dodajKategoriju(nazivK);
 
       if (result.idKategorije !== 0) {
@@ -75,7 +83,7 @@ export class KategorijeController {
           success: true,
           message: "Uspesno ste dodali kategoriju!",
           data: result,
-      });
+        });
       } else {
         res.status(401).json({
           success: false,

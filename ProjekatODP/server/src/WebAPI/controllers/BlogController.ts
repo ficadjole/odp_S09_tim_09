@@ -4,6 +4,7 @@ import { authorize } from "../../Middlewares/authorization/AuthorizeMiddleware";
 import { IBlogService } from "../../Domain/services/IBlogService";
 import { Uloga } from "../../Domain/enums/Uloga";
 import { BlogPostDto } from "../../Domain/DTOs/blogPost/BlogPostDto";
+import { validacijaPodatakaDodavanjeBloga } from "../validators/NewBlogValidator";
 
 export class BlogController {
   private router: Router;
@@ -47,6 +48,18 @@ export class BlogController {
   private async dodajBlogPost(req: Request, res: Response): Promise<void> {
     try {
       const { idKorisnika, naslovB, sadrzaj, idPreporucenRecept } = req.body;
+
+      const rezultat = validacijaPodatakaDodavanjeBloga(
+        idKorisnika,
+        naslovB,
+        sadrzaj
+      );
+
+      if (!rezultat.uspesno) {
+        res.status(400).json({ succes: false, message: rezultat.poruka });
+        return;
+      }
+
       const result = await this.blogService.dodajBlogPost(
         idKorisnika,
         naslovB,
