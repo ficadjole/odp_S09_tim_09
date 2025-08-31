@@ -3,6 +3,7 @@ import { IKomenatariService } from "../../Domain/services/IKomentariService";
 import { authenticate } from "../../Middlewares/authentification/AuthMiddleware";
 import { authorize } from "../../Middlewares/authorization/AuthorizeMiddleware";
 import { Uloga } from "../../Domain/enums/Uloga";
+import { validacijaPodatakaDodavanjeKomentara } from "../validators/NewCommentValidator";
 
 export class KomentariController {
   private router: Router;
@@ -38,6 +39,13 @@ export class KomentariController {
   private async dodajKomentar(req: Request, res: Response): Promise<void> {
     try {
       const { idRecepta, idKorisnika, tekst } = req.body;
+
+      const rezultat = validacijaPodatakaDodavanjeKomentara(tekst);
+
+      if (!rezultat.uspesno) {
+        res.status(400).json({ succes: false, message: rezultat.poruka });
+        return;
+      }
 
       const result = await this.komentarService.dodajKomentar(
         idRecepta,
