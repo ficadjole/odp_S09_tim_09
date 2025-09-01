@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { validationRecipe } from "../../api_services/validators/RecipeValidation";
 
 interface RecipeFormProps {
   title: string;
@@ -25,6 +26,20 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
   image,
   setImage,
 }) => {
+  const [greska, setGreska] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const validacija = validationRecipe(title, instructions, advice, ingredientInput, image);
+    if (!validacija.uspesno) {
+      setGreska(validacija.poruka ?? "Data not entered correctly");
+      return;
+    }
+
+    setGreska("");
+  };
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
@@ -34,7 +49,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
   };
 
   return (
-    <form className="add-recipe-form" onSubmit={(e) => e.preventDefault()}>
+    <form className="add-recipe-form" onSubmit={handleSubmit}>
       <div className="form-group">
         <label htmlFor="title">Title</label>
         <input
@@ -78,6 +93,12 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
           onChange={(e) => setAdvice(e.target.value)}
         />
       </div>
+
+      {greska && <p className="text-red-600">{greska}</p>}
+
+      <button type="submit" className="bg-green-500 text-white px-3 py-1 mt-2 rounded">
+        Save Recipe
+      </button>
     </form>
   );
 };

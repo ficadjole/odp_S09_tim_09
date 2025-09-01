@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { KategorijaDto } from "../../models/kategorije/KategorijaDto";
 import type { ICategoryApiService } from "../../api_services/category_api/ICategoryApiService";
+import { validationCategoryChoose } from "../../api_services/validators/CategoryChoosingValidation";
 
 interface CategorySelectorProps {
   token: string | null;
@@ -16,11 +17,21 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
   setSelectedCategories,
 }) => {
   const [categories, setCategories] = useState<KategorijaDto[]>([]);
+  const [greska, setGreska] = useState("");
 
   useEffect(() => {
     if (!token) return;
     categoryApiService.getAllCategories(token).then(setCategories);
   }, [token, categoryApiService]);
+
+  const handleSubmit = () => {
+    const validacija = validationCategoryChoose(selectedCategories);
+    if (!validacija.uspesno) {
+      setGreska(validacija.poruka ?? "Data not entered correctly");
+      return;
+    }
+    setGreska("");
+  };
 
   const handleCheckboxChange = (id: number) => {
     if (selectedCategories.includes(id)) {
@@ -39,10 +50,18 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
             checked={selectedCategories.includes(cat.idKategorije)}
             onChange={() => handleCheckboxChange(cat.idKategorije)}
             className="category-div-input"
-          ></input>
+          />
           {cat.nazivK}
         </label>
       ))}
+      {greska && <p className="text-red-600">{greska}</p>}
+      <button
+        type="button"
+        onClick={handleSubmit}
+        className="bg-blue-500 text-white px-3 py-1 mt-2 rounded"
+      >
+        Confirm Categories
+      </button>
     </div>
   );
 };
