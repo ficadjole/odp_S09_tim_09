@@ -27,8 +27,6 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
 }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,15 +82,6 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
           onChange={(e) => setAdvice(e.target.value)}
         />
       </div>
-
-
-
-      <button
-        type="submit"
-        className="bg-green-500 text-white px-3 py-1 mt-2 rounded"
-      >
-        Save Recipe
-      </button>
     </form>
   );
 };
