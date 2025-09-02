@@ -36,7 +36,7 @@ export class BlogService implements IBlogService {
 
     //provera da li postoje recepti
     for (var i = 0; i < idPreporucenRecept.length; i++) {
-      console.log(idPreporucenRecept);
+      
       const postojeciRecept = await this.receptRepository.getByIdRecepta(
         idPreporucenRecept[i]
       );
