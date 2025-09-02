@@ -24,7 +24,6 @@ export const BlogForm: React.FC<BlogFormProps> = ({
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
-
       <div className="form-group">
         <label>Content</label>
         <textarea

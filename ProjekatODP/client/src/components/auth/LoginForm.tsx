@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/auth/authHook";
 import type { IAuthAPIService } from "../../api_services/auth/IAuthAPIService";
-import { validacijaPodatakaAuth } from "../../api_services/validators/Validation";
+import { validacijaPodatakaAuth } from "../../api_services/validators/AuthValidation";
 
 
 interface LoginFormProps {

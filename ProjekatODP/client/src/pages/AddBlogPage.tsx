@@ -45,9 +45,13 @@ const AddBlogPage: React.FC<AddBlogPageProps> = ({ blogsAPI, recipesApi }) => {
       />
 
       <div className="form-buttons">
-        <button className="cancel-btn" onClick={() => navigate("/profile")}>
+        <button
+          className="cancel-btn"
+          onClick={() => navigate("/profile")}
+        >
           Cancel
         </button>
+
         <button
           className="save-btn"
           onClick={async () => {
@@ -61,7 +65,10 @@ const AddBlogPage: React.FC<AddBlogPageProps> = ({ blogsAPI, recipesApi }) => {
             }
 
             try {
-              const selectedRecipeIds = selectedRecipes.map((r) => r.idRecepta);
+              const selectedRecipeIds = selectedRecipes.map(
+                (r) => r.idRecepta
+              );
+
               const newBlog: Blog = await blogsAPI.addBlog(
                 token,
                 user.id,
@@ -69,6 +76,7 @@ const AddBlogPage: React.FC<AddBlogPageProps> = ({ blogsAPI, recipesApi }) => {
                 content,
                 selectedRecipeIds
               );
+
               if (newBlog && newBlog.idBlogPost !== 0) {
                 alert("Blog added successfully");
                 navigate("/profile");

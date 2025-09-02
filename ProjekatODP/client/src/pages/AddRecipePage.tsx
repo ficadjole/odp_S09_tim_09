@@ -6,6 +6,7 @@ import { RecipeForm } from "../components/addRecipe/RecipeForm";
 import { CategorySelector } from "../components/addRecipe/CategorySelector";
 import type { IReceptApiService } from "../api_services/recept_api/IReceptApiService";
 import type { ICategoryApiService } from "../api_services/category_api/ICategoryApiService";
+import { validationRecipe } from "../api_services/validators/RecipeValidation";
 
 interface AddRecipePageProps {
   recipesApi: IReceptApiService;
@@ -25,7 +26,7 @@ const AddRecipePage: React.FC<AddRecipePageProps> = ({
   const [ingredientInput, setIngredientInput] = useState("");
   const [instructions, setInstructions] = useState("");
   const [image, setImage] = useState<string>("");
-
+  const [greska, setGreska] = useState("");
   return (
     <div className="add-recipe-container">
       <h2>Add New Recipe</h2>
@@ -49,7 +50,7 @@ const AddRecipePage: React.FC<AddRecipePageProps> = ({
         selectedCategories={selectedCategories}
         setSelectedCategories={setSelectedCategories}
       />
-
+      {greska && <p className="text-red-600">{greska}</p>}
       <div className="form-buttons">
         <button className="cancel-btn" onClick={() => navigate("/profile")}>
           Cancel
@@ -57,6 +58,20 @@ const AddRecipePage: React.FC<AddRecipePageProps> = ({
         <button
           className="submit-btn"
           onClick={async () => {
+            const validacija = validationRecipe(
+              title,
+              instructions,
+              advice,
+              ingredientInput,
+              image,
+              selectedCategories
+            );
+            
+            if (!validacija.uspesno) {
+              setGreska(validacija.poruka ?? "Data not entered correctly");
+              return;
+            }
+            setGreska("");
             if (!user?.id || !token) return;
             await recipesApi.addRecipe(
               token,

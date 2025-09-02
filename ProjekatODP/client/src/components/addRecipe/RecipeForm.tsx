@@ -25,6 +25,12 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
   image,
   setImage,
 }) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+
+  };
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
@@ -34,7 +40,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
   };
 
   return (
-    <form className="add-recipe-form" onSubmit={(e) => e.preventDefault()}>
+    <form className="add-recipe-form" onSubmit={handleSubmit}>
       <div className="form-group">
         <label htmlFor="title">Title</label>
         <input
@@ -78,6 +84,15 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
           onChange={(e) => setAdvice(e.target.value)}
         />
       </div>
+
+
+
+      <button
+        type="submit"
+        className="bg-green-500 text-white px-3 py-1 mt-2 rounded"
+      >
+        Save Recipe
+      </button>
     </form>
   );
 };

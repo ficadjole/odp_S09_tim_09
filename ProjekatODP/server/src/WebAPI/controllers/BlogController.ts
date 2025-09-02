@@ -143,7 +143,7 @@ export class BlogController {
       const trazeniPost: BlogPostDto = await this.blogService.getByIdBlogPost(
         idBlogPost
       );
-      console.log(trazeniPost);
+      
       if (trazeniPost.idBlogPost !== 0) {
         res.status(200).json({
           success: true,
